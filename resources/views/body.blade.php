@@ -1,1 +1,1 @@
-    <x-filament-exception-reporter::code-preview title="Body" :contents="$getLivewire->data['body']" />
+    <x-filament-exceptions::code-preview title="Body" :contents="$getLivewire->data['body']" />

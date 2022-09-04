@@ -2,10 +2,10 @@
 
 namespace BezhanSalleh\FilamentExceptions;
 
-use Throwable;
-use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
 use BezhanSalleh\FilamentExceptions\Models\Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Throwable;
 
 class FilamentExceptions
 {

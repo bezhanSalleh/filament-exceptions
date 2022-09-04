@@ -20,6 +20,7 @@
         "php": "^8.1",
         "spatie/laravel-package-tools": "^1.9.2",
         "filament/filament": "^2.0",
+        "bezhansalleh/filament-addons": "^0.0",
         "illuminate/contracts": "^9.0"
     },
     "require-dev": {
@@ -29,9 +30,6 @@
         "orchestra/testbench": "^7.0",
         "pestphp/pest": "^1.21",
         "pestphp/pest-plugin-laravel": "^1.1",
-        "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan-deprecation-rules": "^1.0",
-        "phpstan/phpstan-phpunit": "^1.0",
         "phpunit/phpunit": "^9.5"
     },
     "autoload": {
@@ -46,7 +44,6 @@
         }
     },
     "scripts": {
-        "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
         "test-coverage": "vendor/bin/pest --coverage",
         "format": "vendor/bin/pint"

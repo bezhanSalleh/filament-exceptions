@@ -2,13 +2,13 @@
 
 namespace BezhanSalleh\FilamentExceptions;
 
-use BezhanSalleh\FilamentExceptions\Commands\MakeExceptionsInstallCommand;
+use Illuminate\Http\Request;
+use Filament\PluginServiceProvider;
 use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
-use BezhanSalleh\FilamentExceptions\FilamentExceptions;
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
+use BezhanSalleh\FilamentExceptions\Commands\MakeExceptionsInstallCommand;
 
-class FilamentExceptionsServiceProvider extends PackageServiceProvider
+class FilamentExceptionsServiceProvider extends PluginServiceProvider
 {
     protected array $resources = [
         ExceptionResource::class,

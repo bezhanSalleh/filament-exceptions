@@ -13,7 +13,7 @@ class MakeExceptionsInstallCommand extends Command
     public function handle(): int
     {
         $this->call('vendor:publish', [
-            '--tag' => 'filament-exceptions-migrations'
+            '--tag' => 'filament-exceptions-migrations',
         ]);
 
         $this->components->info('Migration has been published');
@@ -23,6 +23,7 @@ class MakeExceptionsInstallCommand extends Command
         $this->components->info('Filament Exceptions migration run.');
 
         $this->components->info('Add the following snippet to your exceptions');
+
         return self::SUCCESS;
     }
 }

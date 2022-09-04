@@ -2,7 +2,8 @@
 
 namespace BezhanSalleh\FilamentExceptions\Resources;
 
-use BezhanSalleh\FilamentAddons\Forms\Components;
+use BezhanSalleh\FilamentAddons\Forms\Components\Pills;
+use BezhanSalleh\FilamentAddons\Forms\Components\Pills\Pill;
 use BezhanSalleh\FilamentExceptions\Models\Exception;
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
 use Filament\Forms;
@@ -15,7 +16,7 @@ class ExceptionResource extends Resource
 {
     protected static ?string $model = Exception::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-chip';
 
     protected static ?string $navigationLabel = 'Exceptions';
 
@@ -23,30 +24,30 @@ class ExceptionResource extends Resource
     {
         return $form
             ->schema([
-                Components\Pills::make('Heading')
+                Pills::make('Heading')
                     ->activePill(2)
                     ->pills([
-                        Components\Pills\Pill::make('Exception')
+                        Pill::make('Exception')
                             ->icon('heroicon-o-chip')
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::exception'),
                             ]),
-                        Components\Pills\Pill::make('Headers')
+                        Pill::make('Headers')
                             ->icon('heroicon-o-switch-horizontal')
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::headers'),
                             ])->columns(1),
-                        Components\Pills\Pill::make('Cookies')
+                        Pill::make('Cookies')
                                 ->icon('heroicon-o-database')
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::cookies'),
                             ]),
-                        Components\Pills\Pill::make('Body')
+                        Pill::make('Body')
                             ->icon('heroicon-s-code')
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::body'),
                             ]),
-                        Components\Pills\Pill::make('Query')
+                        Pill::make('Query')
                             ->icon('heroicon-s-database')
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::query'),
@@ -106,9 +107,7 @@ class ExceptionResource extends Resource
     {
         return [
             'index' => Pages\ListExceptions::route('/'),
-            'create' => Pages\CreateException::route('/create'),
             'view' => Pages\ViewException::route('/{record}'),
-            'edit' => Pages\EditException::route('/{record}/edit'),
         ];
     }
 }
