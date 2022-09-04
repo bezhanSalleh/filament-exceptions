@@ -3,10 +3,9 @@
 namespace BezhanSalleh\FilamentExceptions;
 
 use BezhanSalleh\FilamentExceptions\Commands\MakeExceptionsInstallCommand;
+use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use BezhanSalleh\FilamentExceptions\FilamentExceptions;
-use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
 
 class FilamentExceptionsServiceProvider extends PackageServiceProvider
 {

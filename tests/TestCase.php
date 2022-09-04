@@ -2,10 +2,10 @@
 
 namespace BezhanSalleh\FilamentExceptions\Tests;
 
+use BezhanSalleh\FilamentExceptions\FilamentExceptionsServiceProvider;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use BezhanSalleh\FilamentExceptions\FilamentExceptionsServiceProvider;
 
 class TestCase extends Orchestra
 {
