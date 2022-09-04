@@ -1,22 +1,27 @@
+<p align="center">
+    <a href="https://filamentadmin.com/docs/2.x/admin/installation">
+        <img alt="FILAMENT 8.x" src="https://img.shields.io/badge/FILAMENT-2.x-EBB304?style=for-the-badge">
+    </a>
+    <a href="https://packagist.org/packages/bezhansalleh/filament-exceptions">
+        <img alt="Packagist" src="https://img.shields.io/packagist/v/bezhansalleh/filament-exceptions.svg?style=for-the-badge&logo=packagist">
+    </a>
+    <a href="https://github.com/bezhansalleh/filament-exceptions/actions?query=workflow%3Arun-tests+branch%3Amain">
+        <img alt="Tests Passing" src="https://img.shields.io/github/workflow/status/bezhansalleh/filament-exceptions/run-tests?style=for-the-badge&logo=github&label=tests">
+    </a>
+    <a href="https://github.com/bezhansalleh/filament-exceptions/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain">
+        <img alt="Code Style Passing" src="https://img.shields.io/github/workflow/status/bezhansalleh/filament-exceptions/run-tests?style=for-the-badge&logo=github&label=code%20style">
+    </a>
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/support-ukraine.svg?t=1" />](https://supportukrainenow.org)
+<a href="https://packagist.org/packages/bezhansalleh/filament-exceptions">
+    <img alt="Downloads" src="https://img.shields.io/packagist/dt/bezhansalleh/filament-exceptions.svg?style=for-the-badge" >
+    </a>
+</p>
 
-# A Simple & Beautiful Pluggable Exception Viewer for FilamentPHP's Admin Panel
+# Filament Exception Viewer
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/bezhansalleh/filament-exceptions.svg?style=flat-square)](https://packagist.org/packages/bezhansalleh/filament-exceptions)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/bezhansalleh/filament-exceptions/run-tests?label=tests)](https://github.com/bezhansalleh/filament-exceptions/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/bezhansalleh/filament-exceptions/Fix%20PHP%20code%20style%20issues?label=code%20style)](https://github.com/bezhansalleh/filament-exceptions/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/bezhansalleh/filament-exceptions.svg?style=flat-square)](https://packagist.org/packages/bezhansalleh/filament-exceptions)
+A Simple & Beautiful Exception Viewer for FilamentPHP's Admin Panel
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
 
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/filament-exceptions.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/filament-exceptions)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
 
 ## Installation
 
@@ -26,38 +31,37 @@ You can install the package via composer:
 composer require bezhansalleh/filament-exceptions
 ```
 
-You can publish and run the migrations with:
-
+Publish and run the migration via:
 ```bash
-php artisan vendor:publish --tag="filament-exceptions-migrations"
-php artisan migrate
+php artisan exceptions:install
 ```
 
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="filament-exceptions-config"
-```
-
-This is the contents of the published config file:
+Activate the plugin by editing your App's Exception Handler as follow:
 
 ```php
-return [
-];
+<?php
+
+namespace App\Exceptions;
+
+use BezhanSalleh\FilamentExceptions\FilamentExceptions;
+
+class Handler extends ExceptionHandler
+{
+    ...
+
+    public function register()
+    {
+        $this->reportable(function (Throwable $e) {
+            if ($this->shouldReport($e)) {
+                FilamentExceptions::report($e);
+            }
+        });
+
+        ...
+    }
 ```
 
-Optionally, you can publish the views using
 
-```bash
-php artisan vendor:publish --tag="filament-exceptions-views"
-```
-
-## Usage
-
-```php
-$filamentExceptions = new BezhanSalleh\FilamentExceptions();
-echo $filamentExceptions->echoPhrase('Hello, BezhanSalleh!');
-```
 
 ## Testing
 

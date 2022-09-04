@@ -3,6 +3,7 @@
 namespace BezhanSalleh\FilamentExceptions\Commands;
 
 use Illuminate\Console\Command;
+use League\CommonMark\Node\Inline\Newline;
 
 class MakeExceptionsInstallCommand extends Command
 {
@@ -12,18 +13,21 @@ class MakeExceptionsInstallCommand extends Command
 
     public function handle(): int
     {
+        $this->components->info('Installing Filament Exceptions ... 🐞');
+
         $this->call('vendor:publish', [
             '--tag' => 'filament-exceptions-migrations',
         ]);
 
-        $this->components->info('Migration has been published');
-
         $this->call('migrate');
 
-        $this->components->info('Filament Exceptions migration run.');
 
-        $this->components->info('Add the following snippet to your exceptions');
-
+        $this->comment('Now activate the plugin for your app by adding the');
+        $this->comment('following snippet into your App\'s Exception Handlers\'s reportable method.');
+        $this->newLine();
+        $this->info('        if ($this->shouldReport($e)) {
+            FilamentExceptions::report($e);
+        }');
         return self::SUCCESS;
     }
 }

@@ -25,7 +25,6 @@ class ExceptionResource extends Resource
         return $form
             ->schema([
                 Pills::make('Heading')
-                    ->activePill(2)
                     ->pills([
                         Pill::make('Exception')
                             ->icon('heroicon-o-chip')
@@ -47,11 +46,11 @@ class ExceptionResource extends Resource
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::body'),
                             ]),
-                        Pill::make('Query')
-                            ->icon('heroicon-s-database')
-                            ->schema([
-                                Forms\Components\View::make('filament-exceptions::query'),
-                            ]),
+                        // Pill::make('Query')
+                        //     ->icon('heroicon-s-database')
+                        //     ->schema([
+                        //         Forms\Components\View::make('filament-exceptions::query'),
+                        //     ]),
 
                     ]),
             ])->columns(1);
@@ -61,8 +60,6 @@ class ExceptionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('path'),
-                Tables\Columns\TextColumn::make('method'),
                 Tables\Columns\BadgeColumn::make('method')
                     ->colors([
                         'primary',
@@ -74,6 +71,7 @@ class ExceptionResource extends Resource
                         'gray' => fn ($state): bool => $state === 'OPTIONS',
 
                     ]),
+                Tables\Columns\TextColumn::make('path'),
                 Tables\Columns\TextColumn::make('type'),
                 Tables\Columns\TextColumn::make('code'),
                 Tables\Columns\BadgeColumn::make('ip')
@@ -88,7 +86,8 @@ class ExceptionResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->color('primary'),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
