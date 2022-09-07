@@ -77,7 +77,7 @@ class ExceptionResource extends Resource
                 Tables\Columns\BadgeColumn::make('ip')
                     ->extraAttributes(['class' => 'font-mono']),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Occured At')
+                    ->label('Occurred At')
                     ->sortable()
                     ->searchable()
                     ->dateTime(),
