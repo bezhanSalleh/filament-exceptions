@@ -2,6 +2,14 @@
 
 All notable changes to `filament-exceptions` will be documented in this file.
 
+## 0.0.6 - 2022-09-08
+
+**What's New
+
+- PHP 8.0 Support
+
+**Full Changelog**: https://github.com/bezhanSalleh/filament-exceptions/compare/0.0.5...0.0.6
+
 ## 0.0.5 - 2022-09-07
 
 ### What's Changed
