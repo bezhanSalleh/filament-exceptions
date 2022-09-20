@@ -2,13 +2,11 @@
 
 namespace BezhanSalleh\FilamentExceptions;
 
-use Illuminate\Http\Request;
-use Filament\PluginServiceProvider;
-use Illuminate\Support\Facades\Event;
-use Spatie\LaravelPackageTools\Package;
-use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
-use Spatie\LaravelIgnition\Recorders\QueryRecorder\QueryRecorder;
 use BezhanSalleh\FilamentExceptions\Commands\MakeExceptionsInstallCommand;
+use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
+use Filament\PluginServiceProvider;
+use Illuminate\Http\Request;
+use Spatie\LaravelPackageTools\Package;
 
 class FilamentExceptionsServiceProvider extends PluginServiceProvider
 {

@@ -48,7 +48,7 @@ class ExceptionResource extends Resource
                             ]),
                         Pill::make('Queries')
                             ->icon('heroicon-s-database')
-                            ->badge(fn($record): string => collect(json_decode($record->query,true))->count())
+                            ->badge(fn ($record): string => collect(json_decode($record->query, true))->count())
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::query'),
                             ]),
