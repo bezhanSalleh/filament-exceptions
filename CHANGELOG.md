@@ -2,6 +2,18 @@
 
 All notable changes to `filament-exceptions` will be documented in this file.
 
+## 1.0.0 - 2022-09-20
+
+### What's Changed
+
+- `feature:`**Queries Tab** by @bezhanSalleh in https://github.com/bezhanSalleh/filament-exceptions/pull/5
+
+### New Contributors
+
+- @bezhanSalleh made their first contribution in https://github.com/bezhanSalleh/filament-exceptions/pull/5
+
+**Full Changelog**: https://github.com/bezhanSalleh/filament-exceptions/compare/0.0.6...1.0.0
+
 ## 0.0.6 - 2022-09-08
 
 **What's New
