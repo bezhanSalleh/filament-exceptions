@@ -33,11 +33,7 @@
                 {{-- class="sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 font-mono break-all" --}}
                 <div x-show="section" x-collapse>
                     <div class="pb-4 px-4 dark:bg-gray-800 dark:text-200 rounded-lg">
-                        <pre
-                            data-start="{!! $frame->getCodeBlock()->getStartLine() -1 !!}"
-                            data-line="{!! $frame->line()-$frame->getCodeBlock()->getStartLine() + 2  !!}"
-                            class="line-numbers"
-                        >
+                        <pre data-start="{!! $frame->getCodeBlock()->getStartLine() - 1 !!}" data-line="{!! $frame->line() - $frame->getCodeBlock()->getStartLine() + 2 !!}" class="line-numbers">
                             <code class="language-php">
                                 {!! $frame->getCodeBlock()->output() !!}
                             </code>
