@@ -3,8 +3,11 @@
 namespace BezhanSalleh\FilamentExceptions;
 
 use BezhanSalleh\FilamentExceptions\Models\Exception;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use Spatie\LaravelIgnition\Recorders\QueryRecorder\QueryRecorder;
 use Throwable;
 
 class FilamentExceptions
@@ -13,6 +16,8 @@ class FilamentExceptions
      * @var Request
      */
     protected $request;
+
+    protected Application $app;
 
     /**
      * Reporter constructor.
@@ -45,7 +50,7 @@ class FilamentExceptions
             'method' => request()->getMethod(),
             'ip' => implode(' ', json_decode(json_encode(request()->getClientIps()))),
             'path' => request()->path(),
-            'query' => Arr::except(request()->all(), ['_pjax', '_token', '_method', '_previous_']),
+            'query' => app()->make(QueryRecorder::class)->getQueries(), //Arr::except(request()->all(), ['_pjax', '_token', '_method', '_previous_']),
             'body' => request()->getContent(),
             'cookies' => request()->cookies->all(),
             'headers' => Arr::except(request()->headers->all(), 'cookie'),

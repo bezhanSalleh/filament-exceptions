@@ -46,11 +46,12 @@ class ExceptionResource extends Resource
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::body'),
                             ]),
-                        // Pill::make('Query')
-                        //     ->icon('heroicon-s-database')
-                        //     ->schema([
-                        //         Forms\Components\View::make('filament-exceptions::query'),
-                        //     ]),
+                        Pill::make('Queries')
+                            ->icon('heroicon-s-database')
+                            ->badge(fn ($record): string => collect(json_decode($record->query, true))->count())
+                            ->schema([
+                                Forms\Components\View::make('filament-exceptions::query'),
+                            ]),
 
                     ]),
             ])->columns(1);
@@ -60,6 +61,7 @@ class ExceptionResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\BadgeColumn::make('method')
                     ->colors([
                         'primary',

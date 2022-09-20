@@ -1,1 +1,1 @@
-    <x-filament-exceptions::code-preview title="Query" :contents="$getLivewire->data['query']" />
+    <x-filament-exceptions::query-preview :queries="$getLivewire->data['query']" />
