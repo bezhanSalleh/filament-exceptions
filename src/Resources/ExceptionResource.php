@@ -26,7 +26,6 @@ class ExceptionResource extends Resource
         return  __('filament-exceptions::default.navigation.icon');
     }
 
-
     protected static function getNavigationLabel(): string
     {
         return __('filament-exceptions::default.navigation.label');

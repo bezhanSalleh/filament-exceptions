@@ -1,11 +1,12 @@
 <?php
+
 return [
     'navigation' => [
         'label' => 'Exceptions',
         'group' => 'Settings',
-        'icon' => 'heroicon-o-chip'
+        'icon' => 'heroicon-o-chip',
     ],
     'header' => 'Headers',
-    'occurred_at' => 'Occurred at'
+    'occurred_at' => 'Occurred at',
 
 ];
