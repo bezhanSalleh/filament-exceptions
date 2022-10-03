@@ -2,16 +2,16 @@
 
 namespace BezhanSalleh\FilamentExceptions\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Resources\Form;
-use Filament\Resources\Table;
-use Filament\Resources\Resource;
-use BezhanSalleh\FilamentExceptions\Support\Utils;
-use BezhanSalleh\FilamentExceptions\Models\Exception;
 use BezhanSalleh\FilamentAddons\Forms\Components\Pills;
 use BezhanSalleh\FilamentAddons\Forms\Components\Pills\Pill;
+use BezhanSalleh\FilamentExceptions\Models\Exception;
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
+use BezhanSalleh\FilamentExceptions\Support\Utils;
+use Filament\Forms;
+use Filament\Resources\Form;
+use Filament\Resources\Resource;
+use Filament\Resources\Table;
+use Filament\Tables;
 
 class ExceptionResource extends Resource
 {
@@ -66,35 +66,35 @@ class ExceptionResource extends Resource
         return $form
             ->schema([
                 Pills::make('Heading')
-                    ->activePill(fn(): int => Utils::getActivePill())
+                    ->activePill(fn (): int => Utils::getActivePill())
                     ->pills([
                         Pill::make('Exception')
-                            ->label(fn(): string => __('filament-exceptions::filament-exceptions.pills.exception.label'))
-                            ->icon(fn(): string => __('filament-exceptions::filament-exceptions.pills.exception.icon'))
+                            ->label(fn (): string => __('filament-exceptions::filament-exceptions.pills.exception.label'))
+                            ->icon(fn (): string => __('filament-exceptions::filament-exceptions.pills.exception.icon'))
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::exception'),
                             ]),
                         Pill::make('Headers')
-                            ->label(fn(): string => __('filament-exceptions::filament-exceptions.pills.headers.label'))
-                            ->icon(fn(): string => __('filament-exceptions::filament-exceptions.pills.headers.icon'))
+                            ->label(fn (): string => __('filament-exceptions::filament-exceptions.pills.headers.label'))
+                            ->icon(fn (): string => __('filament-exceptions::filament-exceptions.pills.headers.icon'))
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::headers'),
                             ])->columns(1),
                         Pill::make('Cookies')
-                            ->label(fn(): string => __('filament-exceptions::filament-exceptions.pills.cookies.label'))
-                            ->icon(fn(): string => __('filament-exceptions::filament-exceptions.pills.cookies.icon'))
+                            ->label(fn (): string => __('filament-exceptions::filament-exceptions.pills.cookies.label'))
+                            ->icon(fn (): string => __('filament-exceptions::filament-exceptions.pills.cookies.icon'))
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::cookies'),
                             ]),
                         Pill::make('Body')
-                            ->label(fn(): string => __('filament-exceptions::filament-exceptions.pills.body.label'))
-                            ->icon(fn(): string => __('filament-exceptions::filament-exceptions.pills.body.icon'))
+                            ->label(fn (): string => __('filament-exceptions::filament-exceptions.pills.body.label'))
+                            ->icon(fn (): string => __('filament-exceptions::filament-exceptions.pills.body.icon'))
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::body'),
                             ]),
                         Pill::make('Queries')
-                            ->label(fn(): string => __('filament-exceptions::filament-exceptions.pills.queries.label'))
-                            ->icon(fn(): string => __('filament-exceptions::filament-exceptions.pills.queries.icon'))
+                            ->label(fn (): string => __('filament-exceptions::filament-exceptions.pills.queries.label'))
+                            ->icon(fn (): string => __('filament-exceptions::filament-exceptions.pills.queries.icon'))
                             ->badge(fn ($record): string => collect(json_decode($record->query, true))->count())
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::query'),
@@ -109,7 +109,7 @@ class ExceptionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\BadgeColumn::make('method')
-                    ->label(fn(): string => __('filament-exceptions::filament-exceptions.columns.method'))
+                    ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.method'))
                     ->colors([
                         'primary',
                         'success' => fn ($state): bool => $state === 'GET',
@@ -123,20 +123,20 @@ class ExceptionResource extends Resource
                     ->searchable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('path')
-                    ->label(fn(): string => __('filament-exceptions::filament-exceptions.columns.path')),
+                    ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.path')),
                 Tables\Columns\TextColumn::make('type')
-                    ->label(fn(): string => __('filament-exceptions::filament-exceptions.columns.type'))
+                    ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.type'))
                     ->searchable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('code')
-                    ->label(fn(): string => __('filament-exceptions::filament-exceptions.columns.code')),
+                    ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.code')),
                 Tables\Columns\BadgeColumn::make('ip')
-                    ->label(fn(): string => __('filament-exceptions::filament-exceptions.columns.ip'))
+                    ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.ip'))
                     ->extraAttributes(['class' => 'font-mono'])
                     ->searchable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label(fn(): string => __('filament-exceptions::filament-exceptions.columns.occurred_at'))
+                    ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.occurred_at'))
                     ->sortable()
                     ->searchable()
                     ->dateTime(),

@@ -16,7 +16,7 @@ class MakeExceptionsInstallCommand extends Command
 
         $this->call('vendor:publish', [
             '--tag' => 'filament-exceptions-migrations',
-            '--tag' => 'filament-exceptions-config'
+            '--tag' => 'filament-exceptions-config',
         ]);
 
         $this->call('migrate');

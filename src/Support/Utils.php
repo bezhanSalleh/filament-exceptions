@@ -31,6 +31,6 @@ class Utils
 
     public static function getActivePill(): int
     {
-        return config('filament-exceptions.active_pill',1);
+        return config('filament-exceptions.active_pill', 1);
     }
 }

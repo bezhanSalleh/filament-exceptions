@@ -21,6 +21,6 @@ return [
     * Body => 4
     * Queries => 5
     */
-    'active_pill' => 1
+    'active_pill' => 1,
 
 ];
