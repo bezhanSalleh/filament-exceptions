@@ -2,6 +2,25 @@
 
 All notable changes to `filament-exceptions` will be documented in this file.
 
+## 1.0.1 - 2022-10-03
+
+### What's Changed
+
+- `feature:`**`Localizations`** by @bezhanSalleh in https://github.com/bezhanSalleh/filament-exceptions/pull/9
+- - Added all possible localizations
+- - added `config` file
+- - updated `exceptions:install` command
+- 
+- Add ability to customize navigation item from config file by @aminetiyal in https://github.com/bezhanSalleh/filament-exceptions/pull/4
+- Lang en by @MarJose123 in https://github.com/bezhanSalleh/filament-exceptions/pull/7
+
+### New Contributors
+
+- @aminetiyal made their first contribution in https://github.com/bezhanSalleh/filament-exceptions/pull/4
+- @MarJose123 made their first contribution in https://github.com/bezhanSalleh/filament-exceptions/pull/7
+
+**Full Changelog**: https://github.com/bezhanSalleh/filament-exceptions/compare/1.0.0...1.0.1
+
 ## 1.0.0 - 2022-09-20
 
 ### What's Changed
