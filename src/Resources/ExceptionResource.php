@@ -18,18 +18,18 @@ class ExceptionResource extends Resource
 
     protected static function getNavigationGroup(): ?string
     {
-        return  __('filament-exception::default.navigation.group');
+        return  __('filament-exceptions::default.navigation.group');
     }
 
     protected static function getNavigationIcon(): string
     {
-        return  __('filament-exception::default.navigation.icon');
+        return  __('filament-exceptions::default.navigation.icon');
     }
 
 
     protected static function getNavigationLabel(): string
     {
-        return __('filament-exception::default.navigation.label');
+        return __('filament-exceptions::default.navigation.label');
     }
 
 
