@@ -1,4 +1,5 @@
 <?php
+
 return [
 
     'model' => [
@@ -9,34 +10,34 @@ return [
     'navigation' => [
         'label' => 'Exception',
         'group' => 'Settings',
-        'icon' => 'heroicon-o-chip'
+        'icon' => 'heroicon-o-chip',
     ],
 
     'pills' => [
 
         'exception' => [
             'label' => 'Exception',
-            'icon' => 'heroicon-o-chip'
+            'icon' => 'heroicon-o-chip',
         ],
 
         'headers' => [
             'label' => 'Headers',
-            'icon' => 'heroicon-o-switch-horizontal'
+            'icon' => 'heroicon-o-switch-horizontal',
         ],
 
         'cookies' => [
             'label' => 'Cookies',
-            'icon' => 'heroicon-o-database'
+            'icon' => 'heroicon-o-database',
         ],
 
         'body' => [
             'label' => 'Body',
-            'icon' => 'heroicon-s-code'
+            'icon' => 'heroicon-s-code',
         ],
 
         'queries' => [
             'label' => 'Queries',
-            'icon' => 'heroicon-s-database'
+            'icon' => 'heroicon-s-database',
         ],
     ],
 
@@ -46,7 +47,7 @@ return [
         'type' => 'Type',
         'code' => 'Code',
         'ip' => 'IP',
-        'occurred_at' => 'Occurred at'
+        'occurred_at' => 'Occurred at',
     ],
 
 ];
