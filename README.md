@@ -65,29 +65,6 @@ class Handler extends ExceptionHandler
     }
 ```
 
-## Custom navigation menu
-
-By default, we set label to Exception under System group in navigation, you can easily customize it by:
-
-Publishing config files
-
-```bash
-php artisan vendor:publish --tag filament-exceptions-config
-```
-
-then update navigation property to your preferences
-```php
-<?php
-
-return [
-    'navigation' => [
-        'label' => 'Exceptions',
-        'group' => 'System',
-        'icon' => 'heroicon-o-chip',
-    ]
-];
-```
-
 
 ## Testing
 
