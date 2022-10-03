@@ -28,6 +28,7 @@ class FilamentExceptionsServiceProvider extends PluginServiceProvider
             ->name('filament-exceptions')
             ->hasConfigFile()
             ->hasViews()
+            ->hasTranslations()
             ->hasMigration('create_filament_exceptions_table')
             ->hasCommand(MakeExceptionsInstallCommand::class);
     }
