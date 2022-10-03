@@ -44,11 +44,6 @@ class ExceptionResource extends Resource
         return __('filament-exceptions::filament-exceptions.navigation.icon');
     }
 
-    protected static function getNavigationSort(): ?int
-    {
-        return Utils::getNavigationSort();
-    }
-
     public static function getSlug(): string
     {
         return Utils::getSlug();
