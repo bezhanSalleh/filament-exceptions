@@ -32,7 +32,6 @@ class ExceptionResource extends Resource
         return __('filament-exceptions::default.navigation.label');
     }
 
-
     public static function form(Form $form): Form
     {
         return $form
