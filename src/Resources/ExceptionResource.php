@@ -16,19 +16,20 @@ class ExceptionResource extends Resource
 {
     protected static ?string $model = Exception::class;
 
-    protected static function getNavigationLabel(): string
+    protected static function getNavigationGroup(): ?string
     {
-        return __(config('filament-exceptions.navigation.label', 'Exceptions'));
-    }
-
-    public static function getNavigationGroup(): ?string
-    {
-        return __(config('filament-exceptions.navigation.group', 'System'));
+        return  __('filament-exceptions::default.navigation.group');
     }
 
     protected static function getNavigationIcon(): string
     {
-        return config('filament-exceptions.navigation.icon', 'heroicon-o-chip');
+        return  __('filament-exceptions::default.navigation.icon');
+    }
+
+
+    protected static function getNavigationLabel(): string
+    {
+        return __('filament-exceptions::default.navigation.label');
     }
 
     public static function form(Form $form): Form

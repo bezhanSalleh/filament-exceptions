@@ -20,7 +20,7 @@
         </h3>
         <div class="mt-1 max-w-2xl text-sm leading-5 text-gray-500 flex items-center">
             <span class="text-xs text-gray-600 dark:text-gray-200 font-mono mt-1">
-                Occured at:
+                {{__('filament-exceptions::default.occurred_at')}}:
 
                 {{ $record->created_at->toDateTimeString() }}
             </span>
