@@ -2,34 +2,68 @@
 
 namespace BezhanSalleh\FilamentExceptions\Resources;
 
+use Filament\Forms;
+use Filament\Tables;
+use Filament\Resources\Form;
+use Filament\Resources\Table;
+use Filament\Resources\Resource;
+use BezhanSalleh\FilamentExceptions\Support\Utils;
+use BezhanSalleh\FilamentExceptions\Models\Exception;
 use BezhanSalleh\FilamentAddons\Forms\Components\Pills;
 use BezhanSalleh\FilamentAddons\Forms\Components\Pills\Pill;
-use BezhanSalleh\FilamentExceptions\Models\Exception;
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
-use Filament\Forms;
-use Filament\Resources\Form;
-use Filament\Resources\Resource;
-use Filament\Resources\Table;
-use Filament\Tables;
 
 class ExceptionResource extends Resource
 {
     protected static ?string $model = Exception::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('filament-exceptions::filament-exceptions.model.label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament-exceptions::filament-exceptions.model.plural_label');
+    }
+
     protected static function getNavigationGroup(): ?string
     {
-        return  __('filament-exceptions::default.navigation.group');
+        return Utils::isNavigationGroupEnabled()
+            ? __('filament-exceptions::filament-exceptions.navigation.group')
+            : '';
+    }
+
+    protected static function getNavigationLabel(): string
+    {
+        return __('filament-exceptions::filament-exceptions.navigation.label');
     }
 
     protected static function getNavigationIcon(): string
     {
-        return  __('filament-exceptions::default.navigation.icon');
+        return __('filament-exceptions::filament-exceptions.navigation.icon');
     }
 
-
-    protected static function getNavigationLabel(): string
+    protected static function getNavigationSort(): ?int
     {
-        return __('filament-exceptions::default.navigation.label');
+        return Utils::getNavigationSort();
+    }
+
+    public static function getSlug(): string
+    {
+        return Utils::getSlug();
+    }
+
+    protected static function getNavigationBadge(): ?string
+    {
+        return Utils::isNavigationBadgeEnabled()
+            ? static::$model::count()
+            : null;
+    }
+
+    public static function canGloballySearch(): bool
+    {
+        return Utils::isGloballySearchable() && count(static::getGloballySearchableAttributes()) && static::canViewAny();
     }
 
     public static function form(Form $form): Form
@@ -37,29 +71,35 @@ class ExceptionResource extends Resource
         return $form
             ->schema([
                 Pills::make('Heading')
+                    ->activePill(fn(): int => Utils::getActivePill())
                     ->pills([
                         Pill::make('Exception')
-                            ->icon('heroicon-o-chip')
+                            ->label(fn(): string => __('filament-exceptions::filament-exceptions.pills.exception.label'))
+                            ->icon(fn(): string => __('filament-exceptions::filament-exceptions.pills.exception.icon'))
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::exception'),
                             ]),
                         Pill::make('Headers')
-                            ->icon('heroicon-o-switch-horizontal')
+                            ->label(fn(): string => __('filament-exceptions::filament-exceptions.pills.headers.label'))
+                            ->icon(fn(): string => __('filament-exceptions::filament-exceptions.pills.headers.icon'))
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::headers'),
                             ])->columns(1),
                         Pill::make('Cookies')
-                                ->icon('heroicon-o-database')
+                            ->label(fn(): string => __('filament-exceptions::filament-exceptions.pills.cookies.label'))
+                            ->icon(fn(): string => __('filament-exceptions::filament-exceptions.pills.cookies.icon'))
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::cookies'),
                             ]),
                         Pill::make('Body')
-                            ->icon('heroicon-s-code')
+                            ->label(fn(): string => __('filament-exceptions::filament-exceptions.pills.body.label'))
+                            ->icon(fn(): string => __('filament-exceptions::filament-exceptions.pills.body.icon'))
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::body'),
                             ]),
                         Pill::make('Queries')
-                            ->icon('heroicon-s-database')
+                            ->label(fn(): string => __('filament-exceptions::filament-exceptions.pills.queries.label'))
+                            ->icon(fn(): string => __('filament-exceptions::filament-exceptions.pills.queries.icon'))
                             ->badge(fn ($record): string => collect(json_decode($record->query, true))->count())
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::query'),
@@ -73,8 +113,8 @@ class ExceptionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\BadgeColumn::make('method')
+                    ->label(fn(): string => __('filament-exceptions::filament-exceptions.columns.method'))
                     ->colors([
                         'primary',
                         'success' => fn ($state): bool => $state === 'GET',
@@ -84,14 +124,24 @@ class ExceptionResource extends Resource
                         'secondary' => fn ($state): bool => $state === 'PATCH',
                         'gray' => fn ($state): bool => $state === 'OPTIONS',
 
-                    ]),
-                Tables\Columns\TextColumn::make('path'),
-                Tables\Columns\TextColumn::make('type'),
-                Tables\Columns\TextColumn::make('code'),
+                    ])
+                    ->searchable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('path')
+                    ->label(fn(): string => __('filament-exceptions::filament-exceptions.columns.path')),
+                Tables\Columns\TextColumn::make('type')
+                    ->label(fn(): string => __('filament-exceptions::filament-exceptions.columns.type'))
+                    ->searchable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('code')
+                    ->label(fn(): string => __('filament-exceptions::filament-exceptions.columns.code')),
                 Tables\Columns\BadgeColumn::make('ip')
-                    ->extraAttributes(['class' => 'font-mono']),
+                    ->label(fn(): string => __('filament-exceptions::filament-exceptions.columns.ip'))
+                    ->extraAttributes(['class' => 'font-mono'])
+                    ->searchable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Occurred At')
+                    ->label(fn(): string => __('filament-exceptions::filament-exceptions.columns.occurred_at'))
                     ->sortable()
                     ->searchable()
                     ->dateTime(),
