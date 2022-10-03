@@ -16,9 +16,20 @@ class ExceptionResource extends Resource
 {
     protected static ?string $model = Exception::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-chip';
+    protected static function getNavigationLabel(): string
+    {
+        return __(config('filament-exceptions.navigation.label', 'Exceptions'));
+    }
 
-    protected static ?string $navigationLabel = 'Exceptions';
+    public static function getNavigationGroup(): ?string
+    {
+        return __(config('filament-exceptions.navigation.group', 'System'));
+    }
+
+    protected static function getNavigationIcon(): string
+    {
+        return config('filament-exceptions.navigation.icon', 'heroicon-o-chip');
+    }
 
     public static function form(Form $form): Form
     {
