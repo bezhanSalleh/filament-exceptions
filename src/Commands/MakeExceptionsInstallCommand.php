@@ -15,8 +15,11 @@ class MakeExceptionsInstallCommand extends Command
         $this->components->info('Installing Filament Exceptions ... 🐞');
 
         $this->call('vendor:publish', [
-            '--tag' => 'filament-exceptions-migrations',
             '--tag' => 'filament-exceptions-config',
+        ]);
+
+        $this->call('vendor:publish', [
+            '--tag' => 'filament-exceptions-migrations',
         ]);
 
         $this->call('migrate');
