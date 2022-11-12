@@ -2,14 +2,32 @@
 
 All notable changes to `filament-exceptions` will be documented in this file.
 
+## 1.0.2 - 2022-11-12
+
+### What's Changed
+
+- Bump dependabot/fetch-metadata from 1.3.3 to 1.3.4 by @dependabot in https://github.com/bezhanSalleh/filament-exceptions/pull/10
+- Bump dependabot/fetch-metadata from 1.3.4 to 1.3.5 by @dependabot in https://github.com/bezhanSalleh/filament-exceptions/pull/12
+- fixed viewing by @bezhanSalleh in https://github.com/bezhanSalleh/filament-exceptions/pull/13
+- fixed migrations publishing issue
+
+### New Contributors
+
+- @dependabot made their first contribution in https://github.com/bezhanSalleh/filament-exceptions/pull/10
+
+**Full Changelog**: https://github.com/bezhanSalleh/filament-exceptions/compare/1.0.1...1.0.2
+
 ## 1.0.1 - 2022-10-03
 
 ### What's Changed
 
 - `feature:`**`Localizations`** by @bezhanSalleh in https://github.com/bezhanSalleh/filament-exceptions/pull/9
 - - Added all possible localizations
+- 
 - - added `config` file
+- 
 - - updated `exceptions:install` command
+- 
 - 
 - Add ability to customize navigation item from config file by @aminetiyal in https://github.com/bezhanSalleh/filament-exceptions/pull/4
 - Lang en by @MarJose123 in https://github.com/bezhanSalleh/filament-exceptions/pull/7
