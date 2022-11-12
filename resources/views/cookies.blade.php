@@ -1,1 +1,1 @@
-    <x-filament-exceptions::code-preview :contents="$getLivewire->data['cookies']" />
+    <x-filament-exceptions::code-preview :contents="$this->data['cookies']" />
