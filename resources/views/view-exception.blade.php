@@ -25,6 +25,9 @@
                 {{ $record->created_at->toDateTimeString() }}
             </span>
         </div>
+        <div class="py-5">
+            {{ $record->message }}
+        </div>
     </div>
     {{ $this->form }}
 
