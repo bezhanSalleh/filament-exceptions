@@ -14,7 +14,7 @@
                     </dt>
                     <dd
                         class="mt-1 text-sm leading-5 text-gray-900 break-words dark:text-gray-200 sm:mt-0 sm:col-span-2">
-                        {{ is_array($values) ? implode(' ', $values) : $values }}
+                        {{ is_array($values) ? implode(' ', collect($values)->flatten()->toArray()) : $values }}
                     </dd>
                 </div>
             @empty
