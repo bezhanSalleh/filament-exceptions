@@ -2,6 +2,19 @@
 
 All notable changes to `filament-exceptions` will be documented in this file.
 
+## 1.0.3 - 2022-11-16
+
+### What's Changed
+
+- Update code-preview.blade.php by @damms005 in https://github.com/bezhanSalleh/filament-exceptions/pull/17
+- Update view-exception.blade.php by @damms005 in https://github.com/bezhanSalleh/filament-exceptions/pull/15
+
+### New Contributors
+
+- @damms005 made their first contribution in https://github.com/bezhanSalleh/filament-exceptions/pull/17
+
+**Full Changelog**: https://github.com/bezhanSalleh/filament-exceptions/compare/1.0.2...1.0.3
+
 ## 1.0.2 - 2022-11-12
 
 ### What's Changed
@@ -24,9 +37,12 @@ All notable changes to `filament-exceptions` will be documented in this file.
 - `feature:`**`Localizations`** by @bezhanSalleh in https://github.com/bezhanSalleh/filament-exceptions/pull/9
 - - Added all possible localizations
 - 
+- 
 - - added `config` file
 - 
+- 
 - - updated `exceptions:install` command
+- 
 - 
 - 
 - Add ability to customize navigation item from config file by @aminetiyal in https://github.com/bezhanSalleh/filament-exceptions/pull/4
