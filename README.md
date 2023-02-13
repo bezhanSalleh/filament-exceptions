@@ -65,6 +65,15 @@ class Handler extends ExceptionHandler
     }
 ```
 
+## Configuration
+The configuration file filament-exceptions.php is automatically published into your config directory.
+You can change icons and navigations settings as well as the active pill and slug there.
+
+## Translations
+Publish the translations with
+```bash
+php artisan vendor:publish --tag=filament-exceptions-translations
+```
 
 ## Testing
 

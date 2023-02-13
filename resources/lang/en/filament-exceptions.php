@@ -2,44 +2,20 @@
 
 return [
 
-    'model' => [
-        'label' => 'Exception',
-        'plural_label' => 'Exceptions',
-    ],
-
-    'navigation' => [
-        'label' => 'Exception',
-        'group' => 'Settings',
-        'icon' => 'heroicon-o-chip',
-    ],
-
-    'pills' => [
-
-        'exception' => [
-            'label' => 'Exception',
-            'icon' => 'heroicon-o-chip',
-        ],
-
-        'headers' => [
-            'label' => 'Headers',
-            'icon' => 'heroicon-o-switch-horizontal',
-        ],
-
-        'cookies' => [
-            'label' => 'Cookies',
-            'icon' => 'heroicon-o-database',
-        ],
-
-        'body' => [
-            'label' => 'Body',
-            'icon' => 'heroicon-s-code',
-        ],
-
-        'queries' => [
-            'label' => 'Queries',
-            'icon' => 'heroicon-s-database',
+    'labels' => [
+        'navigation' => 'Exception',
+        'model' => 'Exception',
+        'model_plural' => 'Exceptions',
+        'pills' => [
+            'exception' => 'Exception',
+            'headers' => 'Headers',
+            'cookies' => 'Cookies',
+            'body' => 'Body',
+            'queries' => 'Queries',
         ],
     ],
+
+    'empty_list' => 'Horray! just sit back & enjoy 😎',
 
     'columns' => [
         'method' => 'Method',
