@@ -2,6 +2,14 @@
 
 All notable changes to `filament-exceptions` will be documented in this file.
 
+## 1.1.1 - 2023-03-05
+
+**What's Changed**:
+
+- fixed script loading issue
+
+**Full Changelog**: https://github.com/bezhanSalleh/filament-exceptions/compare/1.1.0...1.1.1
+
 ## 1.1.0 - 2023-03-05
 
 ### What's Changed
@@ -56,11 +64,14 @@ All notable changes to `filament-exceptions` will be documented in this file.
 - 
 - 
 - 
+- 
 - - added `config` file
 - 
 - 
 - 
+- 
 - - updated `exceptions:install` command
+- 
 - 
 - 
 - 
