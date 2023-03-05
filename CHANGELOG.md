@@ -2,6 +2,23 @@
 
 All notable changes to `filament-exceptions` will be documented in this file.
 
+## 1.1.0 - 2023-03-05
+
+### What's Changed
+
+- feature: Exceptions are now Mass Prunable by @bezhanSalleh in https://github.com/bezhanSalleh/filament-exceptions/pull/27
+- Fix/laravel ignition dep by @bezhanSalleh in https://github.com/bezhanSalleh/filament-exceptions/pull/25
+- Fix/message column data type by @bezhanSalleh in https://github.com/bezhanSalleh/filament-exceptions/pull/26
+- Bump dependabot/fetch-metadata from 1.3.5 to 1.3.6 by @dependabot in https://github.com/bezhanSalleh/filament-exceptions/pull/23
+- Bump aglipanci/laravel-pint-action from 1.0.0 to 2.1.0 by @dependabot in https://github.com/bezhanSalleh/filament-exceptions/pull/20
+- refactor config/translation, fix some minor stuff by @josefbehr in https://github.com/bezhanSalleh/filament-exceptions/pull/24
+
+### New Contributors
+
+- @josefbehr made their first contribution in https://github.com/bezhanSalleh/filament-exceptions/pull/24
+
+**Full Changelog**: https://github.com/bezhanSalleh/filament-exceptions/compare/1.0.3...1.1.0
+
 ## 1.0.3 - 2022-11-16
 
 ### What's Changed
@@ -38,10 +55,13 @@ All notable changes to `filament-exceptions` will be documented in this file.
 - - Added all possible localizations
 - 
 - 
+- 
 - - added `config` file
 - 
 - 
+- 
 - - updated `exceptions:install` command
+- 
 - 
 - 
 - 
