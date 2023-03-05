@@ -147,8 +147,6 @@ class Frame
     }
 
     /**
-     * @return array
-     *
      * @throws ReflectionException
      */
     public function getParameterNames(): array
