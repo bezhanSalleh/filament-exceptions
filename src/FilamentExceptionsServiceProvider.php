@@ -21,7 +21,7 @@ class FilamentExceptionsServiceProvider extends PluginServiceProvider
     ];
 
     protected array $scripts = [
-        'filament-exceptions-scripts' => __DIR__.'/../resources/dist/prism.js',
+        'filament-exceptions-scripts' => __DIR__.'/../resources/dist/filament-exceptions.js',
     ];
 
     public function configurePackage(Package $package): void
