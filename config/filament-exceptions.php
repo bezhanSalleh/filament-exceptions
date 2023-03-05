@@ -36,4 +36,17 @@ return [
     */
     'active_pill' => 1,
 
+    /**-------------------------------------------------
+    * Here you can define when the exceptions should be pruned
+    * The default is 7 days (a week)
+    * The format for providing period should follow carbon's format. i.e.
+    * 1 day => 'subDay()',
+    * 3 days => 'subDays(3)',
+    * 7 days => 'subWeek()',
+    * 1 month => 'subMonth()',
+    * 2 months => 'subMonths(2)',
+    *
+    */
+
+    'period' => now()->subWeek(),
 ];

@@ -28,7 +28,7 @@ class ExceptionResource extends Resource
 
     protected static function getNavigationGroup(): ?string
     {
-        return config('filament-exceptions.navigation_group');
+        return __('filament-exceptions::filament-exceptions.labels.navigation_group');
     }
 
     protected static function getNavigationLabel(): string
@@ -38,7 +38,7 @@ class ExceptionResource extends Resource
 
     protected static function getNavigationIcon(): string
     {
-        return config('filament-exceptions::icons.navigation');
+        return config('filament-exceptions.icons.navigation');
     }
 
     public static function getSlug(): string
@@ -86,7 +86,7 @@ class ExceptionResource extends Resource
                                 Forms\Components\View::make('filament-exceptions::exception'),
                             ]),
                         Pill::make('Headers')
-                            ->label(static fn (): string => __('filament-exceptions::filament-exceptions.labels.pills..headers'))
+                            ->label(static fn (): string => __('filament-exceptions::filament-exceptions.labels.pills.headers'))
                             ->icon(static fn (): string => config('filament-exceptions.icons.headers'))
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::headers'),
