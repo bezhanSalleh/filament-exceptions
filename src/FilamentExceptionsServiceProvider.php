@@ -3,8 +3,10 @@
 namespace BezhanSalleh\FilamentExceptions;
 
 use BezhanSalleh\FilamentExceptions\Commands\MakeExceptionsInstallCommand;
+use BezhanSalleh\FilamentExceptions\Models\Exception;
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
 use Filament\PluginServiceProvider;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Http\Request;
 use Spatie\LaravelPackageTools\Package;
 
@@ -39,6 +41,17 @@ class FilamentExceptionsServiceProvider extends PluginServiceProvider
 
         $this->app->scoped('filament-exceptions', function ($app): FilamentExceptions {
             return new FilamentExceptions($app->make(Request::class));
+        });
+    }
+
+    public function packageBooted(): void
+    {
+        parent::packageBooted();
+
+        $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
+            $schedule->command('model:prune', [
+                '--model' => [Exception::class],
+            ])->daily();
         });
     }
 }
