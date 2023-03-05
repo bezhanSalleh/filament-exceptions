@@ -13,9 +13,6 @@ return [
     /** Whether to show a navigation badge. No effect, if navigation_enabled it set to false. */
     'navigation_badge' => true,
 
-    /** Name of navigation group. Empty means to group. No effect, if navigation_enabled it set to false. */
-    'navigation_group' => 'Settings',
-
     /** Icons to use for navigation (if enabled) and pills */
     'icons' => [
         'navigation' => 'heroicon-o-chip',

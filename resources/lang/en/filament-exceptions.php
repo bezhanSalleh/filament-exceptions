@@ -3,9 +3,11 @@
 return [
 
     'labels' => [
-        'navigation' => 'Exception',
         'model' => 'Exception',
         'model_plural' => 'Exceptions',
+        'navigation' => 'Exception',
+        'navigation_group' => 'Settings',
+
         'pills' => [
             'exception' => 'Exception',
             'headers' => 'Headers',
