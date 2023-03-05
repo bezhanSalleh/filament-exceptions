@@ -21,7 +21,8 @@
         "spatie/laravel-package-tools": "^1.9.2",
         "filament/filament": "^2.0",
         "bezhansalleh/filament-addons": "^1.0",
-        "illuminate/contracts": "^9.0"
+        "illuminate/contracts": "^9.0|^10.0",
+        "spatie/laravel-ignition": "^1.0"
     },
     "require-dev": {
         "laravel/pint": "^1.0",
