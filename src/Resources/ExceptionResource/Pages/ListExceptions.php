@@ -11,11 +11,11 @@ class ListExceptions extends ListRecords
 
     protected function getTableEmptyStateIcon(): ?string
     {
-        return 'heroicon-o-chip';
+        return config('filament-exceptions.icons.exception');
     }
 
     protected function getTableEmptyStateHeading(): ?string
     {
-        return 'Horray! just set back & enjoy 😎';
+        return __('filament-exceptions::filament-exceptions.empty_list');
     }
 }

@@ -4,11 +4,27 @@ return [
 
     'slug' => 'exceptions',
 
+    /** Show or hide in navigation/sidebare */
+    'navigation_enabled' => true,
+
+    /** Sort order, if shown. No effect, if navigation_enabled it set to false. */
     'navigation_sort' => -1,
 
+    /** Whether to show a navigation badge. No effect, if navigation_enabled it set to false. */
     'navigation_badge' => true,
 
-    'navigation_group' => true,
+    /** Name of navigation group. Empty means to group. No effect, if navigation_enabled it set to false. */
+    'navigation_group' => 'Settings',
+
+    /** Icons to use for navigation (if enabled) and pills */
+    'icons' => [
+        'navigation' => 'heroicon-o-chip',
+        'exception' => 'heroicon-o-chip',
+        'headers' => 'heroicon-o-switch-horizontal',
+        'cookies' => 'heroicon-o-database',
+        'body' => 'heroicon-s-code',
+        'queries' => 'heroicon-s-database',
+    ],
 
     'is_globally_searchable' => false,
 
