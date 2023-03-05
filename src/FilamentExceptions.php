@@ -21,8 +21,6 @@ class FilamentExceptions
 
     /**
      * Reporter constructor.
-     *
-     * @param  Request  $request
      */
     public function __construct(Request $request)
     {
@@ -30,7 +28,6 @@ class FilamentExceptions
     }
 
     /**
-     * @param  Throwable  $exception
      * @return void
      */
     public static function report(Throwable $exception)
@@ -41,7 +38,6 @@ class FilamentExceptions
     }
 
     /**
-     * @param  Throwable  $exception
      * @return void
      */
     public function reportException(Throwable $exception)
@@ -74,9 +70,6 @@ class FilamentExceptions
 
     /**
      * Convert all items to string.
-     *
-     * @param $data
-     * @return array
      */
     public function stringify($data): array
     {
@@ -87,9 +80,6 @@ class FilamentExceptions
 
     /**
      * Store exception info to db.
-     *
-     * @param  array  $data
-     * @return bool
      */
     public function store(array $data): bool
     {
