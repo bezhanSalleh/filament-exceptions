@@ -69,6 +69,9 @@ class Handler extends ExceptionHandler
 The configuration file filament-exceptions.php is automatically published into your config directory.
 You can change icons and navigations settings as well as the active pill and slug there.
 
+* **Mass Pruning**: By default exceptions older than a week are scheduled to be pruned daily. You can change the `period` by providing a date in the config or using carbon.
+> **Note**
+> in order for the schedule to work you need to make sure that you have configured your server if not follow this link on how to configure it. [Running The Scheduler](https://laravel.com/docs/9.x/scheduling#running-the-scheduler)
 ## Translations
 Publish the translations with
 ```bash
