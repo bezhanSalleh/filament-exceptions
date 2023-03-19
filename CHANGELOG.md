@@ -2,6 +2,18 @@
 
 All notable changes to `filament-exceptions` will be documented in this file.
 
+## 1.1.2 - 2023-03-19
+
+### What's Changed
+
+- Fix dependency issue in composer.json by @patrickcurl in https://github.com/bezhanSalleh/filament-exceptions/pull/28
+
+### New Contributors
+
+- @patrickcurl made their first contribution in https://github.com/bezhanSalleh/filament-exceptions/pull/28
+
+**Full Changelog**: https://github.com/bezhanSalleh/filament-exceptions/compare/1.1.1...1.1.2
+
 ## 1.1.1 - 2023-03-05
 
 **What's Changed**:
@@ -65,12 +77,15 @@ All notable changes to `filament-exceptions` will be documented in this file.
 - 
 - 
 - 
+- 
 - - added `config` file
 - 
 - 
 - 
 - 
+- 
 - - updated `exceptions:install` command
+- 
 - 
 - 
 - 
