@@ -10,8 +10,8 @@
 
 code[class*="language-"],
 pre[class*="language-"] {
-    color: black;
-    background: none;
+    color: inherit;
+    background: inherit;
     text-shadow: none;
     font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
     text-align: left;
@@ -55,14 +55,14 @@ pre[class*="language-"] {
 
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
-    background: #ffffff;
+    background: inherit;
     border-radius: 8px;
 }
 
 /* Inline code */
 :not(pre) > code[class*="language-"] {
-    padding: 0.1rem;
-    border-radius: 0.3rem;
+    padding: 0.4rem;
+    border-radius: 0.4rem;
     white-space: normal;
 }
 
@@ -105,8 +105,7 @@ pre[class*="language-"] {
 .token.url,
 .language-css .token.string,
 .style .token.string {
-    color: #a67f59;
-    background: hsla(0, 0%, 100%, 0.5);
+    color: inherit;
 }
 
 .token.atrule,
@@ -149,7 +148,7 @@ pre[class*="language-"] {
     padding: inherit 0;
     margin-top: 1rem; /* Same as .prism’s padding-top */
 
-    background: hsla(217, 19%, 27%, 0.1);
+    background: #77778675;
 
     pointer-events: none;
 

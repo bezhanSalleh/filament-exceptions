@@ -42,6 +42,6 @@ class CodeBlock
 
     public function output(): string
     {
-        return htmlentities($this->prefix.$this->line.$this->suffix);
+        return htmlentities($this->prefix . $this->line . $this->suffix);
     }
 }

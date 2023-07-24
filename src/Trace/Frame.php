@@ -13,7 +13,7 @@ class Frame
 {
     protected ?array $attributes = [];
 
-    protected array|CodeBlock|null $code = [];
+    protected array | CodeBlock | null $code = [];
 
     public function __construct(protected ?string $frame = '')
     {
@@ -53,7 +53,7 @@ class Frame
             if (str()->contains($matches[2], ['{closure}']) && Arr::get($this->attributes, 'name') == '[internal function]') {
                 $this->attributes['name'] .= " $matches[1]->$matches[2]";
             }
-        // class method call
+            // class method call
         } else {
             preg_match('/([^(]+)\((.*)\)/', $str, $matches);
             $this->attributes['function'] = $matches[1];
@@ -115,7 +115,7 @@ class Frame
     }
 
     #[Pure]
-    public function getCodeBlock(): array|CodeBlock
+    public function getCodeBlock(): array | CodeBlock
     {
         if (empty($this->code)) {
             return new CodeBlock();

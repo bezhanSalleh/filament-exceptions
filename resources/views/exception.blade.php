@@ -17,7 +17,7 @@
                             <x-heroicon-o-eye class="h-6 w-6 text-primary-700 dark:text-primary-500 rtl:rotate-0" />
                         </span>
                         <span x-show="!section" aria-hidden="true" class="ml-4">
-                            <x-heroicon-o-eye-off
+                            <x-heroicon-o-eye-slash
                                 class="h-6 w-6 text-primary-700 dark:text-primary-500 rtl:rotate-180 " />
                         </span>
                         <span class="px-4 py-3 font-mono text-left break-words">
