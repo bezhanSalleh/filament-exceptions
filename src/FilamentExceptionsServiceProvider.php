@@ -15,18 +15,6 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class FilamentExceptionsServiceProvider extends PackageServiceProvider
 {
-    // protected array $resources = [
-    //     ExceptionResource::class,
-    // ];
-
-    protected array $styles = [
-        'filament-exceptions-styles' => __DIR__ . '/../resources/dist/filament-exceptions.css',
-    ];
-
-    protected array $scripts = [
-        'filament-exceptions-scripts' => __DIR__ . '/../resources/dist/filament-exceptions.js',
-    ];
-
     public function configurePackage(Package $package): void
     {
         $package
