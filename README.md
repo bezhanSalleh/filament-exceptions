@@ -72,6 +72,18 @@ You can change icons and navigations settings as well as the active pill and slu
 * **Mass Pruning**: By default exceptions older than a week are scheduled to be pruned daily. You can change the `period` by providing a date in the config or using carbon.
 > **Note**
 > in order for the schedule to work you need to make sure that you have configured your server if not follow this link on how to configure it. [Running The Scheduler](https://laravel.com/docs/9.x/scheduling#running-the-scheduler)
+
+## Theme
+By default the plugin uses the default theme of Filamentphp, but if you are using a custom theme then include the plugins view path into the content array of your tailwind.config.js file:
+```js
+export default {
+    content: [
+        // ...
+        './vendor/bezhansalleh/filament-exceptions/resources/views/**/*.blade.php', // Language Switch Views
+    ],
+    // ...
+}
+```
 ## Translations
 Publish the translations with
 ```bash
