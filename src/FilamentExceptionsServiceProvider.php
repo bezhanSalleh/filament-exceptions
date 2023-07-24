@@ -4,7 +4,6 @@ namespace BezhanSalleh\FilamentExceptions;
 
 use BezhanSalleh\FilamentExceptions\Commands\MakeExceptionsInstallCommand;
 use BezhanSalleh\FilamentExceptions\Models\Exception;
-use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
 use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
