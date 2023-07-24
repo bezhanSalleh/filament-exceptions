@@ -25,7 +25,7 @@
 
 A Simple & Beautiful Exception Viewer for FilamentPHP's Admin Panel
 
-
+* For FilamentPHP 2.x use version 1.x
 
 ## Installation
 
