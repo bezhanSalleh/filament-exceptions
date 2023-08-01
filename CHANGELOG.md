@@ -2,6 +2,24 @@
 
 All notable changes to `filament-exceptions` will be documented in this file.
 
+## 2.0.0 - 2023-08-01
+
+### What's Changed
+
+- Filament v3 support
+- Bump aglipanci/laravel-pint-action from 2.1.0 to 2.2.0 by @dependabot in https://github.com/bezhanSalleh/filament-exceptions/pull/29
+- Bump dependabot/fetch-metadata from 1.3.6 to 1.4.0 by @dependabot in https://github.com/bezhanSalleh/filament-exceptions/pull/31
+- Bump aglipanci/laravel-pint-action from 2.2.0 to 2.3.0 by @dependabot in https://github.com/bezhanSalleh/filament-exceptions/pull/33
+- Bump dependabot/fetch-metadata from 1.4.0 to 1.5.1 by @dependabot in https://github.com/bezhanSalleh/filament-exceptions/pull/34
+- Bump dependabot/fetch-metadata from 1.5.1 to 1.6.0 by @dependabot in https://github.com/bezhanSalleh/filament-exceptions/pull/35
+- Fix typo by @martin-ro in https://github.com/bezhanSalleh/filament-exceptions/pull/30
+
+### New Contributors
+
+- @martin-ro made their first contribution in https://github.com/bezhanSalleh/filament-exceptions/pull/30
+
+**Full Changelog**: https://github.com/bezhanSalleh/filament-exceptions/compare/1.1.2...2.0.0
+
 ## 1.1.2 - 2023-03-19
 
 ### What's Changed
@@ -72,19 +90,22 @@ All notable changes to `filament-exceptions` will be documented in this file.
 ### What's Changed
 
 - `feature:`**`Localizations`** by @bezhanSalleh in https://github.com/bezhanSalleh/filament-exceptions/pull/9
-- - Added all possible localizations
+- - Added all possible localizations   
+  
 - 
 - 
 - 
 - 
 - 
-- - added `config` file
+- - added `config` file   
+  
 - 
 - 
 - 
 - 
 - 
-- - updated `exceptions:install` command
+- - updated `exceptions:install` command   
+  
 - 
 - 
 - 
