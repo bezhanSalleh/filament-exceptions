@@ -16,7 +16,7 @@ class ViewException extends ViewRecord
     public function getFramesProperty()
     {
         $trace = "#0 {$this->record->file}({$this->record->line})\n";
-        $frames = (new Parser($trace.$this->record->trace))->parse();
+        $frames = (new Parser($trace . $this->record->trace))->parse();
         array_pop($frames);
 
         return $frames;

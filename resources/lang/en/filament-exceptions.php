@@ -8,7 +8,7 @@ return [
         'navigation' => 'Exception',
         'navigation_group' => 'Settings',
 
-        'pills' => [
+        'tabs' => [
             'exception' => 'Exception',
             'headers' => 'Headers',
             'cookies' => 'Cookies',

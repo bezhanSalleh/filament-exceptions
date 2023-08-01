@@ -4,26 +4,16 @@ namespace BezhanSalleh\FilamentExceptions;
 
 use BezhanSalleh\FilamentExceptions\Commands\MakeExceptionsInstallCommand;
 use BezhanSalleh\FilamentExceptions\Models\Exception;
-use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
-use Filament\PluginServiceProvider;
+use Filament\Support\Assets\Css;
+use Filament\Support\Assets\Js;
+use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Http\Request;
 use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class FilamentExceptionsServiceProvider extends PluginServiceProvider
+class FilamentExceptionsServiceProvider extends PackageServiceProvider
 {
-    protected array $resources = [
-        ExceptionResource::class,
-    ];
-
-    protected array $styles = [
-        'filament-exceptions-styles' => __DIR__.'/../resources/dist/filament-exceptions.css',
-    ];
-
-    protected array $scripts = [
-        'filament-exceptions-scripts' => __DIR__.'/../resources/dist/filament-exceptions.js',
-    ];
-
     public function configurePackage(Package $package): void
     {
         $package
@@ -47,6 +37,11 @@ class FilamentExceptionsServiceProvider extends PluginServiceProvider
     public function packageBooted(): void
     {
         parent::packageBooted();
+
+        FilamentAsset::register([
+            Js::make('filament-exceptions', __DIR__ . '/../resources/dist/filament-exceptions.js'),
+            Css::make('filament-exceptions', __DIR__ . '/../resources/dist/filament-exceptions.css'),
+        ], 'bezhansalleh/filament-exceptions');
 
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
             $schedule->command('model:prune', [
