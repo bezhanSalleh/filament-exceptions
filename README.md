@@ -29,18 +29,29 @@ A Simple & Beautiful Exception Viewer for FilamentPHP's Admin Panel
 
 ## Installation
 
-You can install the package via composer:
+1. You can install the package via composer:
 
 ```bash
 composer require bezhansalleh/filament-exceptions
 ```
 
-Publish and run the migration via:
+2. Publish and run the migration via:
 ```bash
 php artisan exceptions:install
 ```
 
-Activate the plugin by editing your App's Exception Handler as follow:
+3. Register the plugin for the Filament Panel
+```php
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        ->plugins([
+            \BezhanSalleh\FilamentExceptions\FilamentExceptionsPlugin::make()
+        ]);
+}
+```
+
+4. Activate the plugin by editing your App's Exception Handler as follow:
 
 ```php
 <?php
