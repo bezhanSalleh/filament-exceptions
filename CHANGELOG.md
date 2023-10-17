@@ -2,6 +2,20 @@
 
 All notable changes to `filament-exceptions` will be documented in this file.
 
+## 2.0.1 - 2023-10-17
+
+### What's Changed
+
+- Update README.md to include Filament panel plugin registration by @vanhooff in https://github.com/bezhanSalleh/filament-exceptions/pull/37
+- Bump actions/checkout from 3 to 4 by @dependabot in https://github.com/bezhanSalleh/filament-exceptions/pull/38
+- Bump stefanzweifel/git-auto-commit-action from 4 to 5 by @dependabot in https://github.com/bezhanSalleh/filament-exceptions/pull/39
+
+### New Contributors
+
+- @vanhooff made their first contribution in https://github.com/bezhanSalleh/filament-exceptions/pull/37
+
+**Full Changelog**: https://github.com/bezhanSalleh/filament-exceptions/compare/2.0.0...2.0.1
+
 ## 2.0.0 - 2023-08-01
 
 ### What's Changed
@@ -89,7 +103,8 @@ All notable changes to `filament-exceptions` will be documented in this file.
 
 ### What's Changed
 
-- `feature:`**`Localizations`** by @bezhanSalleh in https://github.com/bezhanSalleh/filament-exceptions/pull/9
+- `feature:`**`Localizations`** by @bezhanSalleh in https://github.com/bezhanSalleh/filament-exceptions/pull/9   
+  
 - - Added all possible localizations   
   
 - 
@@ -112,8 +127,10 @@ All notable changes to `filament-exceptions` will be documented in this file.
 - 
 - 
 - 
-- Add ability to customize navigation item from config file by @aminetiyal in https://github.com/bezhanSalleh/filament-exceptions/pull/4
-- Lang en by @MarJose123 in https://github.com/bezhanSalleh/filament-exceptions/pull/7
+- Add ability to customize navigation item from config file by @aminetiyal in https://github.com/bezhanSalleh/filament-exceptions/pull/4   
+  
+- Lang en by @MarJose123 in https://github.com/bezhanSalleh/filament-exceptions/pull/7   
+  
 
 ### New Contributors
 
