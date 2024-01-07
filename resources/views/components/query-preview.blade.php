@@ -7,14 +7,16 @@
             class="flex items-center justify-start pb-2 space-x-2 text-xs font-medium leading-6 text-gray-900 dark:text-gray-50">
             <div
                 class="flex items-center px-2 py-1 text-xs font-medium transition duration-75 rounded-lg outline-none gap-x-1 hover:bg-gray-950/5 focus:bg-gray-950/5 dark:hover:bg-white/5 dark:focus:bg-white/5 bg-gray-950/5 dark:bg-white/5 text-primary-600 dark:text-primary-400">
-                @svg('heroicon-s-clock', 'h-4 w-4 text-gray-400 dark:text-gray-500')
+                <x-filament::icon alias="fe::queryClock" class="w-4 h-4 text-gray-400 dark:text-gray-500"
+                    icon="heroicon-s-clock" />
                 <span>
                     {{ str($query['time'])->append('MS') }}
                 </span>
             </div>
             <div
                 class="flex items-center px-2 py-1 text-xs font-medium transition duration-75 rounded-lg outline-none gap-x-1 hover:bg-gray-950/5 focus:bg-gray-950/5 dark:hover:bg-white/5 dark:focus:bg-white/5 bg-gray-950/5 dark:bg-white/5 text-primary-600 dark:text-primary-400">
-                @svg('heroicon-s-circle-stack', 'h-4 w-4 text-gray-400 dark:text-gray-500')
+                <x-filament::icon alias="fe::queryConnection" class="w-4 h-4 text-gray-400 dark:text-gray-500"
+                    icon="heroicon-s-circle-stack" />
                 <span>
                     {{ str($query['connection_name'])->upper() }}
                 </span>

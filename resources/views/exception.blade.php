@@ -14,10 +14,13 @@
                 <div x-on:click="section = !section"
                     class="flex items-center justify-start w-full py-2 pr-2 text-sm font-semibold rtl:pl-2">
                     <span x-show="section" aria-hidden="true" class="ml-4">
-                        @svg('heroicon-o-eye', 'h-6 w-6 text-primary-700 dark:text-primary-500 rtl:rotate-0')
+                        <x-filament::icon alias="fe::sectionOpen"
+                            class="w-6 h-6 text-primary-700 dark:text-primary-500 rtl:rotate-0" icon="heroicon-o-eye" />
                     </span>
                     <span x-show="!section" aria-hidden="true" class="ml-4">
-                        @svg('heroicon-o-eye-slash', 'h-6 w-6 text-primary-700 dark:text-primary-500 rtl:rotate-180')
+                        <x-filament::icon alias="fe::sectionClose"
+                            class="w-6 h-6 text-primary-700 dark:text-primary-500 rtl:rotate-180"
+                            icon="heroicon-o-eye-slash" />
                     </span>
                     <span class="px-4 py-3 font-mono text-left break-words">
                         {{ str($frame->file())->replace(base_path() . '/', '') }}
