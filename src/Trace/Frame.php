@@ -53,7 +53,7 @@ class Frame
             if (str()->contains($matches[2], ['{closure}']) && Arr::get($this->attributes, 'name') == '[internal function]') {
                 $this->attributes['name'] .= " $matches[1]->$matches[2]";
             }
-            // class method call
+        // class method call
         } else {
             preg_match('/([^(]+)\((.*)\)/', $str, $matches);
             $this->attributes['function'] = $matches[1];
