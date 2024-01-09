@@ -2,6 +2,19 @@
 
 All notable changes to `filament-exceptions` will be documented in this file.
 
+## 2.0.2 - 2024-01-09
+
+### What's Changed
+
+* Bump aglipanci/laravel-pint-action from 2.3.0 to 2.3.1 by @dependabot in https://github.com/bezhanSalleh/filament-exceptions/pull/43
+* use @svg directive to load icons by @iRaziul in https://github.com/bezhanSalleh/filament-exceptions/pull/42
+
+### New Contributors
+
+* @iRaziul made their first contribution in https://github.com/bezhanSalleh/filament-exceptions/pull/42
+
+**Full Changelog**: https://github.com/bezhanSalleh/filament-exceptions/compare/2.0.1...2.0.2
+
 ## 2.0.1 - 2023-10-17
 
 ### What's Changed
@@ -103,23 +116,23 @@ All notable changes to `filament-exceptions` will be documented in this file.
 
 ### What's Changed
 
-- `feature:`**`Localizations`** by @bezhanSalleh in https://github.com/bezhanSalleh/filament-exceptions/pull/9   
+- `feature:`**`Localizations`** by @bezhanSalleh in https://github.com/bezhanSalleh/filament-exceptions/pull/9
   
-- - Added all possible localizations   
-  
-- 
-- 
-- 
-- 
-- 
-- - added `config` file   
+- - Added all possible localizations
   
 - 
 - 
 - 
 - 
 - 
-- - updated `exceptions:install` command   
+- - added `config` file
+  
+- 
+- 
+- 
+- 
+- 
+- - updated `exceptions:install` command
   
 - 
 - 
@@ -127,9 +140,9 @@ All notable changes to `filament-exceptions` will be documented in this file.
 - 
 - 
 - 
-- Add ability to customize navigation item from config file by @aminetiyal in https://github.com/bezhanSalleh/filament-exceptions/pull/4   
+- Add ability to customize navigation item from config file by @aminetiyal in https://github.com/bezhanSalleh/filament-exceptions/pull/4
   
-- Lang en by @MarJose123 in https://github.com/bezhanSalleh/filament-exceptions/pull/7   
+- Lang en by @MarJose123 in https://github.com/bezhanSalleh/filament-exceptions/pull/7
   
 
 ### New Contributors
