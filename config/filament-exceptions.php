@@ -4,6 +4,8 @@ use BezhanSalleh\FilamentExceptions\Models\Exception;
 
 return [
 
+    'exception_model' => Exception::class,
+
     'slug' => 'exceptions',
 
     /** Show or hide in navigation/sidebar */
@@ -14,8 +16,6 @@ return [
 
     /** Whether to show a navigation badge. No effect, if navigation_enabled it set to false. */
     'navigation_badge' => true,
-
-    'exception_model' => Exception::class,
 
     /** Icons to use for navigation (if enabled) and pills */
     'icons' => [
@@ -52,5 +52,5 @@ return [
      *
      */
 
-    'period' => now()->subWeek(),
+    'period' => now()->subDays(5),
 ];
