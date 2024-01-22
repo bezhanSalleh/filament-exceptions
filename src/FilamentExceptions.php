@@ -101,12 +101,4 @@ class FilamentExceptions
         }
     }
 
-    public static function formatFileName(string $fileName) : string
-    {
-        return str($fileName)
-            ->after(str(request()->getHost())->beforeLast('.')->toString())
-            ->afterLast('/')
-            ->prepend('.../')
-            ->toString();
-    }
 }
