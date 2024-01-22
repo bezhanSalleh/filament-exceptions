@@ -2,11 +2,11 @@
 
 namespace BezhanSalleh\FilamentExceptions;
 
-use BezhanSalleh\FilamentExceptions\Models\Exception;
+
+use BezhanSalleh\FilamentExceptions\Models\Exception as ExceptionModel;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 use Spatie\LaravelIgnition\Recorders\QueryRecorder\QueryRecorder;
 use Throwable;
 
@@ -37,6 +37,13 @@ class FilamentExceptions
         $reporter->reportException($exception);
     }
 
+    /** @return ExceptionModel */
+    public static function model()
+    {
+        $class = config('filament-exceptions.exception_model');
+        return $class;
+    }
+
     /**
      * @return void
      */
@@ -63,7 +70,8 @@ class FilamentExceptions
 
         try {
             $this->store($data);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             throw $e;
         }
     }
@@ -71,7 +79,7 @@ class FilamentExceptions
     /**
      * Convert all items to string.
      */
-    public function stringify($data): array
+    public function stringify($data) : array
     {
         return array_map(function ($item) {
             return is_array($item) ? json_encode($item, JSON_OBJECT_AS_ARRAY) : (string) $item;
@@ -81,18 +89,19 @@ class FilamentExceptions
     /**
      * Store exception info to db.
      */
-    public function store(array $data): bool
+    public function store(array $data) : bool
     {
         try {
-            Exception::query()->create($data);
+            $this->model()::query()->create($data);
 
             return true;
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             return false;
         }
     }
 
-    public static function formatFileName(string $fileName): string
+    public static function formatFileName(string $fileName) : string
     {
         return str($fileName)
             ->after(str(request()->getHost())->beforeLast('.')->toString())
