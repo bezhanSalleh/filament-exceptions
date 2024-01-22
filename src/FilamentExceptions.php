@@ -37,11 +37,12 @@ class FilamentExceptions
         $reporter->reportException($exception);
     }
 
-    /** @return ExceptionModel */
-    public static function model()
+    public static function model() : string
     {
-        $class = config('filament-exceptions.exception_model');
-        return $class;
+        if (config('filament-exceptions.exception_model') === null) {
+            return ExceptionModel::class;
+        }
+        return config('filament-exceptions.exception_model');
     }
 
     /**
