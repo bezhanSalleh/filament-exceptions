@@ -52,5 +52,5 @@ return [
      *
      */
 
-    'period' => now()->subDays(5),
+    'period' => now()->subWeek(),
 ];
