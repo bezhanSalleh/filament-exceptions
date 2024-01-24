@@ -47,7 +47,7 @@ public function panel(Panel $panel): Panel
 {
     return $panel
         ->plugins([
-            \BezhanSalleh\FilamentExceptions\ExceptionPlugin::make()
+            \BezhanSalleh\FilamentExceptions\FilamentExceptionsPlugin::make()
         ]);
 }
 ```

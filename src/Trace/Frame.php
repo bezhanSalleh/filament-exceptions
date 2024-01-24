@@ -1,6 +1,6 @@
 <?php
 
-namespace BezhanSalleh\ExceptionPlugin\Trace;
+namespace BezhanSalleh\FilamentExceptions\Trace;
 
 use Illuminate\Support\Arr;
 use ReflectionClass;
@@ -29,7 +29,7 @@ class Frame
         return $this->attributes;
     }
 
-    public function parseFileAndLine($str)
+    public function parseFileAndLine($str): void
     {
         if (str()->startsWith($str, '/')) {
             preg_match('/^([^(]+)\((\d+)\)/', $str, $matches);
@@ -111,6 +111,11 @@ class Frame
         } catch (RuntimeException) {
             return;
         }
+    }
+
+    public function getCodeBlock(): array | CodeBlock
+    {
+        return !empty($this->code) ? $this->code : new CodeBlock();
     }
 
     public function method()

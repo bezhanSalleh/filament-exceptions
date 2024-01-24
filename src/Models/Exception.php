@@ -1,8 +1,8 @@
 <?php
 
-namespace BezhanSalleh\ExceptionPlugin\Models;
+namespace BezhanSalleh\FilamentExceptions\Models;
 
-use BezhanSalleh\ExceptionPlugin\ExceptionPlugin;
+use BezhanSalleh\FilamentExceptions\FilamentExceptionsPlugin;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,6 +19,6 @@ class Exception extends model
 
     public function prunable(): \Illuminate\Database\Eloquent\Builder
     {
-        return static::whereDate('created_at', '<=', ExceptionPlugin::get()->getModelPruneInterval());
+        return static::whereDate('created_at', '<=', FilamentExceptionsPlugin::get()->getModelPruneInterval());
     }
 }

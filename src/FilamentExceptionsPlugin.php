@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace BezhanSalleh\ExceptionPlugin;
+namespace BezhanSalleh\FilamentExceptions;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 
-class ExceptionPlugin implements Plugin
+class FilamentExceptionsPlugin implements Plugin
 {
     use Concerns\HasLabels;
     use Concerns\HasModelPruneInterval;

@@ -1,10 +1,10 @@
 <?php
 
-namespace BezhanSalleh\ExceptionPlugin\Resources;
+namespace BezhanSalleh\FilamentExceptions\Resources;
 
-use BezhanSalleh\ExceptionPlugin\ExceptionManager;
-use BezhanSalleh\ExceptionPlugin\ExceptionPlugin;
-use BezhanSalleh\ExceptionPlugin\Resources\ExceptionResource\Pages;
+use BezhanSalleh\FilamentExceptions\FilamentExceptions;
+use BezhanSalleh\FilamentExceptions\FilamentExceptionsPlugin;
+use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,14 +13,14 @@ use Filament\Tables\Table;
 
 class ExceptionResource extends Resource
 {
-    public static function getPlugin(): ExceptionPlugin
+    public static function getPlugin(): FilamentExceptionsPlugin
     {
-        return ExceptionPlugin::get();
+        return FilamentExceptionsPlugin::get();
     }
 
     public static function getModel(): string
     {
-        return ExceptionManager::getModel();
+        return FilamentExceptions::getModel();
     }
 
     public static function getModelLabel(): string

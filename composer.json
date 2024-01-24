@@ -33,8 +33,8 @@
     },
     "autoload": {
         "psr-4": {
-            "BezhanSalleh\\ExceptionPlugin\\": "src",
-            "BezhanSalleh\\ExceptionPlugin\\Database\\Factories\\": "database/factories"
+            "BezhanSalleh\\FilamentExceptions\\": "src",
+            "BezhanSalleh\\FilamentExceptions\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
@@ -57,10 +57,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "BezhanSalleh\\ExceptionPlugin\\ExceptionPluginServiceProvider"
+                "BezhanSalleh\\FilamentExceptions\\FilamentExceptionsServiceProvider"
             ],
             "aliases": {
-                "FilamentExceptions": "BezhanSalleh\\ExceptionPlugin\\Facades\\FilamentExceptions"
+                "FilamentExceptions": "BezhanSalleh\\FilamentExceptions\\Facades\\FilamentExceptions"
             }
         }
     },

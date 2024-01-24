@@ -1,16 +1,23 @@
 <?php
 
-namespace BezhanSalleh\ExceptionPlugin\Facades;
+namespace BezhanSalleh\FilamentExceptions\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \BezhanSalleh\ExceptionPlugin\ExceptionManager
+ * @method static void report(\Throwable $exception)
+ * @method static string|null getModel()
+ * @method static void model(string $model)
+ * @method static void reportException(\Throwable $exception)
+ * @method static array stringify(void $data)
+ * @method static bool store(array $data)
+ *
+ * @see \BezhanSalleh\FilamentExceptions\FilamentExceptions
  */
 class FilamentExceptions extends Facade
 {
-    protected static function getFacadeAccessor()
+    protected static function getFacadeAccessor(): string
     {
-        return \BezhanSalleh\ExceptionPlugin\ExceptionManager::class;
+        return \BezhanSalleh\FilamentExceptions\FilamentExceptions::class;
     }
 }

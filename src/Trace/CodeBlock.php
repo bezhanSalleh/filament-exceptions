@@ -1,6 +1,6 @@
 <?php
 
-namespace BezhanSalleh\ExceptionPlugin\Trace;
+namespace BezhanSalleh\FilamentExceptions\Trace;
 
 class CodeBlock
 {

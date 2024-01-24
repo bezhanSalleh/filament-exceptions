@@ -1,8 +1,8 @@
 <?php
 
-namespace BezhanSalleh\ExceptionPlugin;
+namespace BezhanSalleh\FilamentExceptions;
 
-use BezhanSalleh\ExceptionPlugin\Commands\MakeExceptionsInstallCommand;
+use BezhanSalleh\FilamentExceptions\Commands\MakeExceptionsInstallCommand;
 use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class ExceptionPluginServiceProvider extends PackageServiceProvider
+class FilamentExceptionsServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -27,8 +27,8 @@ class ExceptionPluginServiceProvider extends PackageServiceProvider
     {
         parent::packageRegistered();
 
-        $this->app->scoped('filament-exceptions', function ($app): ExceptionManager {
-            return new ExceptionManager($app->make(Request::class));
+        $this->app->scoped('filament-exceptions', function ($app): FilamentExceptions {
+            return new FilamentExceptions($app->make(Request::class));
         });
     }
 
@@ -43,7 +43,7 @@ class ExceptionPluginServiceProvider extends PackageServiceProvider
 
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
             $schedule->command('model:prune', [
-                '--model' => [ExceptionManager::getModel()],
+                '--model' => [FilamentExceptions::getModel()],
             ])->daily();
         });
     }

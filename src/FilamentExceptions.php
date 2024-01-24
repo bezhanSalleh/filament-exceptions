@@ -1,6 +1,6 @@
 <?php
 
-namespace BezhanSalleh\ExceptionPlugin;
+namespace BezhanSalleh\FilamentExceptions;
 
 use BezhanSalleh\ExceptionPlugin\Models\Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -9,7 +9,7 @@ use Illuminate\Support\Arr;
 use Spatie\LaravelIgnition\Recorders\QueryRecorder\QueryRecorder;
 use Throwable;
 
-class ExceptionManager
+class FilamentExceptions
 {
     protected static ?string $model = null;
 
@@ -66,9 +66,6 @@ class ExceptionManager
         $this->store($data);
     }
 
-    /**
-     * Convert all items to string.
-     */
     public function stringify($data): array
     {
         return array_map(function ($item) {
@@ -76,9 +73,6 @@ class ExceptionManager
         }, $data);
     }
 
-    /**
-     * Store exception info to db.
-     */
     public function store(array $data): bool
     {
         try {
