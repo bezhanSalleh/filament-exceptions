@@ -10,10 +10,10 @@ use Filament\Panel;
 class ExceptionPlugin implements Plugin
 {
     use Concerns\HasLabels;
-    use Concerns\HasNavigation;
-    use Concerns\HasTenantScope;
     use Concerns\HasModelPruneInterval;
+    use Concerns\HasNavigation;
     use Concerns\HasTabs;
+    use Concerns\HasTenantScope;
 
     public static function make(): static
     {

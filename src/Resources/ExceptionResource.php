@@ -2,8 +2,8 @@
 
 namespace BezhanSalleh\ExceptionPlugin\Resources;
 
-use BezhanSalleh\ExceptionPlugin\ExceptionPlugin;
 use BezhanSalleh\ExceptionPlugin\ExceptionManager;
+use BezhanSalleh\ExceptionPlugin\ExceptionPlugin;
 use BezhanSalleh\ExceptionPlugin\Resources\ExceptionResource\Pages;
 use Filament\Forms;
 use Filament\Forms\Form;

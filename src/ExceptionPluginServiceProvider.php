@@ -3,7 +3,6 @@
 namespace BezhanSalleh\ExceptionPlugin;
 
 use BezhanSalleh\ExceptionPlugin\Commands\MakeExceptionsInstallCommand;
-use BezhanSalleh\ExceptionPlugin\Models\Exception;
 use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;

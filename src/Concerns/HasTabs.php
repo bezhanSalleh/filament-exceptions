@@ -30,8 +30,6 @@ trait HasTabs
 
     /**
      * Tabs: 1 = Exception, 2 = Headers, 3 = Cookies, 4 = Body, 5 = Queries
-     * @param  int  $tab
-     * @return static
      */
     public function activeTab(int $tab): static
     {
