@@ -4,7 +4,6 @@ namespace BezhanSalleh\FilamentExceptions;
 
 use BezhanSalleh\FilamentExceptions\Models\Exception as ExceptionModel;
 use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Spatie\LaravelIgnition\Recorders\QueryRecorder\QueryRecorder;
@@ -70,6 +69,7 @@ class FilamentExceptions
     {
         try {
             $this->model()::query()->create($data);
+
             return true;
         } catch (Throwable $e) {
             return false;
