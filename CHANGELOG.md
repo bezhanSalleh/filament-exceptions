@@ -2,6 +2,20 @@
 
 All notable changes to `filament-exceptions` will be documented in this file.
 
+## 2.1.0 - 2024-01-24
+
+### What's Changed
+
+* Adding isScopedToTenant at ExceptionResource by @LingMyat in https://github.com/bezhanSalleh/filament-exceptions/pull/47
+* Add Custom Model Support & Fix Iterator Errors by @Fludem in https://github.com/bezhanSalleh/filament-exceptions/pull/46
+
+### New Contributors
+
+* @LingMyat made their first contribution in https://github.com/bezhanSalleh/filament-exceptions/pull/47
+* @Fludem made their first contribution in https://github.com/bezhanSalleh/filament-exceptions/pull/46
+
+**Full Changelog**: https://github.com/bezhanSalleh/filament-exceptions/compare/2.0.2...2.1.0
+
 ## 2.0.2 - 2024-01-09
 
 ### What's Changed
