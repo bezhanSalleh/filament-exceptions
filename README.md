@@ -41,12 +41,13 @@ php artisan exceptions:install
 ```
 
 3. Register the plugin for the Filament Panel
+
 ```php
 public function panel(Panel $panel): Panel
 {
     return $panel
         ->plugins([
-            \BezhanSalleh\FilamentExceptions\FilamentExceptionsPlugin::make()
+            \BezhanSalleh\FilamentExceptions\ExceptionPlugin::make()
         ]);
 }
 ```
@@ -58,7 +59,7 @@ public function panel(Panel $panel): Panel
 
 namespace App\Exceptions;
 
-use BezhanSalleh\FilamentExceptions\FilamentExceptions;
+use BezhanSalleh\FilamentExceptions\ExceptionManager;
 
 class Handler extends ExceptionHandler
 {
@@ -68,7 +69,7 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             if ($this->shouldReport($e)) {
-                FilamentExceptions::report($e);
+                ExceptionManager::report($e);
             }
         });
 

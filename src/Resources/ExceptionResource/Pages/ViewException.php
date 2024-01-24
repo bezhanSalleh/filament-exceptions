@@ -1,9 +1,9 @@
 <?php
 
-namespace BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
+namespace BezhanSalleh\ExceptionPlugin\Resources\ExceptionResource\Pages;
 
-use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
-use BezhanSalleh\FilamentExceptions\Trace\Parser;
+use BezhanSalleh\ExceptionPlugin\Resources\ExceptionResource;
+use BezhanSalleh\ExceptionPlugin\Trace\Parser;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ViewRecord;
 

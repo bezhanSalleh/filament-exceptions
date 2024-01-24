@@ -1,9 +1,8 @@
 <?php
 
-namespace BezhanSalleh\FilamentExceptions\Trace;
+namespace BezhanSalleh\ExceptionPlugin\Trace;
 
 use Illuminate\Support\Arr;
-use JetBrains\PhpStorm\Pure;
 use ReflectionClass;
 use ReflectionException;
 use RuntimeException;
@@ -40,7 +39,7 @@ class Frame
         }
     }
 
-    public function parseCall($str)
+    public function parseCall($str): void
     {
         if (empty($str)) {
             return;
@@ -53,7 +52,7 @@ class Frame
             if (str()->contains($matches[2], ['{closure}']) && Arr::get($this->attributes, 'name') == '[internal function]') {
                 $this->attributes['name'] .= " $matches[1]->$matches[2]";
             }
-        // class method call
+            // class method call
         } else {
             preg_match('/([^(]+)\((.*)\)/', $str, $matches);
             $this->attributes['function'] = $matches[1];
@@ -61,7 +60,7 @@ class Frame
         }
     }
 
-    public function fetchCodeBlock()
+    public function fetchCodeBlock(): void
     {
         $filename = Arr::get($this->attributes, 'file');
         $lineNo = Arr::get($this->attributes, 'line');
@@ -112,16 +111,6 @@ class Frame
         } catch (RuntimeException) {
             return;
         }
-    }
-
-    #[Pure]
-    public function getCodeBlock(): array | CodeBlock
-    {
-        if (empty($this->code)) {
-            return new CodeBlock();
-        }
-
-        return $this->code ?: new CodeBlock();
     }
 
     public function method()

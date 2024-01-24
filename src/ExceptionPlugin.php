@@ -2,21 +2,22 @@
 
 declare(strict_types=1);
 
-namespace BezhanSalleh\FilamentExceptions;
+namespace BezhanSalleh\ExceptionPlugin;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 
-class FilamentExceptionsPlugin implements Plugin
+class ExceptionPlugin implements Plugin
 {
+    use Concerns\HasLabels;
+    use Concerns\HasNavigation;
+    use Concerns\HasTenantScope;
+    use Concerns\HasModelPruneInterval;
+    use Concerns\HasTabs;
+
     public static function make(): static
     {
         return app(static::class);
-    }
-
-    public static function get(): static
-    {
-        return filament(app(static::class)->getId());
     }
 
     public function getId(): string
@@ -35,5 +36,13 @@ class FilamentExceptionsPlugin implements Plugin
     public function boot(Panel $panel): void
     {
         //
+    }
+
+    public static function get(): static
+    {
+        /** @var static $plugin */
+        $plugin = filament(app(static::class)->getId());
+
+        return $plugin;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace BezhanSalleh\FilamentExceptions\Commands;
+namespace BezhanSalleh\ExceptionPlugin\Commands;
 
 use Illuminate\Console\Command;
 
@@ -28,7 +28,7 @@ class MakeExceptionsInstallCommand extends Command
         $this->comment('following snippet into your App\'s Exception Handlers\'s reportable method.');
         $this->newLine();
         $this->info('        if ($this->shouldReport($e)) {
-            FilamentExceptions::report($e);
+            ExceptionManager::report($e);
         }');
 
         return self::SUCCESS;

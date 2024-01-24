@@ -2,7 +2,7 @@
 
 namespace BezhanSalleh\FilamentExceptions\Tests;
 
-use BezhanSalleh\FilamentExceptions\FilamentExceptionsServiceProvider;
+use BezhanSalleh\FilamentExceptions\ExceptionPluginServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
@@ -14,7 +14,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'BezhanSalleh\\FilamentExceptions\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            fn (string $modelName) => 'BezhanSalleh\\ExceptionManager\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
     }
 
@@ -22,7 +22,7 @@ class TestCase extends Orchestra
     {
         return [
             LivewireServiceProvider::class,
-            FilamentExceptionsServiceProvider::class,
+            ExceptionPluginServiceProvider::class,
         ];
     }
 

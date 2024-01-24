@@ -1,16 +1,16 @@
 <?php
 
-namespace BezhanSalleh\FilamentExceptions\Facades;
+namespace BezhanSalleh\ExceptionPlugin\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \BezhanSalleh\FilamentExceptions\FilamentExceptions
+ * @see \BezhanSalleh\ExceptionPlugin\ExceptionManager
  */
 class FilamentExceptions extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \BezhanSalleh\FilamentExceptions\FilamentExceptions::class;
+        return \BezhanSalleh\ExceptionPlugin\ExceptionManager::class;
     }
 }

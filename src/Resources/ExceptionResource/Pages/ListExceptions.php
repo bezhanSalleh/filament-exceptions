@@ -1,8 +1,8 @@
 <?php
 
-namespace BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
+namespace BezhanSalleh\ExceptionPlugin\Resources\ExceptionResource\Pages;
 
-use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
+use BezhanSalleh\ExceptionPlugin\Resources\ExceptionResource;
 use Filament\Resources\Pages\ListRecords;
 
 class ListExceptions extends ListRecords

@@ -1,46 +1,48 @@
 <?php
 
-namespace BezhanSalleh\FilamentExceptions;
+namespace BezhanSalleh\ExceptionPlugin;
 
-use BezhanSalleh\FilamentExceptions\Models\Exception;
-use Illuminate\Foundation\Application;
+use BezhanSalleh\ExceptionPlugin\Models\Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 use Spatie\LaravelIgnition\Recorders\QueryRecorder\QueryRecorder;
 use Throwable;
 
-class FilamentExceptions
+class ExceptionManager
 {
-    /**
-     * @var Request
-     */
-    protected $request;
+    protected static ?string $model = null;
 
-    protected Application $app;
-
-    /**
-     * Reporter constructor.
-     */
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
+    public function __construct(
+        protected Request $request
+    ) {
     }
 
     /**
-     * @return void
+     * @throws Throwable
      */
-    public static function report(Throwable $exception)
+    public static function report(Throwable $exception): void
     {
         $reporter = new static(request());
 
         $reporter->reportException($exception);
     }
 
+    public static function getModel(): ?string
+    {
+        return static::$model ?? '\\BezhanSalleh\\FilamentExceptions\\Models\\Exception';
+    }
+
+    public static function model(string $model): void
+    {
+        static::$model = $model;
+    }
+
     /**
-     * @return void
+     * @throws BindingResolutionException
+     * @throws Throwable
      */
-    public function reportException(Throwable $exception)
+    public function reportException(Throwable $exception): void
     {
         $data = [
             'method' => request()->getMethod(),
@@ -61,11 +63,7 @@ class FilamentExceptions
 
         $data = $this->stringify($data);
 
-        try {
-            $this->store($data);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $this->store($data);
     }
 
     /**
@@ -84,20 +82,11 @@ class FilamentExceptions
     public function store(array $data): bool
     {
         try {
-            Exception::query()->create($data);
+            static::getModel()::create($data);
 
             return true;
         } catch (Throwable $e) {
             return false;
         }
-    }
-
-    public static function formatFileName(string $fileName): string
-    {
-        return str($fileName)
-            ->after(str(request()->getHost())->beforeLast('.')->toString())
-            ->afterLast('/')
-            ->prepend('.../')
-            ->toString();
     }
 }
