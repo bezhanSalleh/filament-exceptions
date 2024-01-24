@@ -78,11 +78,42 @@ class Handler extends ExceptionHandler
 
 ## Configuration
 The configuration file filament-exceptions.php is automatically published into your config directory.
-You can change icons and navigations settings as well as the active pill and slug there.
 
-* **Mass Pruning**: By default exceptions older than a week are scheduled to be pruned daily. You can change the `period` by providing a date in the config or using carbon.
-> **Note**
-> in order for the schedule to work you need to make sure that you have configured your server if not follow this link on how to configure it. [Running The Scheduler](https://laravel.com/docs/9.x/scheduling#running-the-scheduler)
+The config file provides you with multiple options to customize the plugin.
+
+### Mass Pruning
+By default Filament Exceptions is configured to prune exceptions older than 1 week.
+
+To modify how long you'd like to store records for you can supply a Carbon object like so
+
+```php
+'period' => now()->subWeek(), // 1 week
+'period' => now()->subDay(), // 1 day
+'period' => now()->subDays(3), // 3 days
+```
+> **Note** This requires laravel scheduler to be setup and configured in order to work. You can see how to do that here  [Running The Scheduler](https://laravel.com/docs/10.x/scheduling#running-the-scheduler)
+ 
+### Custom Exception Model
+For those who need to change the model this is possible using the configuration file.
+
+```php
+    'exception_model' => Exception::class,
+```
+
+When creating your new exception model you should extend the default model
+
+```php
+<?php
+
+namespace App\Models;
+
+use BezhanSalleh\FilamentExceptions\Models\Exception as BaseException;
+
+class Exception extends BaseException
+{
+
+}
+```
 
 ## Theme
 By default the plugin uses the default theme of Filamentphp, but if you are using a custom theme then include the plugins view path into the content array of your tailwind.config.js file:

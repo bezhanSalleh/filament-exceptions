@@ -10,7 +10,7 @@ class Parser implements Iterator
     {
     }
 
-    public function parse(): ?array
+    public function parse() : ?array
     {
         $frames = explode("\n", $this->trace);
 
@@ -22,6 +22,7 @@ class Parser implements Iterator
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         // TODO: Implement current() method.
@@ -30,6 +31,7 @@ class Parser implements Iterator
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         // TODO: Implement next() method.
@@ -38,6 +40,7 @@ class Parser implements Iterator
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         // TODO: Implement key() method.
@@ -46,6 +49,7 @@ class Parser implements Iterator
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         // TODO: Implement valid() method.
@@ -54,6 +58,7 @@ class Parser implements Iterator
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         // TODO: Implement rewind() method.
