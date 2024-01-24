@@ -10,7 +10,7 @@ class Parser implements Iterator
     {
     }
 
-    public function parse() : ?array
+    public function parse(): ?array
     {
         $frames = explode("\n", $this->trace);
 

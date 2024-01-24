@@ -2,7 +2,6 @@
 
 namespace BezhanSalleh\FilamentExceptions;
 
-
 use BezhanSalleh\FilamentExceptions\Models\Exception as ExceptionModel;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -37,11 +36,12 @@ class FilamentExceptions
         $reporter->reportException($exception);
     }
 
-    public static function model() : string
+    public static function model(): string
     {
         if (config('filament-exceptions.exception_model') === null) {
             return ExceptionModel::class;
         }
+
         return config('filament-exceptions.exception_model');
     }
 
@@ -71,8 +71,7 @@ class FilamentExceptions
 
         try {
             $this->store($data);
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             throw $e;
         }
     }
@@ -80,7 +79,7 @@ class FilamentExceptions
     /**
      * Convert all items to string.
      */
-    public function stringify($data) : array
+    public function stringify($data): array
     {
         return array_map(function ($item) {
             return is_array($item) ? json_encode($item, JSON_OBJECT_AS_ARRAY) : (string) $item;
@@ -90,16 +89,14 @@ class FilamentExceptions
     /**
      * Store exception info to db.
      */
-    public function store(array $data) : bool
+    public function store(array $data): bool
     {
         try {
             $this->model()::query()->create($data);
 
             return true;
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             return false;
         }
     }
-
 }
