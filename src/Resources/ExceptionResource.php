@@ -67,7 +67,12 @@ class ExceptionResource extends Resource
         return config('filament-exceptions.navigation_sort');
     }
 
-    public static function canGloballySearch() : bool
+    public static function isScopedToTenant(): bool
+    {
+        return config('filament-exceptions.is_scoped_to_tenant', true);
+    }
+
+    public static function canGloballySearch(): bool
     {
         return config('filament-exceptions.is_globally_searchable')
             && count(static::getGloballySearchableAttributes())
