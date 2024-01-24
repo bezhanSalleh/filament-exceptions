@@ -3,6 +3,7 @@
 namespace BezhanSalleh\FilamentExceptions;
 
 use BezhanSalleh\FilamentExceptions\Models\Exception as ExceptionModel;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -11,44 +12,30 @@ use Throwable;
 
 class FilamentExceptions
 {
-    /**
-     * @var Request
-     */
-    protected $request;
-
-    protected Application $app;
-
-    /**
-     * Reporter constructor.
-     */
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
+    public function __construct(
+        protected Request $request
+    ) {
     }
 
     /**
-     * @return void
+     * @throws BindingResolutionException
      */
-    public static function report(Throwable $exception)
+    public static function report(Throwable $exception): void
     {
         $reporter = new static(request());
 
         $reporter->reportException($exception);
     }
 
-    public static function model(): string
+    public static function getModel(): string
     {
-        if (config('filament-exceptions.exception_model') === null) {
-            return ExceptionModel::class;
-        }
-
-        return config('filament-exceptions.exception_model');
+        return config('filament-exceptions.exception_model') ?? ExceptionModel::class;
     }
 
     /**
-     * @return void
+     * @throws BindingResolutionException
      */
-    public function reportException(Throwable $exception)
+    public function reportException(Throwable $exception): void
     {
         $data = [
             'method' => request()->getMethod(),
@@ -69,16 +56,9 @@ class FilamentExceptions
 
         $data = $this->stringify($data);
 
-        try {
-            $this->store($data);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $this->store($data);
     }
 
-    /**
-     * Convert all items to string.
-     */
     public function stringify($data): array
     {
         return array_map(function ($item) {
@@ -86,14 +66,10 @@ class FilamentExceptions
         }, $data);
     }
 
-    /**
-     * Store exception info to db.
-     */
     public function store(array $data): bool
     {
         try {
             $this->model()::query()->create($data);
-
             return true;
         } catch (Throwable $e) {
             return false;

@@ -14,7 +14,7 @@ class ExceptionResource extends Resource
 {
     public static function getModel(): string
     {
-        return FilamentExceptions::model();
+        return FilamentExceptions::getModel();
     }
 
     public static function getModelLabel(): string
@@ -50,7 +50,7 @@ class ExceptionResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         if (config('filament-exceptions.navigation_badge')) {
-            return static::getModel()::count();
+            return static::getEloquentQuery()->count();
         }
 
         return null;
