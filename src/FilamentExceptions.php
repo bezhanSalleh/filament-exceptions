@@ -2,7 +2,6 @@
 
 namespace BezhanSalleh\FilamentExceptions;
 
-use BezhanSalleh\ExceptionPlugin\Models\Exception;
 use Filament\Clusters\Cluster;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
