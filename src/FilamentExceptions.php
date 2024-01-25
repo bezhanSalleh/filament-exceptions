@@ -68,7 +68,7 @@ class FilamentExceptions
     public function store(array $data): bool
     {
         try {
-            $this->model()::query()->create($data);
+            static::getModel()::create($data);
 
             return true;
         } catch (Throwable $e) {
