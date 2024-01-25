@@ -10,9 +10,15 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use App\Filament\Clusters\Products;
 
 class ExceptionResource extends Resource
 {
+    public static function getCluster(): ?string
+    {
+        return FilamentExceptions::getCluster();
+    }
+
     public static function getPlugin(): FilamentExceptionsPlugin
     {
         return FilamentExceptionsPlugin::get();

@@ -3,6 +3,7 @@
 namespace BezhanSalleh\FilamentExceptions;
 
 use BezhanSalleh\ExceptionPlugin\Models\Exception;
+use Filament\Clusters\Cluster;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -12,6 +13,9 @@ use Throwable;
 class FilamentExceptions
 {
     protected static ?string $model = null;
+
+    /** @var class-string<Cluster> | null */
+    protected static ?string $cluster = null;
 
     public function __construct(
         protected Request $request
@@ -26,6 +30,16 @@ class FilamentExceptions
         $reporter = new static(request());
 
         $reporter->reportException($exception);
+    }
+
+    public static function cluster(string $cluster): void
+    {
+        static::$cluster = $cluster;
+    }
+
+    public static function getCluster(): ?string
+    {
+        return static::$cluster;
     }
 
     public static function getModel(): ?string
