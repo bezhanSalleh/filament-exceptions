@@ -73,7 +73,7 @@ class ExceptionResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return static::getPlugin()->shouldRegisterNavigation();
+        return filled(FilamentExceptions::getCluster()) && static::getPlugin()->shouldRegisterNavigation();
     }
 
     public static function getNavigationSort(): ?int

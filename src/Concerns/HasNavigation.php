@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace BezhanSalleh\FilamentExceptions\Concerns;
 
+use Filament\Clusters\Cluster;
 use Filament\Pages\SubNavigationPosition;
 
 trait HasNavigation
 {
+    /** @var class-string<Cluster> | null */
+    protected ?string $cluster = null;
+
     protected bool $shouldEnableNavigationBadge = false;
 
     protected string | array | null $navigationBadgeColor = null;
@@ -146,5 +150,19 @@ trait HasNavigation
     public function getSlug(): ?string
     {
         return $this->slug;
+    }
+
+    public function cluster(string $cluster):static
+    {
+        $this->cluster = $cluster;
+
+        return $this;
+    }
+    /**
+     * @return class-string<Cluster> | null
+     */
+    public function getCluster(): ?string
+    {
+        return $this->cluster;
     }
 }
