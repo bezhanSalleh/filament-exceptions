@@ -126,6 +126,18 @@ export default {
     // ...
 }
 ```
+
+### Access The Exception With Filament-Shield
+Access the exception view with filament-shield
+
+```php
+    // Add the code below on AuthServiceProvider.php, inside of policies[]
+    'BezhanSalleh\FilamentExceptions\Models\Exception' => 'App\Policies\ExceptionPolicy',
+
+    // if you need Exception.php file, get it here: https://pastebin.com/NMqKC4t5
+    // if you need ExceptionPolicy.php file, get it here: https://pastebin.com/rpvcZdEp
+```
+
 ## Translations
 Publish the translations with
 ```bash
