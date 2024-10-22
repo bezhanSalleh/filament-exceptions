@@ -31,7 +31,6 @@ class FilamentExceptionsServiceProvider extends PackageServiceProvider
             return new FilamentExceptions($app->make(Request::class));
         });
 
-        
     }
 
     public function packageBooted(): void

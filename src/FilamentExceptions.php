@@ -18,8 +18,7 @@ class FilamentExceptions
 
     public function __construct(
         protected Request $request
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Throwable

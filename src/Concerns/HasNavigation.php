@@ -152,12 +152,13 @@ trait HasNavigation
         return $this->slug;
     }
 
-    public function cluster(string $cluster):static
+    public function cluster(string $cluster): static
     {
         $this->cluster = $cluster;
 
         return $this;
     }
+
     /**
      * @return class-string<Cluster> | null
      */

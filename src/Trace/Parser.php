@@ -9,8 +9,7 @@ class Parser implements Iterator
 {
     public function __construct(
         protected ?string $trace = ''
-    ) {
-    }
+    ) {}
 
     public function parse(): ?array
     {
