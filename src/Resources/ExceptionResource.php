@@ -17,6 +17,11 @@ class ExceptionResource extends Resource
         return FilamentExceptions::getModel();
     }
 
+    public static function getCluster(): ?string
+    {
+        return __(config('filament-exceptions.cluster'));
+    }
+
     public static function getModelLabel(): string
     {
         return __('filament-exceptions::filament-exceptions.labels.model');
@@ -29,7 +34,7 @@ class ExceptionResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('filament-exceptions::filament-exceptions.labels.navigation_group');
+        return __(config('filament-exceptions.navigation_group', 'Management'));
     }
 
     public static function getNavigationLabel(): string
@@ -58,7 +63,7 @@ class ExceptionResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return (bool) config('filament-exceptions.navigation_enabled');
+        return (bool)config('filament-exceptions.navigation_enabled');
     }
 
     public static function getNavigationSort(): ?int
@@ -83,36 +88,36 @@ class ExceptionResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Tabs::make('Heading')
-                    ->activeTab(static fn (): int => config('filament-exceptions.active_tab'))
+                    ->activeTab(static fn(): int => config('filament-exceptions.active_tab'))
                     ->tabs([
                         Forms\Components\Tabs\Tab::make('Exception')
-                            ->label(static fn (): string => __('filament-exceptions::filament-exceptions.labels.tabs.exception'))
-                            ->icon(static fn (): string => config('filament-exceptions.icons.exception'))
+                            ->label(static fn(): string => __('filament-exceptions::filament-exceptions.labels.tabs.exception'))
+                            ->icon(static fn(): string => config('filament-exceptions.icons.exception'))
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::exception'),
                             ]),
                         Forms\Components\Tabs\Tab::make('Headers')
-                            ->label(static fn (): string => __('filament-exceptions::filament-exceptions.labels.tabs.headers'))
-                            ->icon(static fn (): string => config('filament-exceptions.icons.headers'))
+                            ->label(static fn(): string => __('filament-exceptions::filament-exceptions.labels.tabs.headers'))
+                            ->icon(static fn(): string => config('filament-exceptions.icons.headers'))
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::headers'),
                             ])->columns(1),
                         Forms\Components\Tabs\Tab::make('Cookies')
-                            ->label(static fn (): string => __('filament-exceptions::filament-exceptions.labels.tabs.cookies'))
-                            ->icon(static fn (): string => config('filament-exceptions.icons.cookies'))
+                            ->label(static fn(): string => __('filament-exceptions::filament-exceptions.labels.tabs.cookies'))
+                            ->icon(static fn(): string => config('filament-exceptions.icons.cookies'))
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::cookies'),
                             ]),
                         Forms\Components\Tabs\Tab::make('Body')
-                            ->label(static fn (): string => __('filament-exceptions::filament-exceptions.labels.tabs.body'))
-                            ->icon(static fn (): string => config('filament-exceptions.icons.body'))
+                            ->label(static fn(): string => __('filament-exceptions::filament-exceptions.labels.tabs.body'))
+                            ->icon(static fn(): string => config('filament-exceptions.icons.body'))
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::body'),
                             ]),
                         Forms\Components\Tabs\Tab::make('Queries')
-                            ->label(static fn (): string => __('filament-exceptions::filament-exceptions.labels.tabs.queries'))
-                            ->icon(static fn (): string => config('filament-exceptions.icons.queries'))
-                            ->badge(static fn ($record): string => collect(json_decode($record->query, true, 512, JSON_THROW_ON_ERROR))->count())
+                            ->label(static fn(): string => __('filament-exceptions::filament-exceptions.labels.tabs.queries'))
+                            ->icon(static fn(): string => config('filament-exceptions.icons.queries'))
+                            ->badge(static fn($record): string => collect(json_decode($record->query, true, 512, JSON_THROW_ON_ERROR))->count())
                             ->schema([
                                 Forms\Components\View::make('filament-exceptions::query'),
                             ]),
@@ -126,41 +131,41 @@ class ExceptionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('method')
-                    ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.method'))
+                    ->label(fn(): string => __('filament-exceptions::filament-exceptions.columns.method'))
                     ->badge()
                     ->colors([
                         'gray',
-                        'success' => fn ($state): bool => $state === 'GET',
-                        'primary' => fn ($state): bool => $state === 'POST',
-                        'warning' => fn ($state): bool => $state === 'PUT',
-                        'danger' => fn ($state): bool => $state === 'DELETE',
-                        'warning' => fn ($state): bool => $state === 'PATCH',
-                        'gray' => fn ($state): bool => $state === 'OPTIONS',
+                        'success' => fn($state): bool => $state === 'GET',
+                        'primary' => fn($state): bool => $state === 'POST',
+                        'warning' => fn($state): bool => $state === 'PUT',
+                        'danger' => fn($state): bool => $state === 'DELETE',
+                        'warning' => fn($state): bool => $state === 'PATCH',
+                        'gray' => fn($state): bool => $state === 'OPTIONS',
 
                     ])
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('path')
-                    ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.path'))
+                    ->label(fn(): string => __('filament-exceptions::filament-exceptions.columns.path'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('type')
-                    ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.type'))
+                    ->label(fn(): string => __('filament-exceptions::filament-exceptions.columns.type'))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('code')
-                    ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.code'))
+                    ->label(fn(): string => __('filament-exceptions::filament-exceptions.columns.code'))
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('ip')
-                    ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.ip'))
+                    ->label(fn(): string => __('filament-exceptions::filament-exceptions.columns.ip'))
                     ->badge()
                     ->extraAttributes(['class' => 'font-mono'])
                     ->sortable()
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.occurred_at'))
+                    ->label(fn(): string => __('filament-exceptions::filament-exceptions.columns.occurred_at'))
                     ->sortable()
                     ->searchable()
                     ->dateTime()
