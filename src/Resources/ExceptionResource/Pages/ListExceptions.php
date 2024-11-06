@@ -11,7 +11,7 @@ class ListExceptions extends ListRecords
 
     protected function getTableEmptyStateIcon(): ?string
     {
-        return config('filament-exceptions.icons.exception');
+        return static::$resource::getNavigationIcon();
     }
 
     protected function getTableEmptyStateHeading(): ?string

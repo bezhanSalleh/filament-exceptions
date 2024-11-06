@@ -45,12 +45,12 @@ class ExceptionResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return static::getPlugin()->getNavigationGroup();
+        return static::getPlugin()->getNavigationGroup() ?? static::getTitleCasePluralModelLabel();
     }
 
     public static function getNavigationLabel(): string
     {
-        return static::getPlugin()->getNavigationLabel();
+        return static::getPlugin()->getNavigationLabel() ?? __('filament-exceptions::filament-exceptions.labels.navigation');
     }
 
     public static function getNavigationIcon(): string
@@ -72,7 +72,7 @@ class ExceptionResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return filled(FilamentExceptions::getCluster()) && static::getPlugin()->shouldRegisterNavigation();
+        return filled(FilamentExceptions::getCluster()) || static::getPlugin()->shouldRegisterNavigation();
     }
 
     public static function getNavigationSort(): ?int

@@ -18,8 +18,7 @@ class FilamentExceptions
 
     public function __construct(
         protected Request $request
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Throwable
@@ -43,7 +42,7 @@ class FilamentExceptions
 
     public static function getModel(): ?string
     {
-        return static::$model ?? '\\BezhanSalleh\\FilamentExceptions\\Models\\Exception';
+        return static::$model;// ?? '\\BezhanSalleh\\FilamentExceptions\\Models\\Exception';
     }
 
     public static function model(string $model): void
@@ -61,7 +60,7 @@ class FilamentExceptions
             'method' => request()->getMethod(),
             'ip' => implode(' ', json_decode(json_encode(request()->getClientIps()))),
             'path' => request()->path(),
-            'query' => app()->make(QueryRecorder::class)->getQueries(), //Arr::except(request()->all(), ['_pjax', '_token', '_method', '_previous_']),
+            'query' => app()->make(QueryRecorder::class)->getQueries(),
             'body' => request()->getContent(),
             'cookies' => request()->cookies->all(),
             'headers' => Arr::except(request()->headers->all(), 'cookie'),

@@ -4,29 +4,31 @@ declare(strict_types=1);
 
 namespace BezhanSalleh\FilamentExceptions\Concerns;
 
+use Closure;
+
 trait HasTenantScope
 {
-    protected bool $isScopedToTenant = true;
+    protected bool | Closure $isScopedToTenant = true;
 
-    protected ?string $tenantOwnershipRelationshipName = null;
+    protected string | Closure | null $tenantOwnershipRelationshipName = null;
 
-    protected ?string $tenantRelationshipName = null;
+    protected string | Closure | null $tenantRelationshipName = null;
 
-    public function scopeToTenant(bool $condition = true): static
+    public function scopeToTenant(bool | Closure $condition = true): static
     {
         $this->isScopedToTenant = $condition;
 
         return $this;
     }
 
-    public function tenantOwnershipRelationshipName(string $ownershipRelationshipName): static
+    public function tenantOwnershipRelationshipName(string | Closure | null $ownershipRelationshipName): static
     {
         $this->tenantOwnershipRelationshipName = $ownershipRelationshipName;
 
         return $this;
     }
 
-    public function tenantRelationshipName(string $relationshipName): static
+    public function tenantRelationshipName(string | Closure | null $relationshipName): static
     {
         $this->tenantRelationshipName = $relationshipName;
 
@@ -35,16 +37,16 @@ trait HasTenantScope
 
     public function isScopedToTenant(): bool
     {
-        return $this->isScopedToTenant;
+        return $this->evaluate($this->isScopedToTenant);
     }
 
     public function getTenantRelationshipName(): ?string
     {
-        return $this->tenantRelationshipName;
+        return $this->evaluate($this->tenantRelationshipName);
     }
 
     public function getTenantOwnershipRelationshipName(): ?string
     {
-        return $this->tenantOwnershipRelationshipName;
+        return $this->evaluate($this->tenantOwnershipRelationshipName);
     }
 }

@@ -4,165 +4,183 @@ declare(strict_types=1);
 
 namespace BezhanSalleh\FilamentExceptions\Concerns;
 
+use Closure;
 use Filament\Clusters\Cluster;
 use Filament\Pages\SubNavigationPosition;
 
 trait HasNavigation
 {
-    /** @var class-string<Cluster> | null */
-    protected ?string $cluster = null;
+    /** @var class-string<Cluster> | Closure | null */
+    protected string | Closure | null $cluster = null;
 
-    protected bool $shouldEnableNavigationBadge = false;
+    protected bool | Closure $shouldEnableNavigationBadge = false;
 
-    protected string | array | null $navigationBadgeColor = null;
+    protected string | array | Closure | null $navigationBadgeColor = null;
 
-    protected ?string $navigationGroup = null;
+    protected string | Closure | null $navigationGroup = null;
 
-    protected ?string $navigationParentItem = null;
+    protected string | Closure | null $navigationParentItem = null;
 
-    protected ?string $navigationIcon = null;
+    protected string | Closure | null $navigationIcon = null;
 
-    protected ?string $activeNavigationIcon = null;
+    protected string | Closure | null $activeNavigationIcon = null;
 
-    protected ?string $navigationLabel = null;
+    protected string | Closure | null $navigationLabel = null;
 
-    protected ?int $navigationSort = null;
+    protected int | Closure | null $navigationSort = null;
 
-    protected ?string $slug = null;
+    protected string | Closure | null $slug = null;
 
-    protected bool $shouldRegisterNavigation = true;
+    protected bool | Closure $shouldRegisterNavigation = true;
 
-    protected SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Start;
+    protected SubNavigationPosition | Closure $subNavigationPosition = SubNavigationPosition::Start;
 
-    public function getSubNavigationPosition(): SubNavigationPosition
+    // Setters
+    public function cluster(string | Closure | null $cluster): static
     {
-        return $this->subNavigationPosition;
+        $this->cluster = $cluster;
+
+        return $this;
     }
 
-    public function navigationBadge(bool $condition = true): static
+    public function navigationBadge(bool | Closure $condition = true): static
     {
         $this->shouldEnableNavigationBadge = $condition;
 
         return $this;
     }
 
-    public function shouldEnableNavigationBadge(): bool
-    {
-        return $this->shouldEnableNavigationBadge;
-    }
-
-    public function navigationBadgeColor(string | array $color): static
+    public function navigationBadgeColor(string | array | Closure $color): static
     {
         $this->navigationBadgeColor = $color;
 
         return $this;
     }
 
-    public function getNavigationBadgeColor(): string | array | null
-    {
-        return $this->navigationBadgeColor;
-    }
-
-    public function navigationGroup(?string $group): static
+    public function navigationGroup(string | Closure | null $group): static
     {
         $this->navigationGroup = $group;
 
         return $this;
     }
 
-    public function getNavigationGroup(): ?string
-    {
-        return $this->navigationGroup ?? __('filament-exceptions::filament-exceptions.labels.navigation_group');
-    }
-
-    public function getNavigationParentItem(): ?string
-    {
-        return $this->navigationParentItem;
-    }
-
-    public function navigationParentItem(?string $item): static
+    public function navigationParentItem(string | Closure | null $item): static
     {
         $this->navigationParentItem = $item;
 
         return $this;
     }
 
-    public function getNavigationIcon(): ?string
-    {
-        return $this->navigationIcon ?? 'heroicon-o-bug-ant';
-    }
-
-    public function navigationIcon(?string $icon): static
+    public function navigationIcon(string | Closure | null $icon): static
     {
         $this->navigationIcon = $icon;
 
         return $this;
     }
 
-    public function activeNavigationIcon(?string $icon): static
+    public function activeNavigationIcon(string | Closure | null $icon): static
     {
         $this->activeNavigationIcon = $icon;
 
         return $this;
     }
 
-    public function getActiveNavigationIcon(): ?string
-    {
-        return $this->activeNavigationIcon ?? 'heroicon-o-bug-ant';
-    }
-
-    public function navigationLabel(?string $label): static
+    public function navigationLabel(string | Closure | null $label): static
     {
         $this->navigationLabel = $label;
 
         return $this;
     }
 
-    public function getNavigationLabel(): ?string
-    {
-        return $this->navigationLabel ?? __('filament-exceptions::filament-exceptions.labels.navigation');
-    }
-
-    public function navigationSort(?int $sort): static
+    public function navigationSort(int | Closure | null $sort): static
     {
         $this->navigationSort = $sort;
 
         return $this;
     }
 
-    public function getNavigationSort(): ?int
-    {
-        return $this->navigationSort;
-    }
-
-    public function shouldRegisterNavigation(): bool
-    {
-        return $this->shouldRegisterNavigation;
-    }
-
-    public function slug(string $slug): static
+    public function slug(string | Closure | null $slug): static
     {
         $this->slug = $slug;
 
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function registerNavigation(bool | Closure $shouldRegisterNavigation): static
     {
-        return $this->slug;
-    }
-
-    public function cluster(string $cluster):static
-    {
-        $this->cluster = $cluster;
+        $this->shouldRegisterNavigation = $shouldRegisterNavigation;
 
         return $this;
     }
+
+    public function subNavigationPosition(SubNavigationPosition | Closure $subNavigationPosition): static
+    {
+        $this->subNavigationPosition = $subNavigationPosition;
+
+        return $this;
+    }
+
+    // Getters
+    public function getSubNavigationPosition(): SubNavigationPosition
+    {
+        return $this->evaluate($this->subNavigationPosition);
+    }
+
+    public function shouldEnableNavigationBadge(): bool
+    {
+        return $this->evaluate($this->shouldEnableNavigationBadge);
+    }
+
+    public function getNavigationBadgeColor(): string | array | null
+    {
+        return $this->evaluate($this->navigationBadgeColor);
+    }
+
+    public function getNavigationGroup(): ?string
+    {
+        return $this->evaluate($this->navigationGroup ?? __('filament-exceptions::filament-exceptions.labels.navigation_group'));
+    }
+
+    public function getNavigationParentItem(): ?string
+    {
+        return $this->evaluate($this->navigationParentItem);
+    }
+
+    public function getNavigationIcon(): string
+    {
+        return $this->evaluate($this->navigationIcon ?? 'heroicon-o-bug-ant');
+    }
+
+    public function getActiveNavigationIcon(): ?string
+    {
+        return $this->evaluate($this->activeNavigationIcon ?? 'heroicon-s-bug-ant');
+    }
+
+    public function getNavigationLabel(): string
+    {
+        return (string) $this->evaluate($this->navigationLabel ?? __('filament-exceptions::filament-exceptions.labels.navigation'));
+    }
+
+    public function getNavigationSort(): ?int
+    {
+        return $this->evaluate($this->navigationSort);
+    }
+
+    public function shouldRegisterNavigation(): bool
+    {
+        return $this->evaluate($this->shouldRegisterNavigation);
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->evaluate($this->slug);
+    }
+
     /**
      * @return class-string<Cluster> | null
      */
     public function getCluster(): ?string
     {
-        return $this->cluster;
+        return $this->evaluate($this->cluster);
     }
 }

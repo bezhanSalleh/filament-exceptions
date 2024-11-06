@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace BezhanSalleh\FilamentExceptions;
 
+use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Filament\Support\Concerns\EvaluatesClosures;
 
 class FilamentExceptionsPlugin implements Plugin
 {
@@ -14,6 +16,7 @@ class FilamentExceptionsPlugin implements Plugin
     use Concerns\HasNavigation;
     use Concerns\HasTabs;
     use Concerns\HasTenantScope;
+    use EvaluatesClosures;
 
     public static function make(): static
     {
@@ -29,14 +32,11 @@ class FilamentExceptionsPlugin implements Plugin
     {
         $panel
             ->resources([
-                Resources\ExceptionResource::class,
+                ExceptionResource::class,
             ]);
     }
 
-    public function boot(Panel $panel): void
-    {
-
-    }
+    public function boot(Panel $panel): void {}
 
     public static function get(): static
     {

@@ -2,13 +2,13 @@
 
 namespace BezhanSalleh\FilamentExceptions;
 
-use BezhanSalleh\FilamentExceptions\Commands\MakeExceptionsInstallCommand;
-use Filament\Support\Assets\Css;
+use Illuminate\Http\Request;
 use Filament\Support\Assets\Js;
+use Filament\Support\Assets\Css;
+use Spatie\LaravelPackageTools\Package;
 use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Http\Request;
-use Spatie\LaravelPackageTools\Package;
+use BezhanSalleh\FilamentExceptions\Commands;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class FilamentExceptionsServiceProvider extends PackageServiceProvider
@@ -20,7 +20,7 @@ class FilamentExceptionsServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasTranslations()
             ->hasMigration('create_filament_exceptions_table')
-            ->hasCommand(MakeExceptionsInstallCommand::class);
+            ->hasCommand(Commands\InstallCommand::class);
     }
 
     public function packageRegistered(): void
@@ -31,7 +31,6 @@ class FilamentExceptionsServiceProvider extends PackageServiceProvider
             return new FilamentExceptions($app->make(Request::class));
         });
 
-        
     }
 
     public function packageBooted(): void
