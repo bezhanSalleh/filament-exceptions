@@ -3,7 +3,6 @@
 namespace BezhanSalleh\FilamentExceptions\Trace;
 
 use Iterator;
-use ReturnTypeWillChange;
 
 class Parser implements Iterator
 {
@@ -23,11 +22,7 @@ class Parser implements Iterator
     /**
      * {@inheritDoc}
      */
-<<<<<<< HEAD
-    #[ReturnTypeWillChange]
-=======
     #[\ReturnTypeWillChange]
->>>>>>> main
     public function current()
     {
         // TODO: Implement current() method.
@@ -36,11 +31,7 @@ class Parser implements Iterator
     /**
      * {@inheritDoc}
      */
-<<<<<<< HEAD
-    #[ReturnTypeWillChange]
-=======
     #[\ReturnTypeWillChange]
->>>>>>> main
     public function next()
     {
         // TODO: Implement next() method.
@@ -49,11 +40,7 @@ class Parser implements Iterator
     /**
      * {@inheritDoc}
      */
-<<<<<<< HEAD
-    #[ReturnTypeWillChange]
-=======
     #[\ReturnTypeWillChange]
->>>>>>> main
     public function key()
     {
         // TODO: Implement key() method.
@@ -62,11 +49,7 @@ class Parser implements Iterator
     /**
      * {@inheritDoc}
      */
-<<<<<<< HEAD
-    #[ReturnTypeWillChange]
-=======
     #[\ReturnTypeWillChange]
->>>>>>> main
     public function valid()
     {
         // TODO: Implement valid() method.
@@ -75,11 +58,7 @@ class Parser implements Iterator
     /**
      * {@inheritDoc}
      */
-<<<<<<< HEAD
-    #[ReturnTypeWillChange]
-=======
     #[\ReturnTypeWillChange]
->>>>>>> main
     public function rewind()
     {
         // TODO: Implement rewind() method.
