@@ -2,7 +2,7 @@
 
 namespace BezhanSalleh\FilamentExceptions\Resources;
 
-use BezhanSalleh\FilamentExceptions\Models\Exception;
+use BezhanSalleh\FilamentExceptions\Facades\FilamentExceptions;
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -12,7 +12,10 @@ use Filament\Tables\Table;
 
 class ExceptionResource extends Resource
 {
-    protected static ?string $model = Exception::class;
+    public static function getModel(): string
+    {
+        return FilamentExceptions::getModel();
+    }
 
     public static function getModelLabel(): string
     {
@@ -47,7 +50,7 @@ class ExceptionResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         if (config('filament-exceptions.navigation_badge')) {
-            return static::$model::count();
+            return static::getEloquentQuery()->count();
         }
 
         return null;
@@ -61,6 +64,11 @@ class ExceptionResource extends Resource
     public static function getNavigationSort(): ?int
     {
         return config('filament-exceptions.navigation_sort');
+    }
+
+    public static function isScopedToTenant(): bool
+    {
+        return config('filament-exceptions.is_scoped_to_tenant', true);
     }
 
     public static function canGloballySearch(): bool

@@ -6,9 +6,7 @@ use Iterator;
 
 class Parser implements Iterator
 {
-    public function __construct(protected ?string $trace = '')
-    {
-    }
+    public function __construct(protected ?string $trace = '') {}
 
     public function parse(): ?array
     {
@@ -22,6 +20,7 @@ class Parser implements Iterator
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         // TODO: Implement current() method.
@@ -30,6 +29,7 @@ class Parser implements Iterator
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         // TODO: Implement next() method.
@@ -38,6 +38,7 @@ class Parser implements Iterator
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         // TODO: Implement key() method.
@@ -46,6 +47,7 @@ class Parser implements Iterator
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         // TODO: Implement valid() method.
@@ -54,6 +56,7 @@ class Parser implements Iterator
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         // TODO: Implement rewind() method.

@@ -34,7 +34,7 @@
                     class="w-full overflow-hidden rounded-lg bg-gray-50 dark:bg-gray-900 dark:border dark:border-gray-800">
                     @foreach ($query['bindings'] as $key => $value)
                         <div class="flex px-4 py-2">
-                            <div class="py-2 font-mono text-gray-500 basis-1/12 dark:text-gray-400">{{ $key + 1 }}
+                            <div class="py-2 font-mono text-gray-500 basis-1/12 dark:text-gray-400">{{ intVal($key) + 1 }}
                             </div>
                             <div
                                 class="px-4 py-2 font-medium text-gray-500 rounded-lg basis-11/12 dark:text-gray-200 bg-gray-950/5 dark:bg-white/5">

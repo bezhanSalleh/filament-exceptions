@@ -2,45 +2,38 @@
 
 namespace BezhanSalleh\FilamentExceptions;
 
-use BezhanSalleh\FilamentExceptions\Models\Exception;
-use Illuminate\Foundation\Application;
+use BezhanSalleh\FilamentExceptions\Models\Exception as ExceptionModel;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 use Spatie\LaravelIgnition\Recorders\QueryRecorder\QueryRecorder;
 use Throwable;
 
 class FilamentExceptions
 {
-    /**
-     * @var Request
-     */
-    protected $request;
-
-    protected Application $app;
+    public function __construct(
+        protected Request $request
+    ) {}
 
     /**
-     * Reporter constructor.
+     * @throws BindingResolutionException
      */
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
-    }
-
-    /**
-     * @return void
-     */
-    public static function report(Throwable $exception)
+    public static function report(Throwable $exception): void
     {
         $reporter = new static(request());
 
         $reporter->reportException($exception);
     }
 
+    public static function getModel(): string
+    {
+        return config('filament-exceptions.exception_model') ?? ExceptionModel::class;
+    }
+
     /**
-     * @return void
+     * @throws BindingResolutionException
      */
-    public function reportException(Throwable $exception)
+    public function reportException(Throwable $exception): void
     {
         $data = [
             'method' => request()->getMethod(),
@@ -61,16 +54,9 @@ class FilamentExceptions
 
         $data = $this->stringify($data);
 
-        try {
-            $this->store($data);
-        } catch (Throwable $e) {
-            throw $e;
-        }
+        $this->store($data);
     }
 
-    /**
-     * Convert all items to string.
-     */
     public function stringify($data): array
     {
         return array_map(function ($item) {
@@ -78,26 +64,14 @@ class FilamentExceptions
         }, $data);
     }
 
-    /**
-     * Store exception info to db.
-     */
     public function store(array $data): bool
     {
         try {
-            Exception::query()->create($data);
+            static::getModel()::create($data);
 
             return true;
         } catch (Throwable $e) {
             return false;
         }
-    }
-
-    public static function formatFileName(string $fileName): string
-    {
-        return str($fileName)
-            ->after(str(request()->getHost())->beforeLast('.')->toString())
-            ->afterLast('/')
-            ->prepend('.../')
-            ->toString();
     }
 }
