@@ -2,6 +2,38 @@
 
 All notable changes to `filament-exceptions` will be documented in this file.
 
+## 2.1.2 - 2024-11-06
+
+### What's Changed
+
+* Adding isScopedToTenant at ExceptionResource by @LingMyat in https://github.com/bezhanSalleh/filament-exceptions/pull/47
+* Add Custom Model Support & Fix Iterator Errors by @Fludem in https://github.com/bezhanSalleh/filament-exceptions/pull/46
+* Bump aglipanci/laravel-pint-action from 2.3.1 to 2.4 by @dependabot in https://github.com/bezhanSalleh/filament-exceptions/pull/53
+* Slovak translation by @hamrak in https://github.com/bezhanSalleh/filament-exceptions/pull/55
+* Bump dependabot/fetch-metadata from 1.6.0 to 2.2.0 by @dependabot in https://github.com/bezhanSalleh/filament-exceptions/pull/59
+
+### New Contributors
+
+* @LingMyat made their first contribution in https://github.com/bezhanSalleh/filament-exceptions/pull/47
+* @Fludem made their first contribution in https://github.com/bezhanSalleh/filament-exceptions/pull/46
+* @hamrak made their first contribution in https://github.com/bezhanSalleh/filament-exceptions/pull/55
+
+**Full Changelog**: https://github.com/bezhanSalleh/filament-exceptions/compare/2.0.2...2.1.2
+
+## 2.1.0 - 2024-01-24
+
+### What's Changed
+
+* Adding isScopedToTenant at ExceptionResource by @LingMyat in https://github.com/bezhanSalleh/filament-exceptions/pull/47
+* Add Custom Model Support & Fix Iterator Errors by @Fludem in https://github.com/bezhanSalleh/filament-exceptions/pull/46
+
+### New Contributors
+
+* @LingMyat made their first contribution in https://github.com/bezhanSalleh/filament-exceptions/pull/47
+* @Fludem made their first contribution in https://github.com/bezhanSalleh/filament-exceptions/pull/46
+
+**Full Changelog**: https://github.com/bezhanSalleh/filament-exceptions/compare/2.0.2...2.1.0
+
 ## 2.0.2 - 2024-01-09
 
 ### What's Changed
