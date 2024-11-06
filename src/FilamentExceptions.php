@@ -42,7 +42,7 @@ class FilamentExceptions
 
     public static function getModel(): ?string
     {
-        return static::$model; // ?? '\\BezhanSalleh\\FilamentExceptions\\Models\\Exception';
+        return static::$model;
     }
 
     public static function model(string $model): void
