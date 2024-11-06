@@ -118,10 +118,10 @@ class Frame
     public function getCodeBlock(): array | CodeBlock
     {
         if (empty($this->code)) {
-            return new CodeBlock();
+            return new CodeBlock;
         }
 
-        return $this->code ?: new CodeBlock();
+        return $this->code ?: new CodeBlock;
     }
 
     public function method()
