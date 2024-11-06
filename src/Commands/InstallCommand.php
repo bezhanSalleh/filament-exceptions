@@ -22,7 +22,7 @@ class InstallCommand extends Command
         ]);
 
         $this->call('migrate', [
-            '--force' => $this->option('force')
+            '--force' => $this->option('force'),
         ]);
 
         $this->components->info('Filament Exceptions🐞... installed!');

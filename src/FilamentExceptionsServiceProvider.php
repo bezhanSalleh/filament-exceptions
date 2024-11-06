@@ -2,13 +2,12 @@
 
 namespace BezhanSalleh\FilamentExceptions;
 
-use Illuminate\Http\Request;
-use Filament\Support\Assets\Js;
 use Filament\Support\Assets\Css;
-use Spatie\LaravelPackageTools\Package;
+use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Console\Scheduling\Schedule;
-use BezhanSalleh\FilamentExceptions\Commands;
+use Illuminate\Http\Request;
+use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class FilamentExceptionsServiceProvider extends PackageServiceProvider
