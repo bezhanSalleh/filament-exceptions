@@ -164,8 +164,7 @@ class ExceptionResource extends Resource
                     ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.occurred_at'))
                     ->sortable()
                     ->searchable()
-                    ->dateTime()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->dateTime(),
             ])
             ->filters([
                 //
