@@ -36,10 +36,10 @@
             <div x-show="section" x-collapse>
                 <div class="px-4 pb-4 rounded-lg dark:bg-gray-800 dark:text-200">
                     <pre data-start="{!! $frame->getCodeBlock()->getStartLine() - 1 !!}" data-line="{!! $frame->line() - $frame->getCodeBlock()->getStartLine() + 2 !!}" class="line-numbers">
-                            <code class="language-php">
+                          <code class="language-php">
                                 {!! $frame->getCodeBlock()->output() !!}
-                            </code>
-                        </pre>
+                          </code>
+                    </pre>
                     @if (count($frame->args()))
                         <table
                             class="table p-1 mt-4 text-white bg-gray-400 rounded-sm args dark:even:bg-gray-600 dark:even:text-gray-50">

@@ -41,6 +41,7 @@ php artisan exceptions:install
 ```
 
 3. Register the plugin for the Filament Panel
+
 ```php
 public function panel(Panel $panel): Panel
 {
@@ -52,56 +53,130 @@ public function panel(Panel $panel): Panel
 ```
 
 4. Activate the plugin by editing your App's Exception Handler as follow:
+- **Laravel 11.x**
+  Enable it in the `bootstrap/app.php` file
+  ```php
+  <?php
 
+  use BezhanSalleh\FilamentExceptions\FilamentExceptions;
+  use Illuminate\Foundation\Application;
+  ...
+
+  return Application::configure(basePath: dirname(__DIR__))
+      ...
+      ->withExceptions(function (Exceptions $exceptions) {
+          $exceptions->reportable(function (Exception|Throwable $e) {
+              FilamentExceptions::report($e);
+          });
+      })
+      ...
+  ```
+- **Laravel 10.x**
+  ```php
+  <?php
+
+  namespace App\Exceptions;
+
+  use BezhanSalleh\FilamentExceptions\ExceptionManager;
+
+  class Handler extends ExceptionHandler
+  {
+      ...
+
+      public function register()
+      {
+          $this->reportable(function (Throwable $e) {
+              if ($this->shouldReport($e)) {
+                  ExceptionManager::report($e);
+              }
+          });
+
+          ...
+      }
+  }
+  ```
+
+### Configuration Options
+
+When registering the FilamentExceptions plugin, you can chain various methods to customize its behavior. Here are all available configuration options:
+
+#### Navigation
 ```php
-<?php
-
-namespace App\Exceptions;
-
-use BezhanSalleh\FilamentExceptions\FilamentExceptions;
-
-class Handler extends ExceptionHandler
-{
-    ...
-
-    public function register()
-    {
-        $this->reportable(function (Throwable $e) {
-            if ($this->shouldReport($e)) {
-                FilamentExceptions::report($e);
-            }
-        });
-
-        ...
-    }
+FilamentExceptionsPlugin::make()
+    ->navigationBadge(bool | Closure $condition = true)
+    ->navigationBadgeColor(string | array | Closure $color)
+    ->navigationGroup(string | Closure | null $group)
+    ->navigationParentItem(string | Closure | null $item)
+    ->navigationIcon(string | Closure | null $icon)
+    ->activeNavigationIcon(string | Closure | null $icon)
+    ->navigationLabel(string | Closure | null $label)
+    ->navigationSort(int | Closure | null $sort)
+    ->registerNavigation(bool | Closure $shouldRegisterNavigation)
+    ->subNavigationPosition(SubNavigationPosition | Closure $position)
 ```
 
-## Configuration
-The configuration file filament-exceptions.php is automatically published into your config directory.
-
-The config file provides you with multiple options to customize the plugin.
-
-### Mass Pruning
-By default Filament Exceptions is configured to prune exceptions older than 1 week.
-
-To modify how long you'd like to store records for you can supply a Carbon object like so
-
+#### Labels and Search
 ```php
-'period' => now()->subWeek(), // 1 week
-'period' => now()->subDay(), // 1 day
-'period' => now()->subDays(3), // 3 days
+FilamentExceptionsPlugin::make()
+    ->modelLabel(string | Closure | null $label)
+    ->pluralModelLabel(string | Closure | null $label)
+    ->titleCaseModelLabel(bool | Closure $condition = true)
+    ->globallySearchable(bool | Closure $condition = true)
+```
+
+#### Tabs Labels and Icons
+```php
+FilamentExceptionsPlugin::make()
+    ->activeTab(int $tab) // 1 = Exception, 2 = Headers, 3 = Cookies, 4 = Body, 5 = Queries
+    ->bodyTabIcon(string $icon)
+    ->bodyTabLabel(string $label)
+    ->cookiesTabIcon(string $icon)
+    ->cookiesTabLabel(string $label)
+    ->exceptionTabIcon(string $icon)
+    ->exceptionTabLabel(string $label)
+    ->headersTabIcon(string $icon)
+    ->headersTabLabel(string $label)
+    ->queriesTabIcon(string $icon)
+    ->queriesTabLabel(string $label)
+```
+
+#### Mass Pruning Settings
+```php
+FilamentExceptionsPlugin::make()
+    ->modelPruneInterval(Carbon $interval)
 ```
 > **Note** This requires laravel scheduler to be setup and configured in order to work. You can see how to do that here  [Running The Scheduler](https://laravel.com/docs/10.x/scheduling#running-the-scheduler)
- 
-### Custom Exception Model
-For those who need to change the model this is possible using the configuration file.
 
+#### Tenancy Configuration
 ```php
-    'exception_model' => Exception::class,
+FilamentExceptionsPlugin::make()
+    ->scopeToTenant(bool | Closure $condition = true)
+    ->tenantOwnershipRelationshipName(string | Closure | null $ownershipRelationshipName)
+    ->tenantRelationshipName(string | Closure | null $relationshipName)
 ```
 
-When creating your new exception model you should extend the default model
+#### General Configuration
+```php
+FilamentExceptionsPlugin::make()
+    ->cluster(string | Closure | null $cluster)
+    ->slug(string | Closure | null $slug)
+```
 
+Example usage:
+```php
+return $panel
+    ->plugins([
+        FilamentExceptionsPlugin::make()
+            ->navigationLabel('Error Logs')
+            ->navigationIcon('heroicon-o-bug-ant')
+            ->navigationBadge()
+            ->navigationGroup('System')
+            ->modelPruneInterval(now()->subDays(7))
+    ]);
+```
+ 
+### Custom Exception Model
+1. Extend the base model as follow:
 ```php
 <?php
 
@@ -109,12 +184,22 @@ namespace App\Models;
 
 use BezhanSalleh\FilamentExceptions\Models\Exception as BaseException;
 
-class Exception extends BaseException
+class MyCustomException extends BaseException
 {
-
+    ...
 }
 ```
-
+2. Then, in a service provider's `boot()` method for instance `AppServiceProvider`:
+```php
+use App\Models\MyCustomException;
+use BezhanSalleh\FilamentExceptions\FilamentExceptions;
+...
+   public function boot()
+   {
+       FilamentExceptions::model(MyCustomException::class);
+   }
+...
+```
 ## Theme
 By default the plugin uses the default theme of Filamentphp, but if you are using a custom theme then include the plugins view path into the content array of your tailwind.config.js file:
 ```js

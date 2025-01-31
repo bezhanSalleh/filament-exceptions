@@ -4,7 +4,7 @@ namespace BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
 
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
 use BezhanSalleh\FilamentExceptions\Trace\Parser;
-use Filament\Pages\Actions;
+use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewException extends ViewRecord
@@ -13,7 +13,7 @@ class ViewException extends ViewRecord
 
     protected static string $view = 'filament-exceptions::view-exception';
 
-    public function getFramesProperty()
+    public function getFramesProperty(): ?array
     {
         $trace = "#0 {$this->record->file}({$this->record->line})\n";
         $frames = (new Parser($trace . $this->record->trace))->parse();

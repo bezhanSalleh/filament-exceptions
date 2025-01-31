@@ -2,6 +2,7 @@
 
 namespace BezhanSalleh\FilamentExceptions\Models;
 
+use BezhanSalleh\FilamentExceptions\FilamentExceptionsPlugin;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,13 +17,8 @@ class Exception extends model
      */
     protected $guarded = [];
 
-    /**
-     * Get the prunable model query.
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function prunable()
+    public function prunable(): \Illuminate\Database\Eloquent\Builder
     {
-        return static::where('created_at', '<=', config('filament-exceptions.period'));
+        return static::whereDate('created_at', '<=', FilamentExceptionsPlugin::get()->getModelPruneInterval());
     }
 }
