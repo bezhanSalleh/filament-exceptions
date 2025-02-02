@@ -124,6 +124,7 @@ class ExceptionResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn ($query) => $query->select('id', 'path', 'method', 'type', 'code', 'ip', 'created_at'))
             ->columns([
                 Tables\Columns\TextColumn::make('method')
                     ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.method'))
@@ -163,8 +164,7 @@ class ExceptionResource extends Resource
                     ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.occurred_at'))
                     ->sortable()
                     ->searchable()
-                    ->dateTime()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->dateTime(),
             ])
             ->filters([
                 //
