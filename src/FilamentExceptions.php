@@ -2,21 +2,26 @@
 
 namespace BezhanSalleh\FilamentExceptions;
 
-use BezhanSalleh\FilamentExceptions\Models\Exception as ExceptionModel;
+use BezhanSalleh\FilamentExceptions\QueryRecorder\QueryRecorder;
+use Filament\Clusters\Cluster;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Spatie\LaravelIgnition\Recorders\QueryRecorder\QueryRecorder;
 use Throwable;
 
 class FilamentExceptions
 {
+    protected static ?string $model = null;
+
+    /** @var class-string<Cluster> | null */
+    protected static ?string $cluster = null;
+
     public function __construct(
         protected Request $request
     ) {}
 
     /**
-     * @throws BindingResolutionException
+     * @throws Throwable
      */
     public static function report(Throwable $exception): void
     {
@@ -25,13 +30,29 @@ class FilamentExceptions
         $reporter->reportException($exception);
     }
 
-    public static function getModel(): string
+    public static function cluster(string $cluster): void
     {
-        return config('filament-exceptions.exception_model') ?? ExceptionModel::class;
+        static::$cluster = $cluster;
+    }
+
+    public static function getCluster(): ?string
+    {
+        return static::$cluster;
+    }
+
+    public static function getModel(): ?string
+    {
+        return static::$model;
+    }
+
+    public static function model(string $model): void
+    {
+        static::$model = $model;
     }
 
     /**
      * @throws BindingResolutionException
+     * @throws Throwable
      */
     public function reportException(Throwable $exception): void
     {
@@ -39,7 +60,7 @@ class FilamentExceptions
             'method' => request()->getMethod(),
             'ip' => implode(' ', json_decode(json_encode(request()->getClientIps()))),
             'path' => request()->path(),
-            'query' => app()->make(QueryRecorder::class)->getQueries(), //Arr::except(request()->all(), ['_pjax', '_token', '_method', '_previous_']),
+            'query' => app()->make(QueryRecorder::class)->getQueries(),
             'body' => request()->getContent(),
             'cookies' => request()->cookies->all(),
             'headers' => Arr::except(request()->headers->all(), 'cookie'),

@@ -3,7 +3,6 @@
 namespace BezhanSalleh\FilamentExceptions\Trace;
 
 use Illuminate\Support\Arr;
-use JetBrains\PhpStorm\Pure;
 use ReflectionClass;
 use ReflectionException;
 use RuntimeException;
@@ -30,7 +29,7 @@ class Frame
         return $this->attributes;
     }
 
-    public function parseFileAndLine($str)
+    public function parseFileAndLine($str): void
     {
         if (str()->startsWith($str, '/')) {
             preg_match('/^([^(]+)\((\d+)\)/', $str, $matches);
@@ -40,7 +39,7 @@ class Frame
         }
     }
 
-    public function parseCall($str)
+    public function parseCall($str): void
     {
         if (empty($str)) {
             return;
@@ -61,7 +60,7 @@ class Frame
         }
     }
 
-    public function fetchCodeBlock()
+    public function fetchCodeBlock(): void
     {
         $filename = Arr::get($this->attributes, 'file');
         $lineNo = Arr::get($this->attributes, 'line');
@@ -114,14 +113,9 @@ class Frame
         }
     }
 
-    #[Pure]
     public function getCodeBlock(): array | CodeBlock
     {
-        if (empty($this->code)) {
-            return new CodeBlock;
-        }
-
-        return $this->code ?: new CodeBlock;
+        return ! empty($this->code) ? $this->code : new CodeBlock;
     }
 
     public function method()
@@ -154,7 +148,7 @@ class Frame
         $names = [];
         $class = Arr::get($this->attributes, 'class');
         $method = Arr::get($this->attributes, 'method');
-        if ($class && isset($method)) {
+        if (class_exists($class) && isset($method)) {
             $classReflection = new ReflectionClass($class);
             if (! $classReflection->hasMethod($method)) {
                 return $names;

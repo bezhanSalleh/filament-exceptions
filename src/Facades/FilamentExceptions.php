@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static void report(\Throwable $exception)
- * @method static string getModel()
+ * @method static string|null getModel()
+ * @method static void model(string $model)
  * @method static void reportException(\Throwable $exception)
  * @method static array stringify(void $data)
  * @method static bool store(array $data)
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Facade;
  */
 class FilamentExceptions extends Facade
 {
-    protected static function getFacadeAccessor()
+    protected static function getFacadeAccessor(): string
     {
         return \BezhanSalleh\FilamentExceptions\FilamentExceptions::class;
     }

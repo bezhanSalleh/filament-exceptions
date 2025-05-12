@@ -4,19 +4,23 @@ declare(strict_types=1);
 
 namespace BezhanSalleh\FilamentExceptions;
 
+use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Filament\Support\Concerns\EvaluatesClosures;
 
 class FilamentExceptionsPlugin implements Plugin
 {
+    use Concerns\HasLabels;
+    use Concerns\HasModelPruneInterval;
+    use Concerns\HasNavigation;
+    use Concerns\HasTabs;
+    use Concerns\HasTenantScope;
+    use EvaluatesClosures;
+
     public static function make(): static
     {
         return app(static::class);
-    }
-
-    public static function get(): static
-    {
-        return filament(app(static::class)->getId());
     }
 
     public function getId(): string
@@ -26,14 +30,24 @@ class FilamentExceptionsPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
+        if (is_null(FilamentExceptions::getModel())) {
+            FilamentExceptions::model('\\BezhanSalleh\\FilamentExceptions\\Models\\Exception');
+        }
+
         $panel
             ->resources([
-                Resources\ExceptionResource::class,
+                ExceptionResource::class,
             ]);
+
     }
 
-    public function boot(Panel $panel): void
+    public function boot(Panel $panel): void {}
+
+    public static function get(): static
     {
-        //
+        /** @var static $plugin */
+        $plugin = filament(app(static::class)->getId());
+
+        return $plugin;
     }
 }

@@ -2,8 +2,6 @@
 
 namespace BezhanSalleh\FilamentExceptions;
 
-use BezhanSalleh\FilamentExceptions\Commands\MakeExceptionsInstallCommand;
-use BezhanSalleh\FilamentExceptions\Models\Exception;
 use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
@@ -18,11 +16,10 @@ class FilamentExceptionsServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('filament-exceptions')
-            ->hasConfigFile()
             ->hasViews()
             ->hasTranslations()
             ->hasMigration('create_filament_exceptions_table')
-            ->hasCommand(MakeExceptionsInstallCommand::class);
+            ->hasCommand(Commands\InstallCommand::class);
     }
 
     public function packageRegistered(): void
@@ -32,6 +29,7 @@ class FilamentExceptionsServiceProvider extends PackageServiceProvider
         $this->app->scoped('filament-exceptions', function ($app): FilamentExceptions {
             return new FilamentExceptions($app->make(Request::class));
         });
+
     }
 
     public function packageBooted(): void
@@ -45,7 +43,7 @@ class FilamentExceptionsServiceProvider extends PackageServiceProvider
 
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
             $schedule->command('model:prune', [
-                '--model' => [Exception::class],
+                '--model' => [FilamentExceptions::getModel()],
             ])->daily();
         });
     }
