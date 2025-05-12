@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('type', 255);
             $table->string('code');
-            $table->longText('message', 255);
+            $table->longText('message');
             $table->string('file', 255);
             $table->integer('line');
             $table->text('trace');
