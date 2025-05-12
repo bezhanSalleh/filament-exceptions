@@ -148,7 +148,7 @@ class Frame
         $names = [];
         $class = Arr::get($this->attributes, 'class');
         $method = Arr::get($this->attributes, 'method');
-        if ($class && isset($method)) {
+        if (class_exists($class) && isset($method)) {
             $classReflection = new ReflectionClass($class);
             if (! $classReflection->hasMethod($method)) {
                 return $names;

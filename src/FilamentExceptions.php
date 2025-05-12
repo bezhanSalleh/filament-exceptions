@@ -2,11 +2,11 @@
 
 namespace BezhanSalleh\FilamentExceptions;
 
+use BezhanSalleh\FilamentExceptions\QueryRecorder\QueryRecorder;
 use Filament\Clusters\Cluster;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Spatie\LaravelIgnition\Recorders\QueryRecorder\QueryRecorder;
 use Throwable;
 
 class FilamentExceptions

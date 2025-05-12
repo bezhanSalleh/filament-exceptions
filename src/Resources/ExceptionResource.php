@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class ExceptionResource extends Resource
 {
@@ -146,6 +147,7 @@ class ExceptionResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query->select('id', 'path', 'method', 'type', 'code', 'ip', 'created_at'))
             ->columns([
                 Tables\Columns\TextColumn::make('method')
                     ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.method'))

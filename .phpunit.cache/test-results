@@ -1,1 +1,1 @@
-{"version":"pest_2.36.0","defects":[],"times":{"P\\Tests\\ArchTest::__pest_evaluable_it_will_not_use_debugging_functions":0.092,"P\\Tests\\ExampleTest::__pest_evaluable_it_can_test":0.001}}
+{"version":"pest_2.36.0","defects":[],"times":{"P\\Tests\\ArchTest::__pest_evaluable_it_will_not_use_debugging_functions":0.138,"P\\Tests\\ExampleTest::__pest_evaluable_it_can_test":0.001}}
