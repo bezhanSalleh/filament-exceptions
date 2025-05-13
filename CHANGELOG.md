@@ -2,6 +2,14 @@
 
 All notable changes to `filament-exceptions` will be documented in this file.
 
+## 3.0.0 - 2025-05-13
+
+### What's Changed
+
+* 3.x Rewrite by @bezhanSalleh in https://github.com/bezhanSalleh/filament-exceptions/pull/49
+
+**Full Changelog**: https://github.com/bezhanSalleh/filament-exceptions/compare/2.1.2...3.0.0
+
 ## 2.1.2 - 2024-11-06
 
 ### What's Changed
