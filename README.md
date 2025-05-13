@@ -206,11 +206,12 @@ By default the plugin uses the default theme of Filamentphp, but if you are usin
 export default {
     content: [
         // ...
-        './vendor/bezhansalleh/filament-exceptions/resources/views/**/*.blade.php', // Language Switch Views
+        './vendor/bezhansalleh/filament-exceptions/resources/views/**/*.blade.php',
     ],
     // ...
 }
 ```
+
 ## Translations
 Publish the translations with
 ```bash
