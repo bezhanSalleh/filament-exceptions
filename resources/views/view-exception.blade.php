@@ -9,13 +9,8 @@
         default => \Illuminate\Support\Arr::toCssClasses(['text-gray-700 bg-gray-500/10 dark:text-gray-300 dark:bg-gray-500/20']),
     };
 @endphp
-<x-filament::page
-    @class([
-        'fi-resource-view-record-page',
-        'fi-resource-' . str_replace('/', '-', $this->getResource()::getSlug()),
-        'fi-resource-record-' . $record->getKey(),
-    ])
->
+
+<x-filament-panels::page>
 
     <div
         class="px-6 py-5 bg-white border-b border-gray-200 rounded-lg shadow-none dark:bg-gray-900 dark:border-gray-950 sm:px-6">
@@ -36,20 +31,7 @@
             {{ $record->message }}
         </div>
     </div>
-    @php
-        $relationManagers = $this->getRelationManagers();
-    @endphp
+        {{$this->content}}
+</x-filament-panels::page>
 
-    @if ((! $this->hasCombinedRelationManagerTabsWithContent()) || (! count($relationManagers)))
-        @if ($this->hasInfolist())
-            {{ $this->infolist }}
-        @else
-            <div
-                wire:key="{{ $this->getId() }}.forms.{{ $this->getFormStatePath() }}"
-            >
-                {{ $this->form }}
-            </div>
-        @endif
-    @endif
-</x-filament::page>
 

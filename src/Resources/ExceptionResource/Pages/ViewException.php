@@ -2,11 +2,12 @@
 
 namespace BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
 
-use Filament\Actions\DeleteAction;
-use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
-use BezhanSalleh\FilamentExceptions\Trace\Parser;
 use Filament\Actions;
+use Filament\Facades\Filament;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\ViewRecord;
+use BezhanSalleh\FilamentExceptions\Trace\Parser;
+use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
 
 class ViewException extends ViewRecord
 {
@@ -27,6 +28,18 @@ class ViewException extends ViewRecord
     {
         return [
             DeleteAction::make(),
+        ];
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function getPageClasses(): array
+    {
+        return [
+            'fi-resource-view-record-page',
+            'fi-resource-' . str_replace('/', '-', $this->getResource()::getSlug(Filament::getCurrentOrDefaultPanel())),
+            "fi-resource-record-{$this->getRecord()->getKey()}",
         ];
     }
 }

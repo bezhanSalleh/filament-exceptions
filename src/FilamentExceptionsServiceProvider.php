@@ -2,14 +2,16 @@
 
 namespace BezhanSalleh\FilamentExceptions;
 
-use BezhanSalleh\FilamentExceptions\Commands\InstallCommand;
-use Filament\Support\Assets\Css;
+use Illuminate\Http\Request;
 use Filament\Support\Assets\Js;
+use Filament\Support\Assets\Css;
+use Illuminate\Support\Facades\Cache;
+use Spatie\LaravelPackageTools\Package;
+use Phiki\Adapters\Laravel\Facades\Phiki;
 use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Http\Request;
-use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use BezhanSalleh\FilamentExceptions\Commands\InstallCommand;
 
 class FilamentExceptionsServiceProvider extends PackageServiceProvider
 {
@@ -37,10 +39,12 @@ class FilamentExceptionsServiceProvider extends PackageServiceProvider
     {
         parent::packageBooted();
 
-        FilamentAsset::register([
-            Js::make('filament-exceptions', __DIR__ . '/../resources/dist/filament-exceptions.js'),
-            Css::make('filament-exceptions', __DIR__ . '/../resources/dist/filament-exceptions.css'),
-        ], 'bezhansalleh/filament-exceptions');
+        // Phiki::cache(Cache::store('file'));
+
+        // FilamentAsset::register([
+        //     Js::make('filament-exceptions', __DIR__ . '/../resources/dist/filament-exceptions.js'),
+        //     Css::make('filament-exceptions', __DIR__ . '/../resources/dist/filament-exceptions.css'),
+        // ], 'bezhansalleh/filament-exceptions');
 
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
             $schedule->command('model:prune', [
