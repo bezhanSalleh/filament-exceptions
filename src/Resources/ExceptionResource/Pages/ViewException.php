@@ -2,6 +2,7 @@
 
 namespace BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
 
+use Filament\Actions\DeleteAction;
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
 use BezhanSalleh\FilamentExceptions\Trace\Parser;
 use Filament\Actions;
@@ -11,7 +12,7 @@ class ViewException extends ViewRecord
 {
     protected static string $resource = ExceptionResource::class;
 
-    protected static string $view = 'filament-exceptions::view-exception';
+    protected string $view = 'filament-exceptions::view-exception';
 
     public function getFramesProperty(): ?array
     {
@@ -25,7 +26,7 @@ class ViewException extends ViewRecord
     protected function getActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make(),
         ];
     }
 }

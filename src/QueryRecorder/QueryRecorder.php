@@ -17,7 +17,7 @@ use Illuminate\Database\Events\QueryExecuted;
  */
 class QueryRecorder
 {
-    /** @var \BezhanSalleh\FilamentExceptions\QueryRecorder\Query[] */
+    /** @var Query[] */
     protected array $queries = [];
 
     protected Application $app;

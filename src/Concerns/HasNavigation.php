@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace BezhanSalleh\FilamentExceptions\Concerns;
 
+use Filament\Pages\Enums\SubNavigationPosition;
 use Closure;
 use Filament\Clusters\Cluster;
-use Filament\Pages\SubNavigationPosition;
 
 trait HasNavigation
 {

@@ -2,6 +2,7 @@
 
 namespace BezhanSalleh\FilamentExceptions;
 
+use BezhanSalleh\FilamentExceptions\Commands\InstallCommand;
 use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
@@ -19,7 +20,7 @@ class FilamentExceptionsServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasTranslations()
             ->hasMigration('create_filament_exceptions_table')
-            ->hasCommand(Commands\InstallCommand::class);
+            ->hasCommand(InstallCommand::class);
     }
 
     public function packageRegistered(): void

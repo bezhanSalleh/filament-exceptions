@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace BezhanSalleh\FilamentExceptions;
 
+use BezhanSalleh\FilamentExceptions\Concerns\HasLabels;
+use BezhanSalleh\FilamentExceptions\Concerns\HasModelPruneInterval;
+use BezhanSalleh\FilamentExceptions\Concerns\HasNavigation;
+use BezhanSalleh\FilamentExceptions\Concerns\HasTabs;
+use BezhanSalleh\FilamentExceptions\Concerns\HasTenantScope;
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
@@ -11,11 +16,11 @@ use Filament\Support\Concerns\EvaluatesClosures;
 
 class FilamentExceptionsPlugin implements Plugin
 {
-    use Concerns\HasLabels;
-    use Concerns\HasModelPruneInterval;
-    use Concerns\HasNavigation;
-    use Concerns\HasTabs;
-    use Concerns\HasTenantScope;
+    use HasLabels;
+    use HasModelPruneInterval;
+    use HasNavigation;
+    use HasTabs;
+    use HasTenantScope;
     use EvaluatesClosures;
 
     public static function make(): static

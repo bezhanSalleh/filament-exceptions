@@ -2,11 +2,21 @@
 
 namespace BezhanSalleh\FilamentExceptions\Resources;
 
+use Filament\Panel;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\View;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\ViewAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages\ListExceptions;
+use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages\ViewException;
 use BezhanSalleh\FilamentExceptions\FilamentExceptions;
 use BezhanSalleh\FilamentExceptions\FilamentExceptionsPlugin;
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -59,7 +69,7 @@ class ExceptionResource extends Resource
         return static::getPlugin()->getNavigationIcon();
     }
 
-    public static function getSlug(): string
+    public static function getSlug(?Panel $panel = null): string
     {
         return static::getPlugin()->getSlug() ?? parent::getSlug();
     }
@@ -101,43 +111,43 @@ class ExceptionResource extends Resource
         return static::getPlugin()->canGloballySearch() && parent::canGloballySearch();
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make('Heading')
+        return $schema
+            ->components([
+                Tabs::make('Heading')
                     ->activeTab(static fn (): int => static::getPlugin()->getActiveTab())
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Exception')
+                        Tab::make('Exception')
                             ->label(static fn (): string => static::getPlugin()->getExceptionTabLabel())
                             ->icon(static fn (): string => static::getPlugin()->getExceptionTabIcon())
                             ->schema([
-                                Forms\Components\View::make('filament-exceptions::exception'),
+                                View::make('filament-exceptions::exception'),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Headers')
+                        Tab::make('Headers')
                             ->label(static fn (): string => static::getPlugin()->getHeadersTabLabel())
                             ->icon(static fn (): string => static::getPlugin()->getHeadersTabIcon())
                             ->schema([
-                                Forms\Components\View::make('filament-exceptions::headers'),
+                                View::make('filament-exceptions::headers'),
                             ])->columns(1),
-                        Forms\Components\Tabs\Tab::make('Cookies')
+                        Tab::make('Cookies')
                             ->label(static fn (): string => static::getPlugin()->getCookiesTabLabel())
                             ->icon(static fn (): string => static::getPlugin()->getCookiesTabIcon())
                             ->schema([
-                                Forms\Components\View::make('filament-exceptions::cookies'),
+                                View::make('filament-exceptions::cookies'),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Body')
+                        Tab::make('Body')
                             ->label(static fn (): string => static::getPlugin()->getBodyTabLabel())
                             ->icon(static fn (): string => static::getPlugin()->getBodyTabIcon())
                             ->schema([
-                                Forms\Components\View::make('filament-exceptions::body'),
+                                View::make('filament-exceptions::body'),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Queries')
+                        Tab::make('Queries')
                             ->label(static fn (): string => static::getPlugin()->getQueriesTabLabel())
                             ->icon(static fn (): string => static::getPlugin()->getQueriesTabIcon())
                             ->badge(static fn ($record): string => collect(json_decode($record->query, true, 512, JSON_THROW_ON_ERROR))->count())
                             ->schema([
-                                Forms\Components\View::make('filament-exceptions::query'),
+                                View::make('filament-exceptions::query'),
                             ]),
 
                     ]),
@@ -149,7 +159,7 @@ class ExceptionResource extends Resource
         return $table
             ->modifyQueryUsing(fn (Builder $query) => $query->select('id', 'path', 'method', 'type', 'code', 'ip', 'created_at'))
             ->columns([
-                Tables\Columns\TextColumn::make('method')
+                TextColumn::make('method')
                     ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.method'))
                     ->badge()
                     ->colors([
@@ -164,26 +174,26 @@ class ExceptionResource extends Resource
                     ])
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('path')
+                TextColumn::make('path')
                     ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.path'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('type')
+                TextColumn::make('type')
                     ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.type'))
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('code')
+                TextColumn::make('code')
                     ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.code'))
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
-                Tables\Columns\TextColumn::make('ip')
+                TextColumn::make('ip')
                     ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.ip'))
                     ->badge()
                     ->extraAttributes(['class' => 'font-mono'])
                     ->sortable()
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->label(fn (): string => __('filament-exceptions::filament-exceptions.columns.occurred_at'))
                     ->sortable()
                     ->searchable()
@@ -193,13 +203,13 @@ class ExceptionResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make()
+            ->recordActions([
+                ViewAction::make()
                     ->color('primary'),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('created_at', 'desc');
@@ -215,8 +225,8 @@ class ExceptionResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListExceptions::route('/'),
-            'view' => Pages\ViewException::route('/{record}'),
+            'index' => ListExceptions::route('/'),
+            'view' => ViewException::route('/{record}'),
         ];
     }
 }
