@@ -20,14 +20,14 @@ class Exception extends model
      */
     protected $guarded = [];
 
-    protected function casts(): array
-    {
-        return [
-            'headers' => 'array',
-            'cookies' => 'array',
-            'body' => 'array',
-        ];
-    }
+    // protected function casts(): array
+    // {
+    //     return [
+    //         'headers' => 'array',
+    //         'cookies' => 'array',
+    //         'body' => 'array',
+    //     ];
+    // }
 
     public function prunable(): Builder
     {
@@ -71,5 +71,19 @@ class Exception extends model
             })
             ->filter()
             ->all();
+                // return collect(json_decode($value, true))
+    // ->transform(function ($val) {
+    //     if (is_array($val)) {
+    //         // Check if it is a simple array (all items are strings or numbers)
+    //         $isSimple = collect($val)->every(fn($item) => is_string($item) || is_numeric($item));
+
+    //         return $isSimple
+    //             ? str_replace(',', ' | ', implode(',', $val))  // simple array -> join and replace
+    //             : json_encode($val);                           // complex array -> encode as string
+    //     }
+
+    //     return $val; // keep strings/numbers as is
+    // })
+    // ->all();
     }
 }

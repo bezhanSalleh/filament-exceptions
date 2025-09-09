@@ -12,25 +12,33 @@ use Phiki\Grammar\Grammar;
 use Filament\Schemas\Schema;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Resource;
+use Illuminate\Support\HtmlString;
+use Filament\Support\Enums\IconSize;
 use Filament\Actions\BulkActionGroup;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\View;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Forms\Components\KeyValue;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Infolists\Components\CodeEntry;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Infolists\Components\KeyValueEntry;
+use BezhanSalleh\FilamentExceptions\Trace\Parser;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use BezhanSalleh\FilamentExceptions\FilamentExceptions;
 use BezhanSalleh\FilamentExceptions\FilamentExceptionsPlugin;
+use BezhanSalleh\FilamentExceptions\Resources\CustomCodeEntry;
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages\ViewException;
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages\ListExceptions;
 
 class ExceptionResource extends Resource
 {
+    public static ?array $cachedFrames = null;
+
     public static function getCluster(): ?string
     {
         return FilamentExceptions::getCluster();
@@ -118,50 +126,6 @@ class ExceptionResource extends Resource
         return static::getPlugin()->canGloballySearch() && parent::canGloballySearch();
     }
 
-    // public static function form(Schema $schema): Schema
-    // {
-    //     return $schema
-    //         ->components([
-    //             Tabs::make('Heading')
-    //                 ->activeTab(static fn (): int => static::getPlugin()->getActiveTab())
-    //                 ->tabs([
-    //                     // Tab::make('Exception')
-    //                     //     ->label(static fn (): string => static::getPlugin()->getExceptionTabLabel())
-    //                     //     ->icon(static fn (): string => static::getPlugin()->getExceptionTabIcon())
-    //                     //     ->schema([
-    //                     //         View::make('filament-exceptions::exception'),
-    //                     //     ]),
-    //                     Tab::make('Headers')
-    //                         ->label(static fn (): string => static::getPlugin()->getHeadersTabLabel())
-    //                         ->icon(static fn (): string => static::getPlugin()->getHeadersTabIcon())
-    //                         ->schema([
-    //                             // View::make('filament-exceptions::headers'),
-    //                             // \Filament\Forms\Components\TextInput::make('headers')
-    //                         ])->columns(1),
-    //                     Tab::make('Cookies')
-    //                         ->label(static fn (): string => static::getPlugin()->getCookiesTabLabel())
-    //                         ->icon(static fn (): string => static::getPlugin()->getCookiesTabIcon())
-    //                         ->schema([
-    //                             // \Filament\Forms\Components\TextInput::make('cookies'),
-    //                         ]),
-    //                     // Tab::make('Body')
-    //                     //     ->label(static fn (): string => static::getPlugin()->getBodyTabLabel())
-    //                     //     ->icon(static fn (): string => static::getPlugin()->getBodyTabIcon())
-    //                     //     ->schema([
-    //                     //         View::make('filament-exceptions::body'),
-    //                     //     ]),
-    //                     // Tab::make('Queries')
-    //                     //     ->label(static fn (): string => static::getPlugin()->getQueriesTabLabel())
-    //                     //     ->icon(static fn (): string => static::getPlugin()->getQueriesTabIcon())
-    //                     //     ->badge(static fn ($record): string => collect(json_decode($record->query, true, 512, JSON_THROW_ON_ERROR))->count())
-    //                     //     ->schema([
-    //                     //         View::make('filament-exceptions::query'),
-    //                     //     ]),
-
-    //                 ])
-    //         ])->columns(1);
-    // }
-
     public static function table(Table $table): Table
     {
         return $table
@@ -247,19 +211,46 @@ class ExceptionResource extends Resource
                         Tab::make('Exception')
                             ->label(static fn (): string => static::getPlugin()->getExceptionTabLabel())
                             ->icon(static fn (): string => static::getPlugin()->getExceptionTabIcon())
-                            ->schema([
-                                // View::make('filament-exceptions::exception'),
-                            ]),
+                            ->schema(function(Model $record) {
+                                return collect(static::getTraceFrames($record))->map(function ($frame, $index) {
+                                    return
+    Section::make(fn (): HtmlString => static::getCustomCodeEntrySection($frame))
+        ->id("frame_section_{$index}")
+        ->schema([
+            CustomCodeEntry::make("frame.{$index}")
+                ->hiddenLabel()
+                ->state(fn () => $frame->getCodeBlock()->codeString())
+                ->grammar(Grammar::Php)
+                ->lightTheme(Theme::GithubLight)
+                ->darkTheme(Theme::GithubDarkDefault)
+                ->focusLine($frame->line())
+        ])
+        ->extraAlpineAttributes([
+            'x-on:expand-section.window' => 'console.log(`yello`, $event)'
+        ])
+        ->collapsible()
+        ->collapsed($index !== 0)
+        ->persistCollapsed('frame_section_' . $index);
+
+                                })->toArray();
+
+                            })
+                            // ->schema([
+                            //     View::make('filament-exceptions::exception'),
+                            // ])
+                            ,
                         Tab::make('Headers')
                             ->label(static fn (): string => static::getPlugin()->getHeadersTabLabel())
                             ->icon(static fn (): string => static::getPlugin()->getHeadersTabIcon())
+                            ->hidden(fn(Model $record) => blank($record->headers))
                             ->schema([
                                 Infolists\Components\KeyValueEntry::make('headers')
                                     ->hiddenLabel()
-                            ])->columns(1),
+                            ]),
                         Tab::make('Cookies')
                             ->label(static fn (): string => static::getPlugin()->getCookiesTabLabel())
                             ->icon(static fn (): string => static::getPlugin()->getCookiesTabIcon())
+                            ->hidden(fn(Model $record) => blank($record->cookies))
                             ->schema([
                                 Infolists\Components\KeyValueEntry::make('cookies')
                                     ->hiddenLabel(),
@@ -267,6 +258,7 @@ class ExceptionResource extends Resource
                         Tab::make('Body')
                             ->label(static fn (): string => static::getPlugin()->getBodyTabLabel())
                             ->icon(static fn (): string => static::getPlugin()->getBodyTabIcon())
+                            ->hidden(fn(Model $record) => blank($record->body))
                             ->schema([
                                 Infolists\Components\KeyValueEntry::make('body')
                                     ->hiddenLabel(),
@@ -275,10 +267,10 @@ class ExceptionResource extends Resource
                             ->label(static fn (): string => static::getPlugin()->getQueriesTabLabel())
                             ->icon(static fn (): string => static::getPlugin()->getQueriesTabIcon())
                             ->badge(static fn ($record): string => collect($record->query)->count())
+                            ->hidden(fn(Model $record) => blank($record->queury))
                             ->schema([
                                 Infolists\Components\RepeatableEntry::make('query')
                                     ->hiddenLabel()
-                                    ->extraAttributes(['class' => ''])
                                     ->schema([
                                         CodeEntry::make('sql')
                                             ->hiddenLabel()
@@ -299,5 +291,35 @@ class ExceptionResource extends Resource
 
                     ]),
             ])->columns(1);
+    }
+
+
+    public static function getTraceFrames(Model $record): ?array
+    {
+        if (blank(static::$cachedFrames) && $record) {
+            $trace = "#0 {$record->file}({$record->line})\n";
+            $frames = (new Parser($trace . $record->trace))->parse();
+            array_pop($frames);
+            static::$cachedFrames = $frames;
+        }
+
+        return static::$cachedFrames;
+    }
+
+    public static function getCustomCodeEntrySection($frame): HtmlString
+    {
+        $title = $frame->file() ? str($frame->file())->replace(base_path() . '/', '') : '[internal]';
+        return new HtmlString(
+            <<<HTML
+                <span class="px-4 py-3 font-mono text-left break-words">
+                    {$title}
+                    in {$frame->method()}
+                    at line
+                    <span class="inline-flex items-center justify-center ml-auto rtl:ml-0 rtl:mr-auto min-h-4 px-2 py-0.5 text-xs font-medium tracking-tight rounded-xl whitespace-normal text-primary-600 bg-primary-500/10 dark:text-primary-500">
+                        {$frame->line()}
+                    </span>
+                </span>
+            HTML
+        );
     }
 }

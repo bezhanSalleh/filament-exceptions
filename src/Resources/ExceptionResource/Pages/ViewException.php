@@ -19,19 +19,19 @@ class ViewException extends ViewRecord
 
     protected string $view = 'filament-exceptions::view-exception';
 
-    // protected ?array $cachedFrames = null;
+    protected ?array $cachedFrames = null;
 
-    // public function getFramesProperty(): ?array
-    // {
-    //     if (blank($this->cachedFrames)) {
-    //         $trace = "#0 {$this->record->file}({$this->record->line})\n";
-    //         $frames = (new Parser($trace . $this->record->trace))->parse();
-    //         array_pop($frames);
-    //         $this->cachedFrames = $frames;
-    //     }
+    public function getFramesProperty(): ?array
+    {
+        if (blank($this->cachedFrames)) {
+            $trace = "#0 {$this->record->file}({$this->record->line})\n";
+            $frames = (new Parser($trace . $this->record->trace))->parse();
+            array_pop($frames);
+            $this->cachedFrames = $frames;
+        }
 
-    //     return $this->cachedFrames;
-    // }
+        return $this->cachedFrames;
+    }
 
     protected function getActions(): array
     {
