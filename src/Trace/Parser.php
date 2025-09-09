@@ -5,7 +5,7 @@ namespace BezhanSalleh\FilamentExceptions\Trace;
 use ReturnTypeWillChange;
 use Iterator;
 
-class Parser implements Iterator
+class Parser
 {
     public function __construct(
         protected ?string $trace = ''
@@ -13,55 +13,15 @@ class Parser implements Iterator
 
     public function parse(): ?array
     {
-        $frames = explode("\n", $this->trace);
+        $lines = explode("\n", $this->trace);
 
-        return collect($frames)->map(function ($frame) {
-            return new Frame($frame);
-        })->toArray();
-    }
+        if (blank($lines)) {
+            return null;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    #[ReturnTypeWillChange]
-    public function current()
-    {
-        // TODO: Implement current() method.
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    #[ReturnTypeWillChange]
-    public function next()
-    {
-        // TODO: Implement next() method.
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    #[ReturnTypeWillChange]
-    public function key()
-    {
-        // TODO: Implement key() method.
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    #[ReturnTypeWillChange]
-    public function valid()
-    {
-        // TODO: Implement valid() method.
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    #[ReturnTypeWillChange]
-    public function rewind()
-    {
-        // TODO: Implement rewind() method.
+        return collect($lines)
+            ->filter(fn($line) => filled(trim($line)))
+            ->map(fn ($line) => new Frame($line))
+            ->toArray();
     }
 }

@@ -31,7 +31,7 @@
             {{ $record->message }}
         </div>
     </div>
-        {{$this->content}}
+        {{ $this->content }}
 </x-filament-panels::page>
 
 

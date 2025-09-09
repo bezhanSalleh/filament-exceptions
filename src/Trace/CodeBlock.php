@@ -6,6 +6,7 @@ use Phiki\Phiki;
 use Phiki\Theme\Theme;
 use Phiki\Grammar\Grammar;
 use Phiki\Phast\ClassList;
+use Filament\Facades\Filament;
 use Phiki\Transformers\AddClassesTransformer;
 use Phiki\Transformers\Decorations\LineDecoration;
 use Phiki\Transformers\Decorations\GutterDecoration;
@@ -49,30 +50,27 @@ class CodeBlock
         return $this->prefix;
     }
 
-    public function output(): string
-    {
-        return htmlentities($this->prefix . $this->line . $this->suffix);
-    }
-
     public function codeString(): string
     {
-        return str($this->prefix)->append($this->line)->append($this->suffix)->toString();
+        return once(fn (): string => $this->prefix . $this->line . $this->suffix);
     }
 
-    public function getHighlightedCodeBlock($focusLine)
+    public function output($focusLine, Theme $theme = Theme::GithubLight): string
     {
-        return (new Phiki)
-        ->codeToHtml(
-            code: $this->codeString(),
-            grammar: Grammar::Php,
-            theme: Theme::GithubLight
-            )
-            ->withGutter()
-            ->startingLine($this->getStartLine() - 1)
-            ->decoration(
-                LineDecoration::forLine($focusLine - $this->getStartLine() + 1)
-                    ->class('bg-primary-400/30', 'dark:bg-primary/50'),
-            )
-            ->toString();
+        return once(fn (): string => 
+            (new Phiki)
+                ->codeToHtml(
+                    code: $this->codeString(),
+                    grammar: Grammar::Php,
+                    theme: $theme
+                )
+                ->withGutter()
+                ->startingLine($this->getStartLine())
+                ->decoration(
+                    LineDecoration::forLine($focusLine - $this->getStartLine())
+                        ->class('bg-primary-400/20', 'dark:bg-primary/20'),
+                )
+                ->toString()
+        );
     }
 }
