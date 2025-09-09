@@ -211,34 +211,9 @@ class ExceptionResource extends Resource
                         Tab::make('Exception')
                             ->label(static fn (): string => static::getPlugin()->getExceptionTabLabel())
                             ->icon(static fn (): string => static::getPlugin()->getExceptionTabIcon())
-                            ->schema(function(Model $record) {
-                                return collect(static::getTraceFrames($record))->map(function ($frame, $index) {
-                                    return
-    Section::make(fn (): HtmlString => static::getCustomCodeEntrySection($frame))
-        ->id("frame_section_{$index}")
-        ->schema([
-            CustomCodeEntry::make("frame.{$index}")
-                ->hiddenLabel()
-                ->state(fn () => $frame->getCodeBlock()->codeString())
-                ->grammar(Grammar::Php)
-                ->lightTheme(Theme::GithubLight)
-                ->darkTheme(Theme::GithubDarkDefault)
-                ->focusLine($frame->line())
-        ])
-        ->extraAlpineAttributes([
-            'x-on:expand-section.window' => 'console.log(`yello`, $event)'
-        ])
-        ->collapsible()
-        ->collapsed($index !== 0)
-        ->persistCollapsed('frame_section_' . $index);
-
-                                })->toArray();
-
-                            })
-                            // ->schema([
-                            //     View::make('filament-exceptions::exception'),
-                            // ])
-                            ,
+                            ->schema([
+                                View::make('filament-exceptions::exception'),
+                            ]),
                         Tab::make('Headers')
                             ->label(static fn (): string => static::getPlugin()->getHeadersTabLabel())
                             ->icon(static fn (): string => static::getPlugin()->getHeadersTabIcon())
@@ -304,22 +279,5 @@ class ExceptionResource extends Resource
         }
 
         return static::$cachedFrames;
-    }
-
-    public static function getCustomCodeEntrySection($frame): HtmlString
-    {
-        $title = $frame->file() ? str($frame->file())->replace(base_path() . '/', '') : '[internal]';
-        return new HtmlString(
-            <<<HTML
-                <span class="px-4 py-3 font-mono text-left break-words">
-                    {$title}
-                    in {$frame->method()}
-                    at line
-                    <span class="inline-flex items-center justify-center ml-auto rtl:ml-0 rtl:mr-auto min-h-4 px-2 py-0.5 text-xs font-medium tracking-tight rounded-xl whitespace-normal text-primary-600 bg-primary-500/10 dark:text-primary-500">
-                        {$frame->line()}
-                    </span>
-                </span>
-            HTML
-        );
     }
 }
