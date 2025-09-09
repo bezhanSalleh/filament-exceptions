@@ -1,4 +1,4 @@
-<div x-data="{ active: 0 }" class="space-y-2">
+<div x-data="{ active: 0 }" class="space-y-2" dir="ltr">
 
 
 @capture($frameHtml, $frame, $theme)
