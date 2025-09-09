@@ -22,6 +22,8 @@ class CodeBlock
 
     protected mixed $startLine = 1;
 
+    protected ?string $cachedOutput = null;
+
     public function __construct($startLine = 1, $line = '', $prefix = '', $suffix = '')
     {
         $this->startLine = $startLine;
@@ -57,20 +59,22 @@ class CodeBlock
 
     public function output($focusLine, Theme $theme = Theme::GithubLight): string
     {
-        return once(fn (): string => 
-            (new Phiki)
-                ->codeToHtml(
-                    code: $this->codeString(),
-                    grammar: Grammar::Php,
-                    theme: $theme
-                )
-                ->withGutter()
-                ->startingLine($this->getStartLine())
-                ->decoration(
-                    LineDecoration::forLine($focusLine - $this->getStartLine())
-                        ->class('bg-primary-400/20', 'dark:bg-primary/20'),
-                )
-                ->toString()
-        );
+        if (blank($this->cachedOutput)) {
+            $this->cachedOutput = (new Phiki)
+                    ->codeToHtml(
+                        code: $this->codeString(),
+                        grammar: Grammar::Php,
+                        theme: $theme
+                    )
+                    ->withGutter()
+                    ->startingLine($this->getStartLine())
+                    ->decoration(
+                        LineDecoration::forLine($focusLine - $this->getStartLine())
+                            ->class('bg-primary-400/20', 'dark:bg-primary/20'),
+                    )
+                    ->toString();
+        }
+
+        return $this->cachedOutput;
     }
 }

@@ -48,7 +48,6 @@
         </div>
     @endforeach
 --}}
-
 @capture($frameHtml, $frame, $theme)
     {!! $frame->getCodeBlock()->output($frame->line(), $theme) !!}
 @endcapture

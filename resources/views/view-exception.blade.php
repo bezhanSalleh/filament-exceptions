@@ -1,23 +1,65 @@
+{{-- @dd(get_defined_vars()) --}}
 @php
     $method = $record->method;
     $methodColor = match ($method) {
-        'DELETE' => \Illuminate\Support\Arr::toCssClasses(['text-danger-700 bg-danger-500/10 dark:text-danger-500']),
-        'POST' => \Illuminate\Support\Arr::toCssClasses(['text-primary-700 bg-primary-500/10 dark:text-primary-500']),
-        'GET' => \Illuminate\Support\Arr::toCssClasses(['text-success-700 bg-success-500/10 dark:text-success-500']),
-        'PUT' => \Illuminate\Support\Arr::toCssClasses(['text-warning-700 bg-warning-500/10 dark:text-warning-500']),
-        'PATCH', 'OPTIONS' => \Illuminate\Support\Arr::toCssClasses(['text-gray-700 bg-gray-500/10 dark:text-gray-300 dark:bg-gray-500/20']),
-        default => \Illuminate\Support\Arr::toCssClasses(['text-gray-700 bg-gray-500/10 dark:text-gray-300 dark:bg-gray-500/20']),
+        'DELETE' => \Illuminate\Support\Arr::toCssClasses(['text-danger-700 bg-danger-500/10 dark:text-danger-500 border border-danger-400/20']),
+        'POST' => \Illuminate\Support\Arr::toCssClasses(['text-primary-700 bg-primary-500/10 dark:text-primary-500 border border-primary-400/20']),
+        'GET' => \Illuminate\Support\Arr::toCssClasses(['text-success-700 bg-success-500/10 dark:text-success-500 border border-success-400/20']),
+        'PUT' => \Illuminate\Support\Arr::toCssClasses(['text-warning-700 bg-warning-500/10 dark:text-warning-500 border border-warning-400/20']),
+        'PATCH', 'OPTIONS' => \Illuminate\Support\Arr::toCssClasses(['text-gray-700 bg-gray-500/10 dark:text-gray-300 dark:bg-gray-500/20 border border-gray-400/20']),
+        default => \Illuminate\Support\Arr::toCssClasses(['text-gray-700 bg-gray-500/10 dark:text-gray-300 dark:bg-gray-500/20 border border-gray-400/20']),
     };
 @endphp
 
 <x-filament-panels::page>
 
     <div
-        class="px-6 py-5 bg-white border-b border-gray-200 rounded-lg shadow-none dark:bg-gray-900 dark:border-gray-950 sm:px-6">
-        <h3 class="flex items-center text-lg font-medium leading-6 text-gray-900 dark:text-gray-50">
-            <span class="{{ $methodColor }} rounded-md px-4 py-1 mr-2">{{ $method }}</span>
+        class="px-6 py-5 bg-white border border-gray-200 rounded-xl shadow-none dark:bg-gray-900 dark:border-gray-950 sm:px-6"
+        x-data="{
+        init() {
+            this.updateClasses();
+            this.setTableFirstTdWidth();
+
+            // Optional: observe dynamic changes
+            const observer = new MutationObserver(() => {
+                this.updateClasses();
+                this.setTableFirstTdWidth();
+            });
+            this.$el.querySelectorAll('li.fi-in-repeatable-item').forEach(li => {
+                observer.observe(li, { childList: true, subtree: true });
+            });
+        },
+
+        updateClasses() {
+            this.$el.querySelectorAll('li.fi-in-repeatable-item').forEach(li => {
+                const visibleCols = Array.from(li.querySelectorAll('div.fi-sc > div.fi-grid-col'))
+                    .filter(div => !div.classList.contains('fi-hidden')); // filter out hidden cols
+
+                const classes = ['p-4', 'bg-gray-50', 'rounded-xl', 'dark:bg-gray-800']; // multiple Tailwind classes
+                if (visibleCols.length > 1) {
+                    li.classList.add(...classes);
+                } else {
+                    li.classList.remove(...classes);
+                }
+            });
+        },
+        setTableFirstTdWidth() {
+            document.querySelectorAll('table.fi-in-key-value tbody').forEach(tbody => {
+                tbody.querySelectorAll('tr').forEach(tr => {
+                    const firstTd = tr.querySelector('td');
+                    if (firstTd) {
+                        firstTd.style.width = '20%';
+                    }
+                });
+            });
+        }
+
+    }"
+    >
+        <h3 class="flex items-center text-base font-semibold leading-6 text-gray-900 dark:text-gray-50">
+            <span class="{{ $methodColor }} rounded-s-lg px-3 py-0.5">{{ $method }}</span>
             <span
-                class="px-4 py-1 ml-2 text-gray-800 bg-gray-100 rounded-md dark:bg-gray-800 dark:text-gray-100">{{ $record->path }}
+                class=" px-3 py-0.5 text-gray-700 text-base border border-gray-200 dark:border-gray-800 bg-gray-100 rounded-e-lg dark:bg-gray-800 dark:text-gray-100">{{ $record->path }}
             </span>
         </h3>
         <div class="flex items-center max-w-2xl mt-1 text-sm leading-5 text-gray-500">
@@ -27,11 +69,12 @@
                 {{ $record->created_at->toDateTimeString() }}
             </span>
         </div>
-        <div class="py-5">
+        <div class="pt-5">
             {{ $record->message }}
         </div>
     </div>
         {{ $this->content }}
+
 </x-filament-panels::page>
 
 

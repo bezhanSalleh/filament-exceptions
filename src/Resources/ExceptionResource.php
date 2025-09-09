@@ -2,25 +2,32 @@
 
 namespace BezhanSalleh\FilamentExceptions\Resources;
 
+use Filament\Forms;
 use Filament\Panel;
+use Filament\Tables;
+use Phiki\Theme\Theme;
+use Filament\Infolists;
+use Filament\Tables\Table;
+use Phiki\Grammar\Grammar;
 use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Tabs;
-use Filament\Schemas\Components\Tabs\Tab;
-use Filament\Schemas\Components\View;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Actions\ViewAction;
+use Filament\Resources\Resource;
 use Filament\Actions\BulkActionGroup;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\View;
 use Filament\Actions\DeleteBulkAction;
-use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages\ListExceptions;
-use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages\ViewException;
+use Filament\Forms\Components\KeyValue;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Infolists\Components\CodeEntry;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Infolists\Components\KeyValueEntry;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use BezhanSalleh\FilamentExceptions\FilamentExceptions;
 use BezhanSalleh\FilamentExceptions\FilamentExceptionsPlugin;
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
-use Filament\Forms;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages\ViewException;
+use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages\ListExceptions;
 
 class ExceptionResource extends Resource
 {
@@ -111,48 +118,49 @@ class ExceptionResource extends Resource
         return static::getPlugin()->canGloballySearch() && parent::canGloballySearch();
     }
 
-    public static function form(Schema $schema): Schema
-    {
-        return $schema
-            ->components([
-                Tabs::make('Heading')
-                    ->activeTab(static fn (): int => static::getPlugin()->getActiveTab())
-                    ->tabs([
-                        Tab::make('Exception')
-                            ->label(static fn (): string => static::getPlugin()->getExceptionTabLabel())
-                            ->icon(static fn (): string => static::getPlugin()->getExceptionTabIcon())
-                            ->schema([
-                                View::make('filament-exceptions::exception'),
-                            ]),
-                        Tab::make('Headers')
-                            ->label(static fn (): string => static::getPlugin()->getHeadersTabLabel())
-                            ->icon(static fn (): string => static::getPlugin()->getHeadersTabIcon())
-                            ->schema([
-                                View::make('filament-exceptions::headers'),
-                            ])->columns(1),
-                        Tab::make('Cookies')
-                            ->label(static fn (): string => static::getPlugin()->getCookiesTabLabel())
-                            ->icon(static fn (): string => static::getPlugin()->getCookiesTabIcon())
-                            ->schema([
-                                View::make('filament-exceptions::cookies'),
-                            ]),
-                        Tab::make('Body')
-                            ->label(static fn (): string => static::getPlugin()->getBodyTabLabel())
-                            ->icon(static fn (): string => static::getPlugin()->getBodyTabIcon())
-                            ->schema([
-                                View::make('filament-exceptions::body'),
-                            ]),
-                        Tab::make('Queries')
-                            ->label(static fn (): string => static::getPlugin()->getQueriesTabLabel())
-                            ->icon(static fn (): string => static::getPlugin()->getQueriesTabIcon())
-                            ->badge(static fn ($record): string => collect(json_decode($record->query, true, 512, JSON_THROW_ON_ERROR))->count())
-                            ->schema([
-                                View::make('filament-exceptions::query'),
-                            ]),
+    // public static function form(Schema $schema): Schema
+    // {
+    //     return $schema
+    //         ->components([
+    //             Tabs::make('Heading')
+    //                 ->activeTab(static fn (): int => static::getPlugin()->getActiveTab())
+    //                 ->tabs([
+    //                     // Tab::make('Exception')
+    //                     //     ->label(static fn (): string => static::getPlugin()->getExceptionTabLabel())
+    //                     //     ->icon(static fn (): string => static::getPlugin()->getExceptionTabIcon())
+    //                     //     ->schema([
+    //                     //         View::make('filament-exceptions::exception'),
+    //                     //     ]),
+    //                     Tab::make('Headers')
+    //                         ->label(static fn (): string => static::getPlugin()->getHeadersTabLabel())
+    //                         ->icon(static fn (): string => static::getPlugin()->getHeadersTabIcon())
+    //                         ->schema([
+    //                             // View::make('filament-exceptions::headers'),
+    //                             // \Filament\Forms\Components\TextInput::make('headers')
+    //                         ])->columns(1),
+    //                     Tab::make('Cookies')
+    //                         ->label(static fn (): string => static::getPlugin()->getCookiesTabLabel())
+    //                         ->icon(static fn (): string => static::getPlugin()->getCookiesTabIcon())
+    //                         ->schema([
+    //                             // \Filament\Forms\Components\TextInput::make('cookies'),
+    //                         ]),
+    //                     // Tab::make('Body')
+    //                     //     ->label(static fn (): string => static::getPlugin()->getBodyTabLabel())
+    //                     //     ->icon(static fn (): string => static::getPlugin()->getBodyTabIcon())
+    //                     //     ->schema([
+    //                     //         View::make('filament-exceptions::body'),
+    //                     //     ]),
+    //                     // Tab::make('Queries')
+    //                     //     ->label(static fn (): string => static::getPlugin()->getQueriesTabLabel())
+    //                     //     ->icon(static fn (): string => static::getPlugin()->getQueriesTabIcon())
+    //                     //     ->badge(static fn ($record): string => collect(json_decode($record->query, true, 512, JSON_THROW_ON_ERROR))->count())
+    //                     //     ->schema([
+    //                     //         View::make('filament-exceptions::query'),
+    //                     //     ]),
 
-                    ]),
-            ])->columns(1);
-    }
+    //                 ])
+    //         ])->columns(1);
+    // }
 
     public static function table(Table $table): Table
     {
@@ -228,5 +236,68 @@ class ExceptionResource extends Resource
             'index' => ListExceptions::route('/'),
             'view' => ViewException::route('/{record}'),
         ];
+    }
+
+    public static function infolist(Schema $schema): Schema
+    {
+        return $schema->components([
+                Tabs::make('Heading')
+                    ->activeTab(static fn (): int => static::getPlugin()->getActiveTab())
+                    ->tabs([
+                        Tab::make('Exception')
+                            ->label(static fn (): string => static::getPlugin()->getExceptionTabLabel())
+                            ->icon(static fn (): string => static::getPlugin()->getExceptionTabIcon())
+                            ->schema([
+                                // View::make('filament-exceptions::exception'),
+                            ]),
+                        Tab::make('Headers')
+                            ->label(static fn (): string => static::getPlugin()->getHeadersTabLabel())
+                            ->icon(static fn (): string => static::getPlugin()->getHeadersTabIcon())
+                            ->schema([
+                                Infolists\Components\KeyValueEntry::make('headers')
+                                    ->hiddenLabel()
+                            ])->columns(1),
+                        Tab::make('Cookies')
+                            ->label(static fn (): string => static::getPlugin()->getCookiesTabLabel())
+                            ->icon(static fn (): string => static::getPlugin()->getCookiesTabIcon())
+                            ->schema([
+                                Infolists\Components\KeyValueEntry::make('cookies')
+                                    ->hiddenLabel(),
+                            ]),
+                        Tab::make('Body')
+                            ->label(static fn (): string => static::getPlugin()->getBodyTabLabel())
+                            ->icon(static fn (): string => static::getPlugin()->getBodyTabIcon())
+                            ->schema([
+                                Infolists\Components\KeyValueEntry::make('body')
+                                    ->hiddenLabel(),
+                            ]),
+                        Tab::make('Queries')
+                            ->label(static fn (): string => static::getPlugin()->getQueriesTabLabel())
+                            ->icon(static fn (): string => static::getPlugin()->getQueriesTabIcon())
+                            ->badge(static fn ($record): string => collect($record->query)->count())
+                            ->schema([
+                                Infolists\Components\RepeatableEntry::make('query')
+                                    ->hiddenLabel()
+                                    ->extraAttributes(['class' => ''])
+                                    ->schema([
+                                        CodeEntry::make('sql')
+                                            ->hiddenLabel()
+                                            ->grammar(Grammar::Sql)
+                                            ->lightTheme(Theme::GithubLight)
+                                            ->darkTheme(Theme::GithubDarkDefault)
+                                            ->copyable()
+                                            ->copyMessage('Copied!')
+                                            ->copyMessageDuration(1500),
+                                        KeyValueEntry::make('bindings')
+                                            ->hiddenLabel()
+                                            ->keyLabel('#Bindings: Key')
+                                            ->valueLabel('Value')
+                                            ->hidden(fn($state) => blank($state))
+                                    ])
+                                    ->contained(false)
+                            ]),
+
+                    ]),
+            ])->columns(1);
     }
 }
