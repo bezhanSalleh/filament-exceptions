@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BezhanSalleh\FilamentExceptions\Trace;
 
 use Illuminate\Support\Arr;
@@ -21,7 +23,7 @@ class Frame
 
     public function extract(): ?array
     {
-        preg_match('/#\d+\s([^:]+):?\s?(.*)/', $this->frame, $matches);
+        preg_match('/#\d+\s([^:]+):?\s?(.*)/', (string) $this->frame, $matches);
         $this->parseFileAndLine($matches[1]);
         $this->parseCall($matches[2]);
         $this->fetchCodeBlock();
@@ -32,7 +34,7 @@ class Frame
     public function parseFileAndLine($str): void
     {
         if (str()->startsWith($str, '/')) {
-            preg_match('/^([^(]+)\((\d+)\)/', $str, $matches);
+            preg_match('/^([^(]+)\((\d+)\)/', (string) $str, $matches);
             [, $this->attributes['file'], $this->attributes['line']] = $matches;
         } else {
             $this->attributes['name'] = $str;
@@ -44,8 +46,8 @@ class Frame
         if (empty($str)) {
             return;
         }
-        if (preg_match('/^[^(]+(->|::)/', $str, $m)) {
-            preg_match('/([^:-]+)(?:->|::)([^(]+)\((.*)\)/', $str, $matches);
+        if (preg_match('/^[^(]+(->|::)/', (string) $str, $m)) {
+            preg_match('/([^:-]+)(?:->|::)([^(]+)\((.*)\)/', (string) $str, $matches);
             $this->attributes['class'] = $matches[1];
             $this->attributes['method'] = $matches[2];
             $this->attributes['args'] = $this->extractArgs($matches[3]);
@@ -54,7 +56,7 @@ class Frame
             }
             // class method call
         } else {
-            preg_match('/([^(]+)\((.*)\)/', $str, $matches);
+            preg_match('/([^(]+)\((.*)\)/', (string) $str, $matches);
             $this->attributes['function'] = $matches[1];
             $this->attributes['args'] = $this->extractArgs($matches[2]);
         }
@@ -115,7 +117,7 @@ class Frame
 
     public function getCodeBlock(): array | CodeBlock
     {
-        return ! empty($this->code) ? $this->code : new CodeBlock;
+        return empty($this->code) ? new CodeBlock : $this->code;
     }
 
     public function method()
@@ -166,7 +168,7 @@ class Frame
         if (empty($args)) {
             return [];
         }
-        $args = explode(',', $args);
+        $args = explode(',', (string) $args);
 
         return array_map('trim', $args);
     }

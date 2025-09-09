@@ -16,12 +16,12 @@ use Filament\Support\Concerns\EvaluatesClosures;
 
 class FilamentExceptionsPlugin implements Plugin
 {
+    use EvaluatesClosures;
     use HasLabels;
     use HasModelPruneInterval;
     use HasNavigation;
     use HasTabs;
     use HasTenantScope;
-    use EvaluatesClosures;
 
     public static function make(): static
     {
@@ -36,7 +36,7 @@ class FilamentExceptionsPlugin implements Plugin
     public function register(Panel $panel): void
     {
         if (is_null(FilamentExceptions::getModel())) {
-            FilamentExceptions::model('\\BezhanSalleh\\FilamentExceptions\\Models\\Exception');
+            FilamentExceptions::model(\BezhanSalleh\FilamentExceptions\Models\Exception::class);
         }
 
         $panel

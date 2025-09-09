@@ -1,9 +1,8 @@
 <?php
 
-namespace BezhanSalleh\FilamentExceptions\Trace;
+declare(strict_types=1);
 
-use ReturnTypeWillChange;
-use Iterator;
+namespace BezhanSalleh\FilamentExceptions\Trace;
 
 class Parser
 {
@@ -13,15 +12,15 @@ class Parser
 
     public function parse(): ?array
     {
-        $lines = explode("\n", $this->trace);
+        $lines = explode("\n", (string) $this->trace);
 
         if (blank($lines)) {
             return null;
         }
 
         return collect($lines)
-            ->filter(fn($line) => filled(trim($line)))
-            ->map(fn ($line) => new Frame($line))
+            ->filter(fn ($line): bool => filled(trim((string) $line)))
+            ->map(fn ($line): \BezhanSalleh\FilamentExceptions\Trace\Frame => new Frame($line))
             ->toArray();
     }
 }

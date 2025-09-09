@@ -1,28 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BezhanSalleh\FilamentExceptions\Trace;
 
+use Phiki\Grammar\Grammar;
 use Phiki\Phiki;
 use Phiki\Theme\Theme;
-use Phiki\Grammar\Grammar;
 use Phiki\Transformers\Decorations\LineDecoration;
 
 class CodeBlock
 {
-    protected mixed $line = '';
-
-    protected mixed $suffix = '';
-
-    protected mixed $prefix = '';
-
-    protected mixed $startLine = 1;
-
-    public function __construct($startLine = 1, $line = '', $prefix = '', $suffix = '')
+    public function __construct(protected mixed $startLine = 1, protected mixed $line = '', protected mixed $prefix = '', protected mixed $suffix = '')
     {
-        $this->startLine = $startLine;
-        $this->line = $line;
-        $this->prefix = $prefix;
-        $this->suffix = $suffix;
     }
 
     public function getStartLine()

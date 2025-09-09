@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BezhanSalleh\FilamentExceptions\QueryRecorder;
 
 use Illuminate\Contracts\Foundation\Application;
@@ -20,26 +22,13 @@ class QueryRecorder
     /** @var Query[] */
     protected array $queries = [];
 
-    protected Application $app;
-
-    protected bool $reportBindings = true;
-
-    protected ?int $maxQueries;
-
-    public function __construct(
-        Application $app,
-        bool $reportBindings = true,
-        ?int $maxQueries = 200
-    ) {
-        $this->app = $app;
-        $this->reportBindings = $reportBindings;
-        $this->maxQueries = $maxQueries;
+    public function __construct(protected Application $app, protected bool $reportBindings = true, protected ?int $maxQueries = 200)
+    {
     }
 
-    public function start(): self
+    public function start(): static
     {
-        /** @phpstan-ignore-next-line  */
-        $this->app['events']->listen(QueryExecuted::class, [$this, 'record']);
+        $this->app['events']->listen(QueryExecuted::class, $this->record(...));
 
         return $this;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
 
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;

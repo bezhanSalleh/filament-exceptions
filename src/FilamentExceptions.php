@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BezhanSalleh\FilamentExceptions;
 
 use BezhanSalleh\FilamentExceptions\QueryRecorder\QueryRecorder;
@@ -25,7 +27,7 @@ class FilamentExceptions
      */
     public static function report(Throwable $exception): void
     {
-        $reporter = new static(request());
+        $reporter = new self(request());
 
         $reporter->reportException($exception);
     }
@@ -65,7 +67,7 @@ class FilamentExceptions
             'cookies' => request()->cookies->all(),
             'headers' => Arr::except(request()->headers->all(), 'cookie'),
 
-            'type' => get_class($exception),
+            'type' => $exception::class,
             'code' => $exception->getCode(),
             'file' => $exception->getFile(),
             'line' => $exception->getLine(),
@@ -80,9 +82,7 @@ class FilamentExceptions
 
     public function stringify($data): array
     {
-        return array_map(function ($item) {
-            return is_array($item) ? json_encode($item, JSON_OBJECT_AS_ARRAY) : (string) $item;
-        }, $data);
+        return array_map(fn($item): string|false => is_array($item) ? json_encode($item, JSON_OBJECT_AS_ARRAY) : (string) $item, $data);
     }
 
     public function store(array $data): bool
@@ -91,7 +91,7 @@ class FilamentExceptions
             static::getModel()::create($data);
 
             return true;
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             return false;
         }
     }

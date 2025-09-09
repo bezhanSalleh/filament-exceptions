@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BezhanSalleh\FilamentExceptions\Facades;
 
-use Throwable;
 use Illuminate\Support\Facades\Facade;
+use Throwable;
 
 /**
  * @method static void report(Throwable $exception)

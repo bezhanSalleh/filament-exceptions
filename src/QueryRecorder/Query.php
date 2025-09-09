@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BezhanSalleh\FilamentExceptions\QueryRecorder;
 
 use Illuminate\Database\Events\QueryExecuted;
@@ -16,15 +18,6 @@ use Illuminate\Database\Events\QueryExecuted;
  */
 class Query
 {
-    protected string $sql;
-
-    protected float $time;
-
-    protected string $connectionName;
-
-    /** @var array<string, string>|null */
-    protected ?array $bindings;
-
     protected float $microtime;
 
     public static function fromQueryExecutedEvent(QueryExecuted $queryExecuted, bool $reportBindings = false): self
@@ -42,16 +35,12 @@ class Query
      * @param  array<string, string>|null  $bindings
      */
     protected function __construct(
-        string $sql,
-        float $time,
-        string $connectionName,
-        ?array $bindings = null,
+        protected string $sql,
+        protected float $time,
+        protected string $connectionName,
+        protected ?array $bindings = null,
         ?float $microtime = null
     ) {
-        $this->sql = $sql;
-        $this->time = $time;
-        $this->connectionName = $connectionName;
-        $this->bindings = $bindings;
         $this->microtime = $microtime ?? microtime(true);
     }
 

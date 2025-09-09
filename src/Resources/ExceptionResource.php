@@ -1,39 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BezhanSalleh\FilamentExceptions\Resources;
 
-use Filament\Forms;
-use Filament\Panel;
-use Filament\Tables;
-use Phiki\Theme\Theme;
-use Filament\Infolists;
-use Filament\Tables\Table;
-use Phiki\Grammar\Grammar;
-use Filament\Schemas\Schema;
-use Filament\Actions\ViewAction;
-use Filament\Resources\Resource;
-use Illuminate\Support\HtmlString;
-use Filament\Support\Enums\IconSize;
-use Filament\Actions\BulkActionGroup;
-use Filament\Schemas\Components\Tabs;
-use Filament\Schemas\Components\View;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Forms\Components\KeyValue;
-use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Tabs\Tab;
-use Filament\Infolists\Components\CodeEntry;
-use Filament\Schemas\Components\Utilities\Get;
-use Filament\Infolists\Components\KeyValueEntry;
-use BezhanSalleh\FilamentExceptions\Trace\Parser;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use BezhanSalleh\FilamentExceptions\FilamentExceptions;
 use BezhanSalleh\FilamentExceptions\FilamentExceptionsPlugin;
-use BezhanSalleh\FilamentExceptions\Resources\CustomCodeEntry;
-use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
-use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages\ViewException;
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages\ListExceptions;
+use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages\ViewException;
+use BezhanSalleh\FilamentExceptions\Trace\Parser;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\ViewAction;
+use Filament\Infolists;
+use Filament\Infolists\Components\CodeEntry;
+use Filament\Infolists\Components\KeyValueEntry;
+use Filament\Panel;
+use Filament\Resources\Resource;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\View;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Phiki\Grammar\Grammar;
+use Phiki\Theme\Theme;
 
 class ExceptionResource extends Resource
 {
@@ -138,9 +131,8 @@ class ExceptionResource extends Resource
                         'gray',
                         'success' => fn ($state): bool => $state === 'GET',
                         'primary' => fn ($state): bool => $state === 'POST',
-                        'warning' => fn ($state): bool => $state === 'PUT',
+                        'warning' => fn ($state): bool => in_array($state, ['PUT', 'PATCH'], true),
                         'danger' => fn ($state): bool => $state === 'DELETE',
-                        'warning' => fn ($state): bool => $state === 'PATCH',
                         'gray' => fn ($state): bool => $state === 'OPTIONS',
 
                     ])
@@ -205,69 +197,68 @@ class ExceptionResource extends Resource
     public static function infolist(Schema $schema): Schema
     {
         return $schema->components([
-                Tabs::make('Heading')
-                    ->activeTab(static fn (): int => static::getPlugin()->getActiveTab())
-                    ->tabs([
-                        Tab::make('Exception')
-                            ->label(static fn (): string => static::getPlugin()->getExceptionTabLabel())
-                            ->icon(static fn (): string => static::getPlugin()->getExceptionTabIcon())
-                            ->schema([
-                                View::make('filament-exceptions::exception'),
-                            ]),
-                        Tab::make('Headers')
-                            ->label(static fn (): string => static::getPlugin()->getHeadersTabLabel())
-                            ->icon(static fn (): string => static::getPlugin()->getHeadersTabIcon())
-                            ->hidden(fn(Model $record) => blank($record->headers))
-                            ->schema([
-                                Infolists\Components\KeyValueEntry::make('headers')
-                                    ->hiddenLabel()
-                            ]),
-                        Tab::make('Cookies')
-                            ->label(static fn (): string => static::getPlugin()->getCookiesTabLabel())
-                            ->icon(static fn (): string => static::getPlugin()->getCookiesTabIcon())
-                            ->hidden(fn(Model $record) => blank($record->cookies))
-                            ->schema([
-                                Infolists\Components\KeyValueEntry::make('cookies')
-                                    ->hiddenLabel(),
-                            ]),
-                        Tab::make('Body')
-                            ->label(static fn (): string => static::getPlugin()->getBodyTabLabel())
-                            ->icon(static fn (): string => static::getPlugin()->getBodyTabIcon())
-                            ->hidden(fn(Model $record) => blank($record->body))
-                            ->schema([
-                                Infolists\Components\KeyValueEntry::make('body')
-                                    ->hiddenLabel(),
-                            ]),
-                        Tab::make('Queries')
-                            ->label(static fn (): string => static::getPlugin()->getQueriesTabLabel())
-                            ->icon(static fn (): string => static::getPlugin()->getQueriesTabIcon())
-                            ->badge(static fn ($record): string => collect($record->query)->count())
-                            ->hidden(fn(Model $record) => blank($record->queury))
-                            ->schema([
-                                Infolists\Components\RepeatableEntry::make('query')
-                                    ->hiddenLabel()
-                                    ->schema([
-                                        CodeEntry::make('sql')
-                                            ->hiddenLabel()
-                                            ->grammar(Grammar::Sql)
-                                            ->lightTheme(Theme::GithubLight)
-                                            ->darkTheme(Theme::GithubDarkDefault)
-                                            ->copyable()
-                                            ->copyMessage('Copied!')
-                                            ->copyMessageDuration(1500),
-                                        KeyValueEntry::make('bindings')
-                                            ->hiddenLabel()
-                                            ->keyLabel('#Bindings: Key')
-                                            ->valueLabel('Value')
-                                            ->hidden(fn($state) => blank($state))
-                                    ])
-                                    ->contained(false)
-                            ]),
+            Tabs::make('Heading')
+                ->activeTab(static fn (): int => static::getPlugin()->getActiveTab())
+                ->tabs([
+                    Tab::make('Exception')
+                        ->label(static fn (): string => static::getPlugin()->getExceptionTabLabel())
+                        ->icon(static fn (): string => static::getPlugin()->getExceptionTabIcon())
+                        ->schema([
+                            View::make('filament-exceptions::exception'),
+                        ]),
+                    Tab::make('Headers')
+                        ->label(static fn (): string => static::getPlugin()->getHeadersTabLabel())
+                        ->icon(static fn (): string => static::getPlugin()->getHeadersTabIcon())
+                        ->hidden(fn (Model $record): bool => blank($record->headers))
+                        ->schema([
+                            Infolists\Components\KeyValueEntry::make('headers')
+                                ->hiddenLabel(),
+                        ]),
+                    Tab::make('Cookies')
+                        ->label(static fn (): string => static::getPlugin()->getCookiesTabLabel())
+                        ->icon(static fn (): string => static::getPlugin()->getCookiesTabIcon())
+                        ->hidden(fn (Model $record): bool => blank($record->cookies))
+                        ->schema([
+                            Infolists\Components\KeyValueEntry::make('cookies')
+                                ->hiddenLabel(),
+                        ]),
+                    Tab::make('Body')
+                        ->label(static fn (): string => static::getPlugin()->getBodyTabLabel())
+                        ->icon(static fn (): string => static::getPlugin()->getBodyTabIcon())
+                        ->hidden(fn (Model $record): bool => blank($record->body))
+                        ->schema([
+                            Infolists\Components\KeyValueEntry::make('body')
+                                ->hiddenLabel(),
+                        ]),
+                    Tab::make('Queries')
+                        ->label(static fn (): string => static::getPlugin()->getQueriesTabLabel())
+                        ->icon(static fn (): string => static::getPlugin()->getQueriesTabIcon())
+                        ->badge(static fn ($record): string => collect($record->query)->count())
+                        ->hidden(fn (Model $record): bool => blank($record->queury))
+                        ->schema([
+                            Infolists\Components\RepeatableEntry::make('query')
+                                ->hiddenLabel()
+                                ->schema([
+                                    CodeEntry::make('sql')
+                                        ->hiddenLabel()
+                                        ->grammar(Grammar::Sql)
+                                        ->lightTheme(Theme::GithubLight)
+                                        ->darkTheme(Theme::GithubDarkDefault)
+                                        ->copyable()
+                                        ->copyMessage('Copied!')
+                                        ->copyMessageDuration(1500),
+                                    KeyValueEntry::make('bindings')
+                                        ->hiddenLabel()
+                                        ->keyLabel('#Bindings: Key')
+                                        ->valueLabel('Value')
+                                        ->hidden(fn ($state): bool => blank($state)),
+                                ])
+                                ->contained(false),
+                        ]),
 
-                    ]),
-            ])->columns(1);
+                ]),
+        ])->columns(1);
     }
-
 
     public static function getTraceFrames(Model $record): ?array
     {

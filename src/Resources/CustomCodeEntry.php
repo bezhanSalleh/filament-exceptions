@@ -1,16 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BezhanSalleh\FilamentExceptions\Resources;
 
 use Closure;
-use Phiki\Phiki;
-use Phiki\Theme\Theme;
+use Filament\Infolists\Components\Entry;
+use Filament\Support\Components\Contracts\HasEmbeddedView;
+use Filament\Support\Concerns\CanBeCopied;
 use Illuminate\Support\Js;
 use Phiki\Grammar\Grammar;
-use Filament\Infolists\Components\Entry;
-use Filament\Support\Concerns\CanBeCopied;
+use Phiki\Phiki;
+use Phiki\Theme\Theme;
 use Phiki\Transformers\Decorations\LineDecoration;
-use Filament\Support\Components\Contracts\HasEmbeddedView;
 
 class CustomCodeEntry extends Entry implements HasEmbeddedView
 {
@@ -177,7 +179,7 @@ class CustomCodeEntry extends Entry implements HasEmbeddedView
                         ->class('bg-primary-400/20', 'dark:bg-primary/20'),
                 )
 
-            ?>
+        ?>
         </div>
 
         <?php return $this->wrapEmbeddedHtml(ob_get_clean());

@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
 
-use Filament\Actions;
-use Filament\Facades\Filament;
-use Filament\Actions\DeleteAction;
-use Filament\Resources\Pages\ViewRecord;
-use BezhanSalleh\FilamentExceptions\Trace\Parser;
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
+use BezhanSalleh\FilamentExceptions\Trace\Parser;
+use Filament\Actions\DeleteAction;
+use Filament\Facades\Filament;
 use Filament\Infolists;
-use Filament\Schemas\Schema;
+use Filament\Resources\Pages\ViewRecord;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
 
 class ViewException extends ViewRecord
 {
@@ -24,10 +25,11 @@ class ViewException extends ViewRecord
     public function getFramesProperty(): ?array
     {
         // if (blank($this->cachedFrames)) {
-            $trace = "#0 {$this->record->file}({$this->record->line})\n";
-            $frames = (new Parser($trace . $this->record->trace))->parse();
-            array_pop($frames);
-            return $frames;
+        $trace = "#0 {$this->record->file}({$this->record->line})\n";
+        $frames = (new Parser($trace . $this->record->trace))->parse();
+        array_pop($frames);
+
+        return $frames;
         // }
 
         // return $this->cachedFrames;
