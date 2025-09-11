@@ -24,8 +24,8 @@ class Frame
     public function extract(): ?array
     {
         preg_match('/#\d+\s([^:]+):?\s?(.*)/', (string) $this->frame, $matches);
-        $this->parseFileAndLine($matches[1]);
-        $this->parseCall($matches[2]);
+        $this->parseFileAndLine($matches[1] ?? '');
+        $this->parseCall($matches[2] ?? '');
         $this->fetchCodeBlock();
 
         return $this->attributes;

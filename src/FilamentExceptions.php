@@ -29,6 +29,10 @@ class FilamentExceptions
     {
         $reporter = new self(request());
 
+        if (! str($exception?->getFile())->endsWith('.php')) {
+            return;
+        }
+
         $reporter->reportException($exception);
     }
 
