@@ -73,7 +73,8 @@
             {{ $record->message }}
         </div>
     </div>
-        {{ $this->content }}
+
+    {{ $this->infolist }}
 
 </x-filament-panels::page>
 

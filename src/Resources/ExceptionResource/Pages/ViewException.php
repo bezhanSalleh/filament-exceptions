@@ -8,11 +8,8 @@ use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
 use BezhanSalleh\FilamentExceptions\Trace\Parser;
 use Filament\Actions\DeleteAction;
 use Filament\Facades\Filament;
-use Filament\Infolists;
 use Filament\Resources\Pages\ViewRecord;
-use Filament\Schemas\Components\Tabs;
-use Filament\Schemas\Components\Tabs\Tab;
-use Filament\Schemas\Schema;
+use Phiki\Theme\Theme;
 
 class ViewException extends ViewRecord
 {
@@ -40,6 +37,20 @@ class ViewException extends ViewRecord
         return [
             DeleteAction::make(),
         ];
+    }
+
+    public function renderFrame(int $frameIndex, bool $isDark = false): string
+    {
+        $frames = $this->frames;
+
+        if (!isset($frames[$frameIndex])) {
+            return '<div class="text-red-500">Frame not found</div>';
+        }
+
+        $frame = $frames[$frameIndex];
+        $theme = $isDark ? Theme::GithubDark : Theme::GithubLight;
+
+        return $frame->getCodeBlock()->output($frame->line(), $theme);
     }
 
     /**
