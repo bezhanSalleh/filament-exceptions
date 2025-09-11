@@ -74,7 +74,7 @@
         </div>
     </div>
 
-    {{ $this->infolist }}
+    {{ $this->content }}
 
 </x-filament-panels::page>
 
