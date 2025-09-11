@@ -5,23 +5,24 @@
         frameCache: {},
         preloadQueue: [],
         frames: @js($this->frames),
-        
+
         init() {
             this.updateDarkMode();
             this.watchThemeChanges();
             this.startBackgroundPreload();
         },
-        
+
         updateDarkMode() {
             this.darkMode = document.documentElement.classList.contains('dark') || window.theme === 'dark';
             this.invalidateCache();
+            this.startBackgroundPreload();
         },
-        
+
         watchThemeChanges() {
             const observer = new MutationObserver(() => this.updateDarkMode());
             observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
         },
-        
+
         startBackgroundPreload() {
             setTimeout(() => {
                 for (let i = 1; i < this.frames.length; i++) {
@@ -30,36 +31,31 @@
                 this.processPreloadQueue();
             }, 500);
         },
-        
+
         async processPreloadQueue() {
             if (this.preloadQueue.length === 0) return;
-            
+
             const frameIndex = this.preloadQueue.shift();
             const cacheKey = frameIndex + '_' + (this.darkMode ? 'dark' : 'light');
-            
-            console.log('Processing frame', frameIndex, 'with key', cacheKey);
-            
+
             if (!this.frameCache[cacheKey]) {
                 try {
-                    console.log('Loading frame', frameIndex);
                     this.frameCache[cacheKey] = await $wire.call('renderFrame', frameIndex, this.darkMode);
-                    console.log('Loaded frame', frameIndex, 'success');
                 } catch (error) {
-                    console.log('Error loading frame', frameIndex, error);
                     this.frameCache[cacheKey] = '<div class=\'text-red-500 p-4\'>Error loading frame</div>';
                 }
             }
-            
+
             setTimeout(() => this.processPreloadQueue(), 100);
         },
-        
+
         invalidateCache() {
             this.frameCache = {};
+            this.preloadQueue = [];
         },
-        
+
         getFrameContent(frameIndex) {
             const cacheKey = frameIndex + '_' + (this.darkMode ? 'dark' : 'light');
-            console.log('Getting frame', frameIndex, 'with key', cacheKey, 'cached:', !!this.frameCache[cacheKey]);
             return this.frameCache[cacheKey] || '';
         }
     }"
