@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace BezhanSalleh\FilamentExceptions;
 
-use Illuminate\Http\Request;
-use Spatie\LaravelPackageTools\Package;
+use BezhanSalleh\FilamentExceptions\Commands\InstallCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Http\Request;
+use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use BezhanSalleh\FilamentExceptions\Commands\InstallCommand;
 
 class FilamentExceptionsServiceProvider extends PackageServiceProvider
 {
@@ -27,7 +27,7 @@ class FilamentExceptionsServiceProvider extends PackageServiceProvider
     {
         parent::packageRegistered();
 
-        $this->app->scoped('filament-exceptions', fn($app): FilamentExceptions => new FilamentExceptions($app->make(Request::class)));
+        $this->app->scoped('filament-exceptions', fn ($app): FilamentExceptions => new FilamentExceptions($app->make(Request::class)));
 
     }
 

@@ -22,9 +22,7 @@ class QueryRecorder
     /** @var Query[] */
     protected array $queries = [];
 
-    public function __construct(protected Application $app, protected bool $reportBindings = true, protected ?int $maxQueries = 200)
-    {
-    }
+    public function __construct(protected Application $app, protected bool $reportBindings = true, protected ?int $maxQueries = 200) {}
 
     public function start(): static
     {

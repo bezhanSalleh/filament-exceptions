@@ -67,7 +67,7 @@ class Exception extends model
     {
         return collect(json_decode((string) $value, true))
             ->sortKeys()
-            ->transform(fn($val) => is_array($val) ? implode(' ', collect($val)->flatten()->toArray()) : $val)
+            ->transform(fn ($val) => is_array($val) ? implode(' ', collect($val)->flatten()->toArray()) : $val)
             ->filter()
             ->all();
         // return collect(json_decode($value, true))

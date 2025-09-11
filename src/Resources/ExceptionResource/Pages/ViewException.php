@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
 
-use Phiki\Theme\Theme;
-use Filament\Facades\Filament;
-use Filament\Support\Enums\Width;
-use Filament\Actions\DeleteAction;
-use Filament\Resources\Pages\ViewRecord;
-use BezhanSalleh\FilamentExceptions\Trace\Parser;
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
-use Filament\Support\Enums\MaxWidth;
+use BezhanSalleh\FilamentExceptions\Trace\Parser;
+use Filament\Actions\DeleteAction;
+use Filament\Facades\Filament;
+use Filament\Resources\Pages\ViewRecord;
+use Filament\Support\Enums\Width;
+use Phiki\Theme\Theme;
 
 class ViewException extends ViewRecord
 {
@@ -24,11 +23,11 @@ class ViewException extends ViewRecord
     public function getFramesProperty(): ?array
     {
         if (blank($this->cachedFrames)) {
-        $trace = "#0 {$this->record->file}({$this->record->line})\n";
-        $frames = (new Parser($trace . $this->record->trace))->parse();
-        array_pop($frames);
+            $trace = "#0 {$this->record->file}({$this->record->line})\n";
+            $frames = (new Parser($trace . $this->record->trace))->parse();
+            array_pop($frames);
 
-        $this->cachedFrames = $frames;
+            $this->cachedFrames = $frames;
         }
 
         return $this->cachedFrames;
@@ -45,7 +44,7 @@ class ViewException extends ViewRecord
     {
         $frames = $this->frames;
 
-        if (!isset($frames[$frameIndex])) {
+        if (! isset($frames[$frameIndex])) {
             return '<div class="text-red-500">Frame not found</div>';
         }
 

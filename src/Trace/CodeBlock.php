@@ -11,9 +11,7 @@ use Phiki\Transformers\Decorations\LineDecoration;
 
 class CodeBlock
 {
-    public function __construct(protected mixed $startLine = 1, protected mixed $line = '', protected mixed $prefix = '', protected mixed $suffix = '')
-    {
-    }
+    public function __construct(protected mixed $startLine = 1, protected mixed $line = '', protected mixed $prefix = '', protected mixed $suffix = '') {}
 
     public function getStartLine()
     {

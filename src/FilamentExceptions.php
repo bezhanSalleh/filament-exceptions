@@ -86,7 +86,7 @@ class FilamentExceptions
 
     public function stringify($data): array
     {
-        return array_map(fn($item): string|false => is_array($item) ? json_encode($item, JSON_OBJECT_AS_ARRAY) : (string) $item, $data);
+        return array_map(fn ($item): string | false => is_array($item) ? json_encode($item, JSON_OBJECT_AS_ARRAY) : (string) $item, $data);
     }
 
     public function store(array $data): bool

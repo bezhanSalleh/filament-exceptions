@@ -4,30 +4,29 @@ declare(strict_types=1);
 
 namespace BezhanSalleh\FilamentExceptions\Resources;
 
-use Filament\Panel;
-use Phiki\Theme\Theme;
-use Filament\Infolists;
-use Filament\Tables\Table;
-use Phiki\Grammar\Grammar;
-use Filament\Schemas\Schema;
-use Filament\Actions\ViewAction;
-use Filament\Resources\Resource;
-use Filament\Actions\BulkActionGroup;
-use Filament\Schemas\Components\Tabs;
-use Filament\Schemas\Components\View;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Schemas\Components\Tabs\Tab;
-use Filament\Infolists\Components\CodeEntry;
-use Filament\Infolists\Components\KeyValueEntry;
-use BezhanSalleh\FilamentExceptions\Trace\Parser;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use BezhanSalleh\FilamentExceptions\FilamentExceptions;
 use BezhanSalleh\FilamentExceptions\FilamentExceptionsPlugin;
-use BezhanSalleh\FilamentExceptions\Resources\CustomCodeEntry;
-use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages\ViewException;
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages\ListExceptions;
+use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages\ViewException;
+use BezhanSalleh\FilamentExceptions\Trace\Parser;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\ViewAction;
+use Filament\Infolists;
+use Filament\Infolists\Components\CodeEntry;
+use Filament\Infolists\Components\KeyValueEntry;
+use Filament\Panel;
+use Filament\Resources\Resource;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\View;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Phiki\Grammar\Grammar;
+use Phiki\Theme\Theme;
 
 class ExceptionResource extends Resource
 {
@@ -208,7 +207,7 @@ class ExceptionResource extends Resource
                             // View::make('filament-exceptions::exception'),
                             Tabs::make('Frames')
                                 ->tabs(fn (Model $record): array => static::getFrameTabs($record))
-                                ->vertical()
+                                ->vertical(),
                         ]),
                     Tab::make('Headers')
                         ->label(static fn (): string => static::getPlugin()->getHeadersTabLabel())
@@ -281,16 +280,16 @@ class ExceptionResource extends Resource
         return collect(static::getTraceFrames($record))
             ->map(function ($frame, $index) {
                 return Tab::make(fn () => str()->uuid()->append($index)->toString())
-                    ->label(str($frame->file())->replace(base_path() . '/', '')->append(' in '. $frame->method())->append(' at line: '. $frame->line())->limit(50)->toString())
+                    ->label(str($frame->file())->replace(base_path() . '/', '')->append(' in ' . $frame->method())->append(' at line: ' . $frame->line())->limit(50)->toString())
                     ->schema([
-                        CustomCodeEntry::make('frame_'.$index)
+                        CustomCodeEntry::make('frame_' . $index)
                             ->hiddenLabel()
                             ->state($frame->getCodeBlock()->codeString())
                             ->grammar(Grammar::Php)
                             ->lightTheme(Theme::GithubLight)
                             ->darkTheme(Theme::GithubDarkDefault)
                             ->focusLine(intval($frame->line()))
-                            ->startLine(1)
+                            ->startLine(1),
                     ]);
             })
             ->toArray();
