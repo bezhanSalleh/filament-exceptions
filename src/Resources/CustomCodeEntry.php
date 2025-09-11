@@ -35,6 +35,13 @@ class CustomCodeEntry extends Entry implements HasEmbeddedView
         return $this;
     }
 
+    public function startLine(int $startLine): static
+    {
+        $this->startLine = $startLine;
+
+        return $this;
+    }
+
     public function getFocusLine(): int
     {
         return $this->evaluate($this->focusLine);

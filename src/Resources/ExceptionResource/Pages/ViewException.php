@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
 
-use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
-use BezhanSalleh\FilamentExceptions\Trace\Parser;
-use Filament\Actions\DeleteAction;
-use Filament\Facades\Filament;
-use Filament\Resources\Pages\ViewRecord;
 use Phiki\Theme\Theme;
+use Filament\Facades\Filament;
+use Filament\Support\Enums\Width;
+use Filament\Actions\DeleteAction;
+use Filament\Resources\Pages\ViewRecord;
+use BezhanSalleh\FilamentExceptions\Trace\Parser;
+use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
+use Filament\Support\Enums\MaxWidth;
 
 class ViewException extends ViewRecord
 {
@@ -63,5 +65,10 @@ class ViewException extends ViewRecord
             'fi-resource-' . str_replace('/', '-', $this->getResource()::getSlug(Filament::getCurrentOrDefaultPanel())),
             "fi-resource-record-{$this->getRecord()->getKey()}",
         ];
+    }
+
+    public function getMaxContentWidth(): Width | string | null
+    {
+        return Width::Full;
     }
 }
