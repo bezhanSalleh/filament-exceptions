@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace BezhanSalleh\FilamentExceptions;
 
 use BezhanSalleh\FilamentExceptions\QueryRecorder\QueryRecorder;
+use Closure;
 use Filament\Clusters\Cluster;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Spatie\Backtrace\Backtrace;
 use Throwable;
 
 class FilamentExceptions
@@ -65,7 +66,11 @@ class FilamentExceptions
         }
 
         // Skip invalid line numbers
-        return $exception->getLine() > 0;
+        if ($exception->getLine() <= 0) {
+            return false;
+        }
+
+        return true;
     }
 
     public static function cluster(string $cluster): void
@@ -92,39 +97,34 @@ class FilamentExceptions
     {
         try {
             $data = [
-                'method' => $this->getMethod(),
-                'ip' => $this->getClientIp(),
-                'path' => $this->getPath(),
-                'query' => $this->getQueries(),
-                'body' => $this->getBody(),
-                'cookies' => $this->getCookies(),
-                'headers' => $this->getHeaders(),
-
+                // Exception details
                 'type' => $exception::class,
-                'code' => $exception->getCode(),
+                'code' => (string) $exception->getCode(),
+                'message' => $exception->getMessage(),
                 'file' => $exception->getFile(),
                 'line' => $exception->getLine(),
-                'message' => $exception->getMessage(),
                 'trace' => $this->buildTrace($exception),
+
+                // Request details
+                'method' => $this->getMethod(),
+                'path' => $this->getPath(),
+                'ip' => $this->getClientIp() ?: null,
+
+                // Request data
+                'headers' => $this->getHeaders() ?: null,
+                'cookies' => $this->getCookies() ?: null,
+                'body' => $this->getBody() ?: null,
+                'query' => $this->getQueries() ?: null,
+
+                // Route context
+                'route_context' => $this->getRouteContext() ?: null,
+                'route_parameters' => $this->getRouteParameters() ?: null,
             ];
 
-            $data = $this->stringify($data);
             $this->store($data);
         } catch (Throwable) {
             // Silent fail - never throw while handling exceptions
         }
-    }
-
-    /**
-     * @param  array<string, mixed>  $data
-     * @return array<string, string|false>
-     */
-    public function stringify(array $data): array
-    {
-        return array_map(
-            fn ($item): string | false => is_array($item) ? json_encode($item, JSON_OBJECT_AS_ARRAY) : (string) $item,
-            $data
-        );
     }
 
     /**
@@ -148,113 +148,195 @@ class FilamentExceptions
     }
 
     /**
-     * Build trace data using spatie/backtrace.
+     * Build trace data from native PHP exception trace.
+     * Prepends the exception's own location as the first frame.
      *
      * @return array<int, array<string, mixed>>
      */
     protected function buildTrace(Throwable $exception): array
     {
         try {
-            $frames = Backtrace::createForThrowable($exception)
-                ->applicationPath(base_path())
-                ->frames();
+            $basePath = base_path();
+            $frames = [];
 
-            return collect($frames)
-                ->map(fn ($frame): array => [
-                    'file' => $frame->file,
-                    'line' => $frame->lineNumber,
-                    'class' => $frame->class,
-                    'method' => $frame->method,
-                    'isApplicationFrame' => $frame->applicationFrame,
-                ])
-                ->filter(fn ($frame): bool => filled($frame['file']) && $frame['line'] > 0)
-                ->values()
-                ->toArray();
-        } catch (Throwable) {
-            // Fallback to basic trace if spatie/backtrace fails
-            return collect($exception->getTrace())
-                ->map(fn ($frame): array => [
-                    'file' => $frame['file'] ?? null,
-                    'line' => $frame['line'] ?? null,
+            $exceptionFile = $exception->getFile();
+            $exceptionLine = $exception->getLine();
+
+            // First frame: the actual exception location (not included in getTrace())
+            if ($exceptionFile && $exceptionLine > 0) {
+                $frames[] = [
+                    'file' => $exceptionFile,
+                    'line' => $exceptionLine,
+                    'class' => null,
+                    'type' => null,
+                    'function' => null,
+                ];
+            }
+
+            // Remaining frames from the trace
+            $traceFrames = collect($exception->getTrace())
+                ->filter(fn (array $frame): bool => isset($frame['file']))
+                ->map(fn (array $frame): array => [
+                    'file' => $frame['file'],
+                    'line' => $frame['line'] ?? 0,
                     'class' => $frame['class'] ?? null,
-                    'method' => $frame['function'],
-                    'isApplicationFrame' => isset($frame['file']) && ! str_contains($frame['file'], '/vendor/'),
+                    'type' => $frame['type'] ?? null,
+                    'function' => $frame['function'] ?? null,
                 ])
-                ->filter(fn ($frame): bool => filled($frame['file']) && $frame['line'] > 0)
+                ->filter(fn (array $frame): bool => $frame['line'] > 0)
+                // Filter out any frame that matches the exception location
+                ->filter(function (array $frame) use ($exceptionFile, $exceptionLine): bool {
+                    if (! $exceptionFile || ! $exceptionLine) {
+                        return true;
+                    }
+
+                    return ! (basename($frame['file']) === basename($exceptionFile)
+                        && $frame['line'] === $exceptionLine);
+                })
                 ->values()
                 ->toArray();
+
+            return array_merge($frames, $traceFrames);
+        } catch (Throwable) {
+            return [];
         }
     }
 
     protected function getMethod(): string
     {
         try {
-            return request()->getMethod();
+            return $this->request->getMethod();
         } catch (Throwable) {
             return 'CLI';
         }
     }
 
-    protected function getClientIp(): string
+    protected function getClientIp(): ?string
     {
         try {
-            return implode(', ', request()->getClientIps());
+            $ips = $this->request->getClientIps();
+
+            return $ips ? implode(', ', $ips) : null;
         } catch (Throwable) {
-            return '';
+            return null;
         }
     }
 
     protected function getPath(): string
     {
         try {
-            return request()->path();
+            return $this->request->path();
         } catch (Throwable) {
-            return '';
+            return '/';
         }
     }
 
     /**
-     * @return array<int, array<string, mixed>>
+     * @return array<int, array<string, mixed>>|null
      */
-    protected function getQueries(): array
+    protected function getQueries(): ?array
     {
         try {
-            return app()->make(QueryRecorder::class)->getQueries();
-        } catch (Throwable) {
-            return [];
-        }
-    }
+            $queries = app()->make(QueryRecorder::class)->getQueries();
 
-    protected function getBody(): string
-    {
-        try {
-            return request()->getContent() ?: '';
+            return $queries ?: null;
         } catch (Throwable) {
-            return '';
+            return null;
         }
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<string, mixed>|null
      */
-    protected function getCookies(): array
+    protected function getBody(): ?array
     {
         try {
-            return request()->cookies->all();
+            $payload = $this->request->all();
+
+            return $payload ?: null;
         } catch (Throwable) {
-            return [];
+            return null;
         }
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<string, mixed>|null
      */
-    protected function getHeaders(): array
+    protected function getCookies(): ?array
     {
         try {
-            return Arr::except(request()->headers->all(), 'cookie');
+            $cookies = $this->request->cookies->all();
+
+            return $cookies ?: null;
         } catch (Throwable) {
-            return [];
+            return null;
+        }
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    protected function getHeaders(): ?array
+    {
+        try {
+            $headers = Arr::except($this->request->headers->all(), 'cookie');
+
+            return $headers ?: null;
+        } catch (Throwable) {
+            return null;
+        }
+    }
+
+    /**
+     * Get the application's route context.
+     *
+     * @return array<string, string>|null
+     */
+    protected function getRouteContext(): ?array
+    {
+        try {
+            $route = $this->request->route();
+
+            if (! $route) {
+                return null;
+            }
+
+            $context = array_filter([
+                'controller' => $route->getActionName(),
+                'route name' => $route->getName(),
+                'middleware' => implode(', ', array_map(
+                    fn ($middleware) => $middleware instanceof Closure ? 'Closure' : $middleware,
+                    $route->gatherMiddleware()
+                )),
+            ]);
+
+            return $context ?: null;
+        } catch (Throwable) {
+            return null;
+        }
+    }
+
+    /**
+     * Get the application's route parameters.
+     *
+     * @return array<string, mixed>|null
+     */
+    protected function getRouteParameters(): ?array
+    {
+        try {
+            $parameters = $this->request->route()?->parameters();
+
+            if (! $parameters) {
+                return null;
+            }
+
+            // Convert models to arrays without relations
+            return array_map(
+                fn ($value) => $value instanceof Model ? $value->withoutRelations()->toArray() : $value,
+                $parameters
+            );
+        } catch (Throwable) {
+            return null;
         }
     }
 }

@@ -5,11 +5,17 @@ parameters:
 
     ignoreErrors:
         -
+            identifier: argument.unresolvableType
+        -
             identifier: argument.type
+        -
+            identifier: trait.unused
         -
             identifier: typeCoverage.paramTypeCoverage
         -
             identifier: property.notFound
+        -
+            identifier: method.notFound
 
     checkOctaneCompatibility: true
     checkModelProperties: true

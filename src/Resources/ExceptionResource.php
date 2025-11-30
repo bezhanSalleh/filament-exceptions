@@ -8,30 +8,17 @@ use BezhanSalleh\FilamentExceptions\FilamentExceptions;
 use BezhanSalleh\FilamentExceptions\FilamentExceptionsPlugin;
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages\ListExceptions;
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages\ViewException;
-use BezhanSalleh\FilamentExceptions\Trace\Parser;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\ViewAction;
-use Filament\Infolists;
-use Filament\Infolists\Components\CodeEntry;
-use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Panel;
 use Filament\Resources\Resource;
-use Filament\Schemas\Components\Tabs;
-use Filament\Schemas\Components\Tabs\Tab;
-use Filament\Schemas\Components\View;
-use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Phiki\Grammar\Grammar;
-use Phiki\Theme\Theme;
 
 class ExceptionResource extends Resource
 {
-    public static ?array $cachedFrames = null;
-
     public static function getCluster(): ?string
     {
         return FilamentExceptions::getCluster();
@@ -69,7 +56,7 @@ class ExceptionResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return static::getPlugin()->getNavigationLabel();
+        return static::getPlugin()->getNavigationLabel() ?? __('filament-exceptions::filament-exceptions.labels.navigation');
     }
 
     public static function getNavigationIcon(): string
@@ -85,7 +72,7 @@ class ExceptionResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return static::getPlugin()->shouldEnableNavigationBadge()
-            ? (string) static::getEloquentQuery()->count()
+            ? static::getEloquentQuery()->count()
             : null;
     }
 
@@ -192,114 +179,5 @@ class ExceptionResource extends Resource
             'index' => ListExceptions::route('/'),
             'view' => ViewException::route('/{record}'),
         ];
-    }
-
-    public static function infolist(Schema $schema): Schema
-    {
-        return $schema->components([
-            Tabs::make('Heading')
-                ->activeTab(static fn (): int => static::getPlugin()->getActiveTab())
-                ->tabs([
-                    Tab::make('Exception')
-                        ->label(static fn (): string => static::getPlugin()->getExceptionTabLabel())
-                        ->icon(static fn (): string => static::getPlugin()->getExceptionTabIcon())
-                        ->schema([
-                            View::make('filament-exceptions::exception'),
-                            // Tabs::make('Frames')
-                            //     ->extraAttributes(['class' => '[&_.fi-vertical]:overflow-y-auto [&_.fi-vertical]:overscroll-contain [&_.fi-vertical]:h-[32rem]'])
-                            //     ->tabs(fn (Model $record): array => static::getFrameTabs($record))
-                            //     ->vertical()
-                        ]),
-                    Tab::make('Headers')
-                        ->label(static fn (): string => static::getPlugin()->getHeadersTabLabel())
-                        ->icon(static fn (): string => static::getPlugin()->getHeadersTabIcon())
-                        ->hidden(fn (Model $record): bool => blank($record->headers))
-                        ->schema([
-                            Infolists\Components\KeyValueEntry::make('headers')
-                                ->hiddenLabel(),
-                        ]),
-                    Tab::make('Cookies')
-                        ->label(static fn (): string => static::getPlugin()->getCookiesTabLabel())
-                        ->icon(static fn (): string => static::getPlugin()->getCookiesTabIcon())
-                        ->hidden(fn (Model $record): bool => blank($record->cookies))
-                        ->schema([
-                            Infolists\Components\KeyValueEntry::make('cookies')
-                                ->hiddenLabel(),
-                        ]),
-                    Tab::make('Body')
-                        ->label(static fn (): string => static::getPlugin()->getBodyTabLabel())
-                        ->icon(static fn (): string => static::getPlugin()->getBodyTabIcon())
-                        ->hidden(fn (Model $record): bool => blank($record->body))
-                        ->schema([
-                            Infolists\Components\KeyValueEntry::make('body')
-                                ->hiddenLabel(),
-                        ]),
-                    Tab::make('Queries')
-                        ->label(static fn (): string => static::getPlugin()->getQueriesTabLabel())
-                        ->icon(static fn (): string => static::getPlugin()->getQueriesTabIcon())
-                        ->badge(static fn ($record): int => collect($record->query)->count())
-                        ->hidden(fn (Model $record): bool => blank($record->query))
-                        ->schema([
-                            Infolists\Components\RepeatableEntry::make('query')
-                                ->hiddenLabel()
-                                ->schema([
-                                    CodeEntry::make('sql')
-                                        ->hiddenLabel()
-                                        ->grammar(Grammar::Sql)
-                                        ->lightTheme(Theme::GithubLight)
-                                        ->darkTheme(Theme::GithubDarkDefault)
-                                        ->copyable()
-                                        ->copyMessage('Copied!')
-                                        ->copyMessageDuration(1500),
-                                    KeyValueEntry::make('bindings')
-                                        ->extraAttributes([
-                                            'style' => '--first-col-width: 25%; --last-col-width: 75%;',
-                                            'class' => '[&_tbody_tr_td:first-child]:[width:var(--first-col-width)!important] [&_tbody_tr>td:last-child]:[width:var(--last-col-width)!important]',
-                                        ])
-                                        ->hiddenLabel()
-                                        ->keyLabel('#Bindings: Key')
-                                        ->valueLabel('Value')
-                                        ->hidden(fn ($state): bool => blank($state)),
-                                ])
-                                ->contained(false),
-                        ]),
-
-                ]),
-        ])->columns(1);
-    }
-
-    public static function getTraceFrames(Model $record): ?array
-    {
-        // @phpstan-ignore-next-line
-        if (blank(static::$cachedFrames) && $record) {
-            $trace = "#0 {$record->file}({$record->line})\n";
-            $frames = new Parser(sprintf('%s %s', $trace, $record->trace))->parse();
-            array_pop($frames);
-
-            return $frames;
-        }
-
-        return static::$cachedFrames;
-    }
-
-    public static function getFrameTabs(Model $record): array
-    {
-        return collect(static::getTraceFrames($record))
-            ->filter(fn ($frame): bool => filled($frame) && intval($frame->line()) > 0)
-            ->map(fn ($frame, string $index): Tab => Tab::make(str($frame->method())->append($frame->line())->toString())
-                ->label(str($frame->file())->replace(base_path() . '/', '')->afterLast('/')->append($frame->method())->afterLast('/')->append(' at line: ' . $frame->line())->toString())
-                ->badge(fn () => $frame->line())
-                ->schema([
-                    CustomCodeEntry::make('frame_' . $index)
-                        ->extraAttributes(['class' => '[&_.line]:text-balance'])
-                        ->hiddenLabel()
-                        ->state($frame->getCodeBlock()->codeString())
-                        ->grammar(Grammar::Php)
-                        ->lightTheme(Theme::GithubLight)
-                        ->darkTheme(Theme::GithubDarkDefault)
-                        ->focusLine(intval($frame->line()))
-                        ->startLine(1),
-                ]))
-            ->toArray();
     }
 }

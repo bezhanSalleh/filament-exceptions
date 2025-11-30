@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
 
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
-use BezhanSalleh\FilamentExceptions\Trace\Frame;
-use BezhanSalleh\FilamentExceptions\Trace\Parser;
+use BezhanSalleh\FilamentExceptions\StoredException;
 use Filament\Actions\DeleteAction;
 use Filament\Facades\Filament;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Enums\Width;
-use Phiki\Theme\Theme;
+use Illuminate\Contracts\Support\Htmlable;
 use Throwable;
 
 class ViewException extends ViewRecord
@@ -20,49 +19,30 @@ class ViewException extends ViewRecord
 
     protected string $view = 'filament-exceptions::view-exception';
 
-    /** @var array<int, Frame>|null */
-    protected ?array $cachedFrames = null;
+    protected ?StoredException $storedException = null;
 
     /**
-     * @return array<int, Frame>
+     * Get the stored exception instance for rendering with Laravel's components.
      */
-    public function getFramesProperty(): array
+    public function getStoredException(): StoredException
     {
-        if ($this->cachedFrames !== null) {
-            return $this->cachedFrames;
+        if ($this->storedException !== null) {
+            return $this->storedException;
         }
 
         try {
-            $this->cachedFrames = (new Parser($this->record->trace ?? ''))->parse();
+            $this->storedException = new StoredException($this->record);
         } catch (Throwable) {
-            $this->cachedFrames = [];
+            // If something goes wrong, create with a fresh record
+            $this->storedException = new StoredException($this->record);
         }
 
-        return $this->cachedFrames;
+        return $this->storedException;
     }
 
-    public function renderFrame(int $frameIndex, bool $isDark = false): string
+    public function getHeading(): string | Htmlable | null
     {
-        try {
-            $frames = $this->frames;
-
-            if (! isset($frames[$frameIndex])) {
-                return '<div class="text-gray-500 p-4">Frame not available</div>';
-            }
-
-            $frame = $frames[$frameIndex];
-            $codeBlock = $frame->getCodeBlock();
-
-            if (blank($codeBlock->codeString())) {
-                return '<div class="text-gray-500 p-4">Source code not available</div>';
-            }
-
-            $theme = $isDark ? Theme::GithubDark : Theme::GithubLight;
-
-            return $codeBlock->output($frame->line(), $theme);
-        } catch (Throwable) {
-            return '<div class="text-gray-500 p-4">Unable to render code</div>';
-        }
+        return null; // $this->heading ?? $this->getTitle();
     }
 
     /**
@@ -79,7 +59,7 @@ class ViewException extends ViewRecord
 
     public function getMaxContentWidth(): Width | string | null
     {
-        return Width::Full;
+        return Width::SixExtraLarge;
     }
 
     protected function getActions(): array
