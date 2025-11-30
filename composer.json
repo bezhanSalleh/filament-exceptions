@@ -1,0 +1,85 @@
+{
+    "name": "bezhansalleh/filament-exceptions",
+    "description": "A Simple & Beautiful Pluggable Exception Viewer for FilamentPHP's Admin Panel",
+    "keywords": [
+        "bezhanSalleh",
+        "laravel",
+        "filament-exceptions",
+        "filament-exception-viewer"
+    ],
+    "homepage": "https://github.com/bezhansalleh/filament-exceptions",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bezhan Salleh",
+            "email": "bezhan_salleh@yahoo.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "bezhansalleh/filament-plugin-essentials": "^1.0",
+        "filament/filament": "^4.0",
+        "illuminate/contracts": "^11.28|^12.0",
+        "illuminate/support": "^11.28|^12.0",
+        "phiki/phiki": "2.x-dev",
+        "spatie/backtrace": "^1.6",
+        "spatie/laravel-package-tools": "^1.9"
+    },
+    "require-dev": {
+        "filament/upgrade": "^4.0",
+        "larastan/larastan": "^2.2|^3.0",
+        "laravel/pint": "^1.0",
+        "nunomaduro/collision": "^7.0|^8.0",
+        "orchestra/testbench": "^10.6",
+        "pestphp/pest": "^2.0|^3.0",
+        "pestphp/pest-plugin-laravel": "^2.0|^3.0",
+        "pestphp/pest-plugin-livewire": "^3.0",
+        "pestphp/pest-plugin-type-coverage": "^3.5",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpunit/phpunit": "^10.1|^11.0",
+        "rector/rector": "^2.1",
+        "spatie/laravel-ray": "^1.40"
+    },
+    "autoload": {
+        "psr-4": {
+            "BezhanSalleh\\FilamentExceptions\\": "src",
+            "BezhanSalleh\\FilamentExceptions\\Database\\Factories\\": "database/factories"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BezhanSalleh\\FilamentExceptions\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/pest --no-coverage",
+        "type": "vendor/bin/pest --type-coverage",
+        "lint": "vendor/bin/pint",
+        "refactor": "vendor/bin/rector",
+        "finalize": "composer refactor && composer lint && npm run lint && composer type && composer analyse && composer test"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "BezhanSalleh\\FilamentExceptions\\FilamentExceptionsServiceProvider"
+            ],
+            "aliases": {
+                "FilamentExceptions": "BezhanSalleh\\FilamentExceptions\\Facades\\FilamentExceptions"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

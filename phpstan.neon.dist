@@ -1,0 +1,18 @@
+parameters:
+    level: 5
+    paths:
+        - src
+
+    ignoreErrors:
+        -
+            identifier: argument.type
+        -
+            identifier: typeCoverage.paramTypeCoverage
+        -
+            identifier: property.notFound
+
+    checkOctaneCompatibility: true
+    checkModelProperties: true
+    tmpDir: build/phpstan
+    treatPhpDocTypesAsCertain: false
+    reportUnmatchedIgnoredErrors: true

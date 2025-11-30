@@ -1,0 +1,17 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "lint": "prettier --write resources/",
+        "lint:check": "prettier --check resources/"
+    },
+    "devDependencies": {
+        "prettier": "^3.6.2",
+        "prettier-plugin-organize-imports": "^4.3.0",
+        "prettier-plugin-tailwindcss": "^0.7.1",
+        "tailwindcss": "^4.1.17"
+    },
+    "dependencies": {
+        "prettier-plugin-blade": "^2.1.21"
+    }
+}
