@@ -8,15 +8,7 @@ return [
         'model' => 'Výjimka',
         'model_plural' => 'Výjimky',
         'navigation' => 'Výjimka',
-        'navigation_group' => 'Nastavení',
-
-        'tabs' => [
-            'exception' => 'Výjimka',
-            'headers' => 'Hlavičky',
-            'cookies' => 'Cookies',
-            'body' => 'Tělo',
-            'queries' => 'Dotazy',
-        ],
+        'navigation_group' => 'Nastavení'
     ],
 
     'empty_list' => 'Hurá! Posaďte se a užívejte si 😎',

@@ -3,8 +3,8 @@
 </a>
 
 <p align="center" class="flex items-center justify-center">
-    <a href="https://filamentadmin.com/docs/2.x/admin/installation">
-        <img alt="FILAMENT 8.x" src="https://img.shields.io/badge/FILAMENT-3.x-EBB304?style=for-the-badge">
+    <a href="https://filamentphp.com/docs/4.x/introduction/overview">
+        <img alt="FILAMENT 4.x" src="https://img.shields.io/badge/FILAMENT-4.x-EBB304?style=for-the-badge">
     </a>
     <a href="https://packagist.org/packages/bezhansalleh/filament-exceptions">
         <img alt="Packagist" src="https://img.shields.io/packagist/v/bezhansalleh/filament-exceptions.svg?style=for-the-badge&logo=packagist">
@@ -25,7 +25,10 @@
 
 A Simple & Beautiful Exception Viewer for FilamentPHP's Admin Panel
 
-* For FilamentPHP 2.x use version 1.x
+> **Version Compatibility:**
+> - Filament 4.x → use version 4.x
+> - Filament 3.x → use version 3.x
+> - Filament 2.x → use version 1.x
 
 ## Installation
 
@@ -52,49 +55,62 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-4. Activate the plugin by editing your App's Exception Handler as follow:
-- **Laravel 11.x+**
-  Enable it in the `bootstrap/app.php` file
-  ```php
-  <?php
+That's it! The package automatically registers itself with Laravel's exception handler and starts recording exceptions.
 
-  use BezhanSalleh\FilamentExceptions\FilamentExceptions;
-  use Illuminate\Foundation\Application;
-  ...
+### Recording Control
 
-  return Application::configure(basePath: dirname(__DIR__))
-      ...
-      ->withExceptions(function (Exceptions $exceptions) {
-          $exceptions->reportable(function (Exception|Throwable $e) {
-              FilamentExceptions::report($e);
-          });
-      })
-      ...
-  ```
-- **Laravel 10.x**
-  ```php
-  <?php
+By default, exceptions are recorded automatically. You can control this behavior in your `AppServiceProvider`'s `boot()` method:
 
-  namespace App\Exceptions;
+#### Stop/Start Recording
+```php
+use BezhanSalleh\FilamentExceptions\FilamentExceptions;
 
-  use BezhanSalleh\FilamentExceptions\FilamentExceptions;
+public function boot(): void
+{
+    // Stop recording exceptions
+    FilamentExceptions::stopRecording();
 
-  class Handler extends ExceptionHandler
-  {
-      ...
+    // Resume recording
+    FilamentExceptions::startRecording();
 
-      public function register()
-      {
-          $this->reportable(function (Throwable $e) {
-              if ($this->shouldReport($e)) {
-                  FilamentExceptions::report($e);
-              }
-          });
+    // Check if recording is active
+    FilamentExceptions::isRecording();
+}
+```
 
-          ...
-      }
-  }
-  ```
+#### Conditional Recording
+Use `recordUsing()` to define custom logic for when exceptions should be recorded:
+
+```php
+use BezhanSalleh\FilamentExceptions\FilamentExceptions;
+
+public function boot(): void
+{
+    // Only record in production
+    FilamentExceptions::recordUsing(fn () => app()->isProduction());
+
+    // Skip specific exception types
+    FilamentExceptions::recordUsing(function (Throwable $e) {
+        return ! $e instanceof \Illuminate\Validation\ValidationException
+            && ! $e instanceof \Illuminate\Auth\AuthenticationException;
+    });
+
+    // Combine multiple conditions
+    FilamentExceptions::recordUsing(function (Throwable $e) {
+        if (! app()->isProduction()) {
+            return false;
+        }
+
+        // Skip 4xx HTTP exceptions
+        if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpException
+            && $e->getStatusCode() < 500) {
+            return false;
+        }
+
+        return true;
+    });
+}
+```
 
 ### Configuration Options
 
@@ -122,22 +138,6 @@ FilamentExceptionsPlugin::make()
     ->pluralModelLabel(string | Closure | null $label)
     ->titleCaseModelLabel(bool | Closure $condition = true)
     ->globallySearchable(bool | Closure $condition = true)
-```
-
-#### Tabs Labels and Icons
-```php
-FilamentExceptionsPlugin::make()
-    ->activeTab(int $tab) // 1 = Exception, 2 = Headers, 3 = Cookies, 4 = Body, 5 = Queries
-    ->bodyTabIcon(string $icon)
-    ->bodyTabLabel(string $label)
-    ->cookiesTabIcon(string $icon)
-    ->cookiesTabLabel(string $label)
-    ->exceptionTabIcon(string $icon)
-    ->exceptionTabLabel(string $label)
-    ->headersTabIcon(string $icon)
-    ->headersTabLabel(string $label)
-    ->queriesTabIcon(string $icon)
-    ->queriesTabLabel(string $label)
 ```
 
 #### Mass Pruning Settings
@@ -201,16 +201,7 @@ use BezhanSalleh\FilamentExceptions\FilamentExceptions;
 ...
 ```
 ## Theme
-By default the plugin uses the default theme of Filamentphp, but if you are using a custom theme then include the plugins view path into the content array of your tailwind.config.js file:
-```js
-export default {
-    content: [
-        // ...
-        './vendor/bezhansalleh/filament-exceptions/resources/views/**/*.blade.php',
-    ],
-    // ...
-}
-```
+The exception viewer automatically inherits your Filament panel's theme colors (primary, danger, warning, success, gray). No additional configuration is required.
 
 ## Translations
 Publish the translations with

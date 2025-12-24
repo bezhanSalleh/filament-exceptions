@@ -8,15 +8,7 @@ return [
         'model' => 'Exception',
         'model_plural' => 'Exceptions',
         'navigation' => 'Exception',
-        'navigation_group' => 'Settings',
-
-        'tabs' => [
-            'exception' => 'Exception',
-            'headers' => 'Headers',
-            'cookies' => 'Cookies',
-            'body' => 'Body',
-            'queries' => 'Queries',
-        ],
+        'navigation_group' => 'Settings'
     ],
 
     'empty_list' => 'Horray! just sit back & enjoy 😎',

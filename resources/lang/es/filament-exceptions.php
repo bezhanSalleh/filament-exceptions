@@ -8,15 +8,7 @@ return [
         'model' => 'Excepción',
         'model_plural' => 'Excepciones',
         'navigation' => 'Excepción',
-        'navigation_group' => 'Configuración',
-
-        'tabs' => [
-            'exception' => 'Excepción',
-            'headers' => 'Encabezados',
-            'cookies' => 'Cookies',
-            'body' => 'Cuerpo',
-            'queries' => 'Consultas',
-        ],
+        'navigation_group' => 'Configuración'
     ],
 
     'empty_list' => '¡Hurra! Relájate y disfruta 😎',
