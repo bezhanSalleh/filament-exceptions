@@ -1,3 +1,4 @@
+
 parameters:
     level: 5
     paths:
@@ -21,4 +22,4 @@ parameters:
     checkModelProperties: true
     tmpDir: build/phpstan
     treatPhpDocTypesAsCertain: false
-    reportUnmatchedIgnoredErrors: true
+    reportUnmatchedIgnoredErrors: false

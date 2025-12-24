@@ -6,8 +6,6 @@ namespace BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
 
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
 use BezhanSalleh\FilamentExceptions\StoredException;
-use Filament\Actions\DeleteAction;
-use Filament\Facades\Filament;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Enums\Width;
 use Illuminate\Contracts\Support\Htmlable;
@@ -26,7 +24,7 @@ class ViewException extends ViewRecord
      */
     public function getStoredException(): StoredException
     {
-        if ($this->storedException !== null) {
+        if ($this->storedException instanceof \BezhanSalleh\FilamentExceptions\StoredException) {
             return $this->storedException;
         }
 
@@ -45,16 +43,9 @@ class ViewException extends ViewRecord
         return null; // $this->heading ?? $this->getTitle();
     }
 
-    /**
-     * @return array<string>
-     */
-    public function getPageClasses(): array
+    public function getHeader(): ?\Illuminate\Contracts\View\View
     {
-        return [
-            'fi-resource-view-record-page',
-            'fi-resource-' . str_replace('/', '-', $this->getResource()::getSlug(Filament::getCurrentOrDefaultPanel())),
-            'fi-resource-record-' . $this->getRecord()->getKey(),
-        ];
+        return null;
     }
 
     public function getMaxContentWidth(): Width | string | null
@@ -62,10 +53,15 @@ class ViewException extends ViewRecord
         return Width::SixExtraLarge;
     }
 
-    protected function getActions(): array
+    public function getPageClasses(): array
     {
         return [
-            DeleteAction::make(),
+            '[&_.fi-page-header-main-ctn]:gap-y-0! [&_.fi-page-header-main-ctn]:py-1',
         ];
+    }
+
+    public function getBreadcrumbs(): array
+    {
+        return [];
     }
 }

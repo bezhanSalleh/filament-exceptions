@@ -56,7 +56,7 @@ class ExceptionResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return static::getPlugin()->getNavigationLabel() ?? __('filament-exceptions::filament-exceptions.labels.navigation');
+        return static::getPlugin()->getNavigationLabel();
     }
 
     public static function getNavigationIcon(): string
@@ -72,7 +72,7 @@ class ExceptionResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return static::getPlugin()->shouldEnableNavigationBadge()
-            ? static::getEloquentQuery()->count()
+            ? (string) static::getEloquentQuery()->count()
             : null;
     }
 
@@ -164,13 +164,6 @@ class ExceptionResource extends Resource
                 ]),
             ])
             ->defaultSort('created_at', 'desc');
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array

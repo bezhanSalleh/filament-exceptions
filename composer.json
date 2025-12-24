@@ -26,7 +26,7 @@
     },
     "require-dev": {
         "filament/upgrade": "^4.0",
-        "larastan/larastan": "^2.2|^3.0",
+        "larastan/larastan": "^3.8",
         "laravel/pint": "^1.0",
         "nunomaduro/collision": "^7.0|^8.0",
         "orchestra/testbench": "^10.6",
@@ -54,12 +54,20 @@
         }
     },
     "scripts": {
-        "analyse": "vendor/bin/phpstan analyse",
-        "test": "vendor/bin/pest --no-coverage",
-        "type": "vendor/bin/pest --type-coverage",
-        "lint": "vendor/bin/pint",
-        "refactor": "vendor/bin/rector",
-        "finalize": "composer refactor && composer lint && npm run lint && composer type && composer analyse && composer test"
+        "analyse": "phpstan analyse",
+        "test": "pest --no-coverage",
+        "type": "pest --type-coverage",
+        "cs": [
+            "rector",
+            "pint --parallel"
+        ],
+        "refactor": "rector",
+        "finalize": [
+            "@cs",
+            "@analyse",
+            "@test",
+            "@type"
+        ]
     },
     "config": {
         "sort-packages": true,

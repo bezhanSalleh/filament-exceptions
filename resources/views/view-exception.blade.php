@@ -1,38 +1,43 @@
+@use('BezhanSalleh\FilamentExceptions\FilamentExceptions')
 @php
-    use Illuminate\Foundation\Exceptions\Renderer\Renderer;
-    use BezhanSalleh\FilamentExceptions\FilamentExceptionsServiceProvider;
-
     $exception = $this->getStoredException();
+    $exceptionAsMarkdown = $exception->markdown();
     $record = $exception->record();
 @endphp
 
-<div class="gap-8 flex">
-    {{-- Include our custom CSS (class-based dark mode for Filament compatibility) --}}
-    {{-- {!! Renderer::css() !!} --}}
-    {!! FilamentExceptionsServiceProvider::css() !!}
-    <div class="flex flex-col gap-y-8" dir="ltr">
-        {{-- Use Laravel's header component --}}
-        <x-laravel-exceptions-renderer::header :$exception />
+<x-filament-panels::page class="min-h-dvh [&_.fi-page-content]:gap-y-0!">
 
-        {{-- Use Laravel's trace component --}}
+    {!! FilamentExceptions::renderCss() !!}
+
+    <x-laravel-exceptions-renderer::section-container class="px-6 py-0 sm:py-0">
+        <x-laravel-exceptions-renderer::topbar :title="$exception->title()" :markdown="$exceptionAsMarkdown" />
+    </x-laravel-exceptions-renderer::section-container>
+
+    <x-laravel-exceptions-renderer::separator />
+
+    <x-laravel-exceptions-renderer::section-container class="flex flex-col gap-8 py-0 sm:py-0 [&>div:last-child]:z-10">
+        <x-laravel-exceptions-renderer::header :$exception />
+    </x-laravel-exceptions-renderer::section-container>
+
+    <x-laravel-exceptions-renderer::separator class="-mt-5 -z-10" />
+
+    <x-laravel-exceptions-renderer::section-container class="flex flex-col gap-8 pt-14">
         <x-laravel-exceptions-renderer::trace :$exception />
 
-        {{-- Use Laravel's query component --}}
         <x-laravel-exceptions-renderer::query :queries="$exception->applicationQueries()" />
+    </x-laravel-exceptions-renderer::section-container>
 
-        {{-- Use Laravel's request-header component --}}
+    <x-laravel-exceptions-renderer::separator />
+
+    <x-laravel-exceptions-renderer::section-container class="flex flex-col gap-12">
         <x-laravel-exceptions-renderer::request-header :headers="$exception->requestHeaders()" />
 
-        {{-- Use Laravel's request-body component --}}
         <x-laravel-exceptions-renderer::request-body :body="$exception->requestBody()" />
 
-        {{-- Use Laravel's routing component --}}
         <x-laravel-exceptions-renderer::routing :routing="$exception->applicationRouteContext()" />
 
-        {{-- Use Laravel's routing-parameter component --}}
         <x-laravel-exceptions-renderer::routing-parameter :routeParameters="$exception->applicationRouteParametersContext()" />
 
-        {{-- Cookies Section (not in Laravel's renderer, but we store it) --}}
         @if (filled($record->cookies))
             <div class="flex flex-col gap-3">
                 <h2 class="text-lg font-semibold text-neutral-900 dark:text-white">Cookies</h2>
@@ -49,11 +54,18 @@
                 </div>
             </div>
         @endif
+    </x-laravel-exceptions-renderer::section-container>
 
-        {{-- Timestamp & IP (extra info not in Laravel's renderer) --}}
-        <div class="flex flex-wrap items-center gap-4 text-xs text-neutral-500 dark:text-neutral-400 pb-4">
+    <x-laravel-exceptions-renderer::separator />
+
+    <x-laravel-exceptions-renderer::section-container class="pb-0 sm:pb-0">
+        <div class="flex flex-wrap items-center gap-4 text-xs text-neutral-500 dark:text-neutral-400 pb-2">
             <div class="flex items-center gap-1.5">
-                <x-laravel-exceptions-renderer::icons.info class="w-4 h-4" />
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4">
+                    <path d="M4.5 4.5a3 3 0 0 0-3 3v9a3 3 0 0 0 3 3h8.25a3 3 0 0 0 3-3v-9a3 3 0 0 0-3-3H4.5ZM19.94 18.75l-2.69-2.69V7.94l2.69-2.69c.944-.945 2.56-.276 2.56 1.06v11.38c0 1.336-1.616 2.005-2.56 1.06Z" />
+                </svg>
+
+
                 <span>Recorded: {{ $record->created_at->format('M d, Y H:i:s') }}</span>
             </div>
             @if ($record->ip)
@@ -63,8 +75,6 @@
                 </div>
             @endif
         </div>
-    </div>
-
-    {{-- Include our custom JS (without Alpine.js to avoid Filament conflicts) --}}
-    {!! FilamentExceptionsServiceProvider::js() !!}
-</div>
+    </x-laravel-exceptions-renderer::section-container>
+    {!! FilamentExceptions::renderJs() !!}
+</x-filament-panels::page>

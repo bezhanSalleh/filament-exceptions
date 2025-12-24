@@ -34,6 +34,9 @@ return new class extends Migration
             $table->json('route_context')->nullable();
             $table->json('route_parameters')->nullable();
 
+            // Markdown for copy functionality
+            $table->longText('markdown')->nullable();
+
             $table->timestamps();
 
             // Index for common queries

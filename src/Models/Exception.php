@@ -33,6 +33,7 @@ class Exception extends Model
             'query' => 'array',
             'route_context' => 'array',
             'route_parameters' => 'array',
+            'markdown' => 'string',
         ];
     }
 }

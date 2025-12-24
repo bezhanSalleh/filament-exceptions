@@ -89,7 +89,7 @@ class StoredException
      */
     public function frames(): Collection
     {
-        return once(function () {
+        return once(function (): \Illuminate\Support\Collection {
             $trace = $this->decodeTrace();
             $basePath = base_path();
             $frames = [];
@@ -143,7 +143,7 @@ class StoredException
         foreach ($this->frames() as $frame) {
             $isVendor = $frame->isFromVendor();
 
-            if (empty($groups) || $groups[array_key_last($groups)]['is_vendor'] !== $isVendor) {
+            if ($groups === [] || $groups[array_key_last($groups)]['is_vendor'] !== $isVendor) {
                 $groups[] = [
                     'is_vendor' => $isVendor,
                     'frames' => [],
@@ -173,9 +173,7 @@ class StoredException
     {
         $headers = $this->record->headers ?? [];
 
-        return array_map(function ($header) {
-            return is_array($header) ? implode(', ', $header) : (string) $header;
-        }, $headers);
+        return array_map(fn ($header): string => is_array($header) ? implode(', ', $header) : (string) $header, $headers);
     }
 
     /**
@@ -229,13 +227,11 @@ class StoredException
     {
         $queries = $this->record->query ?? [];
 
-        return array_map(function ($query) {
-            return [
-                'connectionName' => $query['connectionName'] ?? $query['connection'] ?? 'default',
-                'time' => (float) ($query['time'] ?? 0),
-                'sql' => $query['sql'] ?? '',
-            ];
-        }, $queries);
+        return array_map(fn (array $query): array => [
+            'connectionName' => $query['connectionName'] ?? $query['connection'] ?? 'default',
+            'time' => (float) ($query['time'] ?? 0),
+            'sql' => $query['sql'] ?? '',
+        ], $queries);
     }
 
     /**
@@ -244,6 +240,14 @@ class StoredException
     public function record(): ExceptionModel
     {
         return $this->record;
+    }
+
+    /**
+     * Get the stored markdown.
+     */
+    public function markdown(): string
+    {
+        return $this->record->markdown ?? '';
     }
 
     /**
@@ -301,9 +305,7 @@ class StoredException
         // First, try to get from Composer's autoloader
         $loaders = ClassLoader::getRegisteredLoaders();
         if (! empty($loaders)) {
-            $this->classMap = array_map(function ($path) {
-                return (string) realpath($path);
-            }, array_values($loaders)[0]->getClassMap());
+            $this->classMap = array_map(fn (string $path): string => (string) realpath($path), array_values($loaders)[0]->getClassMap());
         }
 
         // Also add classes from our stored trace (in case files moved)
