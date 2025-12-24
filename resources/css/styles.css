@@ -3,8 +3,13 @@
 @import 'tippy.js/dist/tippy.css';
 @import 'tippy.js/animations/shift-away.css';
 
+/* Configure Tailwind v4 to use class-based dark mode (for Filament compatibility) */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Scan Laravel's exception renderer components to include all their Tailwind classes */
+@source "../../vendor/laravel/framework/src/Illuminate/Foundation/resources/exceptions/renderer/components*.blade.php";
+
+/* Also scan our own views */
 @source "../views/**/*.blade.php";
 
 [x-cloak] {

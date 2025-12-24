@@ -52,6 +52,8 @@ class FilamentExceptions
                 base_path()
             );
 
+            logger()->info('from base class',[$flattenException]);
+
             // Generate markdown exactly like Laravel's Renderer does
             $markdown = view('laravel-exceptions-renderer::markdown', [
                 'exception' => $exception,
