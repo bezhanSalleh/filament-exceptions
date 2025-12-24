@@ -129,7 +129,55 @@ class FilamentExceptions
 
     public static function renderCss(): string
     {
-        return '<style>' . file_get_contents(__DIR__ . '/../resources/dist/styles.css') . '</style>';
+        $css = file_get_contents(__DIR__ . '/../resources/dist/styles.css');
+
+        // Override Tailwind colors to use Filament's theme variables
+        // This must come after the main CSS to win in the cascade
+        $colorOverrides = '
+            :root {
+                --color-neutral-50: var(--gray-50);
+                --color-neutral-100: var(--gray-100);
+                --color-neutral-200: var(--gray-200);
+                --color-neutral-300: var(--gray-300);
+                --color-neutral-400: var(--gray-400);
+                --color-neutral-500: var(--gray-500);
+                --color-neutral-600: var(--gray-600);
+                --color-neutral-700: var(--gray-700);
+                --color-neutral-800: var(--gray-800);
+                --color-neutral-900: var(--gray-900);
+                --color-neutral-950: var(--gray-950);
+                --color-rose-50: var(--danger-50);
+                --color-rose-100: var(--danger-100);
+                --color-rose-200: var(--danger-200);
+                --color-rose-500: var(--danger-500);
+                --color-rose-600: var(--danger-600);
+                --color-rose-900: var(--danger-900);
+                --color-rose-950: var(--danger-950);
+                --color-blue-50: var(--primary-50);
+                --color-blue-100: var(--primary-100);
+                --color-blue-300: var(--primary-300);
+                --color-blue-500: var(--primary-500);
+                --color-blue-600: var(--primary-600);
+                --color-blue-700: var(--primary-700);
+                --color-blue-800: var(--primary-800);
+                --color-blue-900: var(--primary-900);
+                --color-blue-950: var(--primary-950);
+                --color-emerald-200: var(--success-200);
+                --color-emerald-400: var(--success-400);
+                --color-emerald-500: var(--success-500);
+                --color-emerald-600: var(--success-600);
+                --color-emerald-900: var(--success-900);
+                --color-amber-200: var(--warning-200);
+                --color-amber-300: var(--warning-300);
+                --color-amber-500: var(--warning-500);
+                --color-amber-600: var(--warning-600);
+                --color-amber-800: var(--warning-800);
+                --color-amber-900: var(--warning-900);
+                --color-amber-950: var(--warning-950);
+            }
+        ';
+
+        return '<style>' . $css . $colorOverrides . '</style>';
     }
 
     /**

@@ -15,7 +15,7 @@
 
     <x-laravel-exceptions-renderer::separator />
 
-    <x-laravel-exceptions-renderer::section-container class="flex flex-col gap-8 py-0 sm:py-0 [&>div:last-child]:z-10">
+    <x-laravel-exceptions-renderer::section-container class="flex flex-col gap-8 py-0 sm:py-0 [&>div:last-child]:z-10 dark:[&>div>div:last-child]:bg-gray-900!">
         <x-laravel-exceptions-renderer::header :$exception />
     </x-laravel-exceptions-renderer::section-container>
 
@@ -61,11 +61,7 @@
     <x-laravel-exceptions-renderer::section-container class="pb-0 sm:pb-0">
         <div class="flex flex-wrap items-center gap-4 text-xs text-neutral-500 dark:text-neutral-400 pb-2">
             <div class="flex items-center gap-1.5">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4">
-                    <path d="M4.5 4.5a3 3 0 0 0-3 3v9a3 3 0 0 0 3 3h8.25a3 3 0 0 0 3-3v-9a3 3 0 0 0-3-3H4.5ZM19.94 18.75l-2.69-2.69V7.94l2.69-2.69c.944-.945 2.56-.276 2.56 1.06v11.38c0 1.336-1.616 2.005-2.56 1.06Z" />
-                </svg>
-
-
+                <x-laravel-exceptions-renderer::icons.info class="w-4 h-4" />
                 <span>Recorded: {{ $record->created_at->format('M d, Y H:i:s') }}</span>
             </div>
             @if ($record->ip)
