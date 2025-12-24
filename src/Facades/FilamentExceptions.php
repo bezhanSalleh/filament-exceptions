@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BezhanSalleh\FilamentExceptions\Facades;
 
+use Closure;
 use Illuminate\Support\Facades\Facade;
 use Throwable;
 
@@ -14,7 +15,12 @@ use Throwable;
  * @method static void model(string $model)
  * @method static string|null getCluster()
  * @method static void cluster(string $cluster)
- * @method static bool shouldCapture(Throwable $exception)
+ * @method static void stopRecording()
+ * @method static void startRecording()
+ * @method static bool isRecording()
+ * @method static void recordUsing(?Closure $callback)
+ * @method static string renderCss()
+ * @method static string renderJs()
  *
  * @see \BezhanSalleh\FilamentExceptions\FilamentExceptions
  */

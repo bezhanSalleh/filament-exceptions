@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BezhanSalleh\FilamentExceptions;
 
+use Closure;
 use Filament\Clusters\Cluster;
 use Illuminate\Foundation\Exceptions\Renderer\Exception;
 use Illuminate\Foundation\Exceptions\Renderer\Listener;
@@ -18,9 +19,23 @@ class FilamentExceptions
     /** @var class-string<Cluster>|null */
     protected static ?string $cluster = null;
 
+    protected static bool $isRecording = true;
+
+    protected static ?Closure $shouldRecordCallback = null;
+
     public static function report(Throwable $throwable): void
     {
         try {
+            if (! static::isRecording()) {
+                return;
+            }
+
+            if (static::$shouldRecordCallback !== null) {
+                if (! call_user_func(static::$shouldRecordCallback, $throwable)) {
+                    return;
+                }
+            }
+
             if (! static::shouldCapture($throwable)) {
                 return;
             }
@@ -125,6 +140,26 @@ class FilamentExceptions
     public static function model(string $model): void
     {
         static::$model = $model;
+    }
+
+    public static function stopRecording(): void
+    {
+        static::$isRecording = false;
+    }
+
+    public static function startRecording(): void
+    {
+        static::$isRecording = true;
+    }
+
+    public static function isRecording(): bool
+    {
+        return static::$isRecording;
+    }
+
+    public static function recordUsing(?Closure $callback): void
+    {
+        static::$shouldRecordCallback = $callback;
     }
 
     public static function renderCss(): string
