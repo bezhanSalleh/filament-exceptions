@@ -1,5 +1,5 @@
 <a href="https://github.com/bezhanSalleh/filament-exceptions" class="filament-hidden">
-<img style="width: 100%; max-width: 100%;" alt="filament-exceptions-art" src="https://user-images.githubusercontent.com/10007504/188786069-e93f01a1-d910-4888-a29a-28eea4ee0458.jpg" >
+<img style="width: 100%; max-width: 100%;" alt="filament-exceptions-art" src="https://raw.githubusercontent.com/bezhanSalleh/filament-exceptions/refs/heads/main/art/filament-exceptions.png" >
 </a>
 
 <p align="center" class="flex items-center justify-center">
