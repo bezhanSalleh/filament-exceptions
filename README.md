@@ -62,7 +62,7 @@ That's it! The package automatically registers itself with Laravel's exception h
 > The plugin follows Filament's theming rules. So, to use the plugin create a custom theme if you haven't already, and add the following line to your `theme.css` file:
 
 ```php
-@source '../../../../vendor/bezhansalleh/filament-language-switch/resources/views/**/*.blade.php';
+@source '../../../../vendor/bezhansalleh/filament-exceptions/resources/views/**/*.blade.php';
 ```
 Now build your theme using: 
 ```bash
