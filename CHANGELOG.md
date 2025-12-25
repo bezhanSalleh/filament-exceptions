@@ -2,6 +2,16 @@
 
 All notable changes to `filament-exceptions` will be documented in this file.
 
+## 4.0.0 - 2025-12-25
+
+### What's Changed
+
+* Support for Filament 4.x
+* Support for Laravel 11.x
+* Replaced custom implementation with Laravel's built-in Exception rendering features.
+
+**Full Changelog**: https://github.com/bezhanSalleh/filament-exceptions/compare/3.0.0...4.0.0
+
 ## 3.0.0 - 2025-05-13
 
 ### What's Changed
