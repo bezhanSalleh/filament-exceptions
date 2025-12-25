@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BezhanSalleh\FilamentExceptions\Trace;
 
 use Illuminate\Support\Arr;
@@ -17,6 +19,16 @@ class Frame
     public function __construct(protected ?string $frame = '')
     {
         $this->extract();
+    }
+
+    public function __call($method, $arguments = [])
+    {
+        return Arr::get($this->attributes, $method, '');
+    }
+
+    public function __get($key)
+    {
+        return Arr::get($this->attributes, $key, '');
     }
 
     public function extract(): ?array
@@ -161,6 +173,11 @@ class Frame
         return $names;
     }
 
+    public function line()
+    {
+        return Arr::get($this->attributes, 'line', 0);
+    }
+
     protected function extractArgs($args): array
     {
         if (empty($args)) {
@@ -169,20 +186,5 @@ class Frame
         $args = explode(',', $args);
 
         return array_map('trim', $args);
-    }
-
-    public function line()
-    {
-        return Arr::get($this->attributes, 'line', 0);
-    }
-
-    public function __call($method, $arguments = [])
-    {
-        return Arr::get($this->attributes, $method, '');
-    }
-
-    public function __get($key)
-    {
-        return Arr::get($this->attributes, $key, '');
     }
 }

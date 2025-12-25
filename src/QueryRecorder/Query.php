@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BezhanSalleh\FilamentExceptions\QueryRecorder;
 
 use Illuminate\Database\Events\QueryExecuted;
@@ -27,17 +29,6 @@ class Query
 
     protected float $microtime;
 
-    public static function fromQueryExecutedEvent(QueryExecuted $queryExecuted, bool $reportBindings = false): self
-    {
-        return new self(
-            $queryExecuted->sql,
-            $queryExecuted->time,
-            /** @phpstan-ignore-next-line  */
-            $queryExecuted->connectionName ?? '',
-            $reportBindings ? $queryExecuted->bindings : null
-        );
-    }
-
     /**
      * @param  array<string, string>|null  $bindings
      */
@@ -53,6 +44,17 @@ class Query
         $this->connectionName = $connectionName;
         $this->bindings = $bindings;
         $this->microtime = $microtime ?? microtime(true);
+    }
+
+    public static function fromQueryExecutedEvent(QueryExecuted $queryExecuted, bool $reportBindings = false): self
+    {
+        return new self(
+            $queryExecuted->sql,
+            $queryExecuted->time,
+            /** @phpstan-ignore-next-line  */
+            $queryExecuted->connectionName ?? '',
+            $reportBindings ? $queryExecuted->bindings : null
+        );
     }
 
     /**

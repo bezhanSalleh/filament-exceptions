@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BezhanSalleh\FilamentExceptions\Trace;
 
 use Iterator;
+use ReturnTypeWillChange;
 
 class Parser implements Iterator
 {
@@ -22,7 +25,7 @@ class Parser implements Iterator
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function current()
     {
         // TODO: Implement current() method.
@@ -31,7 +34,7 @@ class Parser implements Iterator
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function next()
     {
         // TODO: Implement next() method.
@@ -40,7 +43,7 @@ class Parser implements Iterator
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function key()
     {
         // TODO: Implement key() method.
@@ -49,7 +52,7 @@ class Parser implements Iterator
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function valid()
     {
         // TODO: Implement valid() method.
@@ -58,7 +61,7 @@ class Parser implements Iterator
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function rewind()
     {
         // TODO: Implement rewind() method.

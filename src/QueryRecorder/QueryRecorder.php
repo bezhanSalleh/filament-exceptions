@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BezhanSalleh\FilamentExceptions\QueryRecorder;
 
 use Illuminate\Contracts\Foundation\Application;
