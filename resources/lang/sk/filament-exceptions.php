@@ -8,7 +8,7 @@ return [
         'model' => 'Výnimka',
         'model_plural' => 'Výnimky',
         'navigation' => 'Výnimka',
-        'navigation_group' => 'Nastavenia'
+        'navigation_group' => 'Nastavenia',
     ],
 
     'empty_list' => 'Hurá! len si sadnite a užívajte si 😎',

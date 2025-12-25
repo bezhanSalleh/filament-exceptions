@@ -6,11 +6,11 @@ namespace BezhanSalleh\FilamentExceptions;
 
 use BezhanSalleh\FilamentExceptions\Models\Exception as ExceptionModel;
 use Composer\Autoload\ClassLoader;
-use Exception;
-use Illuminate\Foundation\Exceptions\Renderer\Frame;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Symfony\Component\ErrorHandler\Exception\FlattenException;
+
+use function is_array;
+use function is_string;
 
 /**
  * A stored exception that provides the same interface as Laravel's Exception renderer class.
@@ -18,8 +18,6 @@ use Symfony\Component\ErrorHandler\Exception\FlattenException;
  */
 class StoredException
 {
-    protected FlattenException $flattenException;
-
     protected Request $request;
 
     /** @var array<string, string> */
@@ -28,8 +26,6 @@ class StoredException
     public function __construct(
         protected ExceptionModel $record
     ) {
-        // Create a dummy FlattenException - we'll override the methods we need
-        $this->flattenException = FlattenException::createFromThrowable(new Exception(''));
         $this->request = $this->createRequest();
         $this->buildClassMap();
     }
@@ -85,11 +81,11 @@ class StoredException
     /**
      * Get the exception's frames.
      *
-     * @return Collection<int, Frame>
+     * @return Collection<int, StoredFrame>
      */
     public function frames(): Collection
     {
-        return once(function (): \Illuminate\Support\Collection {
+        return once(function (): Collection {
             $trace = $this->decodeTrace();
             $basePath = base_path();
             $frames = [];
@@ -97,8 +93,7 @@ class StoredException
 
             // Process frames in reverse order like Laravel does
             foreach (array_reverse($trace) as $frameData) {
-                $frame = new Frame(
-                    $this->flattenException,
+                $frame = new StoredFrame(
                     $this->classMap,
                     [
                         'file' => $frameData['file'] ?? '',
@@ -134,7 +129,7 @@ class StoredException
     /**
      * Get the exception's frames grouped by vendor status.
      *
-     * @return array<int, array{is_vendor: bool, frames: array<int, Frame>}>
+     * @return array<int, array{is_vendor: bool, frames: array<int, StoredFrame>}>
      */
     public function frameGroups(): array
     {
@@ -173,7 +168,10 @@ class StoredException
     {
         $headers = $this->record->headers ?? [];
 
-        return array_map(fn ($header): string => is_array($header) ? implode(', ', $header) : (string) $header, $headers);
+        return array_map(
+            fn (array|string $header): string => is_array($header) ? implode(', ', $header) : $header,
+            $headers
+        );
     }
 
     /**
@@ -181,7 +179,7 @@ class StoredException
      */
     public function requestBody(): ?string
     {
-        $body = $this->record->body ?? [];
+        $body = $this->record->body;
 
         if (empty($body)) {
             return null;
@@ -229,7 +227,7 @@ class StoredException
 
         return array_map(fn (array $query): array => [
             'connectionName' => $query['connectionName'] ?? $query['connection'] ?? 'default',
-            'time' => (float) ($query['time'] ?? 0),
+            'time' => $query['time'] ?? 0,
             'sql' => $query['sql'] ?? '',
         ], $queries);
     }
@@ -243,11 +241,96 @@ class StoredException
     }
 
     /**
-     * Get the stored markdown.
+     * Get the stored markdown, or generate it if not available (Laravel 11).
      */
     public function markdown(): string
     {
-        return $this->record->markdown ?? '';
+        return $this->record->markdown ?: $this->generateMarkdown();
+    }
+
+    /**
+     * Generate markdown from stored exception data.
+     * This is used for Laravel 11 which doesn't have the markdown view.
+     */
+    protected function generateMarkdown(): string
+    {
+        $lines = [];
+
+        // Header
+        $lines[] = sprintf('# %s - %s', $this->class(), $this->title());
+        $lines[] = '';
+        $lines[] = $this->message();
+        $lines[] = '';
+        $lines[] = 'PHP ' . PHP_VERSION;
+        $lines[] = 'Laravel ' . app()->version();
+        $lines[] = $this->request()->httpHost();
+        $lines[] = '';
+
+        // Stack Trace
+        $lines[] = '## Stack Trace';
+        $lines[] = '';
+        foreach ($this->frames() as $index => $frame) {
+            $lines[] = sprintf('%d - %s:%d', $index, $frame->file(), $frame->line());
+        }
+
+        $lines[] = '';
+
+        // Request
+        $lines[] = '## Request';
+        $lines[] = '';
+        $path = $this->request()->path();
+        $lines[] = $this->request()->method() . ' ' . (str_starts_with($path, '/') ? $path : '/' . $path);
+        $lines[] = '';
+
+        // Headers
+        $lines[] = '## Headers';
+        $lines[] = '';
+        $headers = $this->requestHeaders();
+        if ($headers === []) {
+            $lines[] = 'No header data available.';
+        } else {
+            foreach ($headers as $key => $value) {
+                $lines[] = sprintf('* **%s**: %s', $key, $value);
+            }
+        }
+
+        $lines[] = '';
+
+        // Route Context
+        $lines[] = '## Route Context';
+        $lines[] = '';
+        $routeContext = $this->applicationRouteContext();
+        if ($routeContext === []) {
+            $lines[] = 'No routing data available.';
+        } else {
+            foreach ($routeContext as $name => $value) {
+                $lines[] = sprintf('%s: %s', $name, $value);
+            }
+        }
+
+        $lines[] = '';
+
+        // Route Parameters
+        $lines[] = '## Route Parameters';
+        $lines[] = '';
+        $routeParams = $this->applicationRouteParametersContext();
+        $lines[] = in_array($routeParams, [null, '', '0'], true) ? 'No route parameter data available.' : $routeParams;
+
+        $lines[] = '';
+
+        // Database Queries
+        $lines[] = '## Database Queries';
+        $lines[] = '';
+        $queries = $this->applicationQueries();
+        if ($queries === []) {
+            $lines[] = 'No database queries detected.';
+        } else {
+            foreach ($queries as $query) {
+                $lines[] = sprintf('* %s - %s (%s ms)', $query['connectionName'], $query['sql'], $query['time']);
+            }
+        }
+
+        return implode("\n", $lines);
     }
 
     /**

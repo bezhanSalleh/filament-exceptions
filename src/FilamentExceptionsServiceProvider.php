@@ -27,11 +27,6 @@ class FilamentExceptionsServiceProvider extends PackageServiceProvider
     {
         parent::packageBooted();
 
-        $this->loadViewsFrom(
-            base_path('vendor/laravel/framework/src/Illuminate/Foundation/resources/exceptions/renderer'),
-            'laravel-exceptions-renderer'
-        );
-
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule): void {
             $schedule->command('model:prune', [
                 '--model' => [FilamentExceptions::getModel()],

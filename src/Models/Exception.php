@@ -9,6 +9,27 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property string $type
+ * @property string $code
+ * @property string $message
+ * @property string $file
+ * @property int $line
+ * @property array<int, array<string, mixed>> $trace
+ * @property string $method
+ * @property string $path
+ * @property string|null $ip
+ * @property array<int, array{connectionName: string, time: float, sql: string}> $query
+ * @property array<string, string> $headers
+ * @property array<string, mixed>|null $body
+ * @property array<string, mixed>|null $cookies
+ * @property array<string, string>|null $route_context
+ * @property array<string, mixed>|null $route_parameters
+ * @property string|null $markdown
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ */
 class Exception extends Model
 {
     use MassPrunable;

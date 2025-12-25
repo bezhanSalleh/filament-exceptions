@@ -30,14 +30,17 @@ class FilamentExceptions
                 return;
             }
 
-            if (static::$shouldRecordCallback !== null) {
-                if (! call_user_func(static::$shouldRecordCallback, $throwable)) {
-                    return;
-                }
+            if (static::$shouldRecordCallback !== null && ! call_user_func(static::$shouldRecordCallback, $throwable)) {
+                return;
             }
 
             if (! static::shouldCapture($throwable)) {
                 return;
+            }
+
+            // Ensure Listener is bound (Laravel only binds it when APP_DEBUG=true)
+            if (! app()->bound(Listener::class)) {
+                app()->singleton(Listener::class);
             }
 
             // Use Laravel's exact same process as Renderer::render()
@@ -52,17 +55,16 @@ class FilamentExceptions
                 base_path()
             );
 
-            logger()->info('from base class',[$flattenException]);
-
-            // Generate markdown exactly like Laravel's Renderer does
-            $markdown = view('laravel-exceptions-renderer::markdown', [
-                'exception' => $exception,
-            ])->render();
+            // Generate markdown if the view exists (Laravel 12+), otherwise null
+            $markdown = view()->exists('laravel-exceptions-renderer::markdown')
+                ? view('laravel-exceptions-renderer::markdown', ['exception' => $exception])->render()
+                : null;
 
             // Store all the data
+            // Note: $exception->code() only exists in Laravel 12+, use $flattenException->getCode() for compatibility
             static::store([
                 'type' => $exception->class(),
-                'code' => (string) $exception->code(),
+                'code' => (string) $flattenException->getCode(),
                 'message' => $exception->message(),
                 'file' => $flattenException->getFile(),
                 'line' => $flattenException->getLine(),

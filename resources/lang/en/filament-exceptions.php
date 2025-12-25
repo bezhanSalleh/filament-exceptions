@@ -8,7 +8,7 @@ return [
         'model' => 'Exception',
         'model_plural' => 'Exceptions',
         'navigation' => 'Exception',
-        'navigation_group' => 'Settings'
+        'navigation_group' => 'Settings',
     ],
 
     'empty_list' => 'Horray! just sit back & enjoy 😎',

@@ -9,34 +9,34 @@
 
     {!! FilamentExceptions::renderCss() !!}
 
-    <x-laravel-exceptions-renderer::section-container class="px-6 py-0 sm:py-0">
-        <x-laravel-exceptions-renderer::topbar :title="$exception->title()" :markdown="$exceptionAsMarkdown" />
-    </x-laravel-exceptions-renderer::section-container>
+    <x-filament-exceptions::section-container class="px-6 py-0 sm:py-0">
+        <x-filament-exceptions::topbar :title="$exception->title()" :markdown="$exceptionAsMarkdown" />
+    </x-filament-exceptions::section-container>
 
-    <x-laravel-exceptions-renderer::separator />
+    <x-filament-exceptions::separator />
 
-    <x-laravel-exceptions-renderer::section-container class="flex flex-col gap-8 py-0 sm:py-0 [&>div:last-child]:z-10 dark:[&>div>div:last-child]:bg-gray-900!">
-        <x-laravel-exceptions-renderer::header :$exception />
-    </x-laravel-exceptions-renderer::section-container>
+    <x-filament-exceptions::section-container class="flex flex-col gap-8 py-0 sm:py-0 [&>div:last-child]:z-10 dark:[&>div>div:last-child]:bg-gray-900!">
+        <x-filament-exceptions::header :$exception />
+    </x-filament-exceptions::section-container>
 
-    <x-laravel-exceptions-renderer::separator class="-mt-5 -z-10" />
+    <x-filament-exceptions::separator class="-mt-5 -z-10" />
 
-    <x-laravel-exceptions-renderer::section-container class="flex flex-col gap-8 pt-14">
-        <x-laravel-exceptions-renderer::trace :$exception />
+    <x-filament-exceptions::section-container class="flex flex-col gap-8 pt-14">
+        <x-filament-exceptions::trace :$exception />
 
-        <x-laravel-exceptions-renderer::query :queries="$exception->applicationQueries()" />
-    </x-laravel-exceptions-renderer::section-container>
+        <x-filament-exceptions::query :queries="$exception->applicationQueries()" />
+    </x-filament-exceptions::section-container>
 
-    <x-laravel-exceptions-renderer::separator />
+    <x-filament-exceptions::separator />
 
-    <x-laravel-exceptions-renderer::section-container class="flex flex-col gap-12">
-        <x-laravel-exceptions-renderer::request-header :headers="$exception->requestHeaders()" />
+    <x-filament-exceptions::section-container class="flex flex-col gap-12">
+        <x-filament-exceptions::request-header :headers="$exception->requestHeaders()" />
 
-        <x-laravel-exceptions-renderer::request-body :body="$exception->requestBody()" />
+        <x-filament-exceptions::request-body :body="$exception->requestBody()" />
 
-        <x-laravel-exceptions-renderer::routing :routing="$exception->applicationRouteContext()" />
+        <x-filament-exceptions::routing :routing="$exception->applicationRouteContext()" />
 
-        <x-laravel-exceptions-renderer::routing-parameter :routeParameters="$exception->applicationRouteParametersContext()" />
+        <x-filament-exceptions::routing-parameter :routeParameters="$exception->applicationRouteParametersContext()" />
 
         @if (filled($record->cookies))
             <div class="flex flex-col gap-3">
@@ -54,23 +54,23 @@
                 </div>
             </div>
         @endif
-    </x-laravel-exceptions-renderer::section-container>
+    </x-filament-exceptions::section-container>
 
-    <x-laravel-exceptions-renderer::separator />
+    <x-filament-exceptions::separator />
 
-    <x-laravel-exceptions-renderer::section-container class="pb-0 sm:pb-0">
+    <x-filament-exceptions::section-container class="pb-0 sm:pb-0">
         <div class="flex flex-wrap items-center gap-4 text-xs text-neutral-500 dark:text-neutral-400 pb-2">
             <div class="flex items-center gap-1.5">
-                <x-laravel-exceptions-renderer::icons.info class="w-4 h-4" />
+                <x-filament-exceptions::icons.info class="w-4 h-4" />
                 <span>Recorded: {{ $record->created_at->format('M d, Y H:i:s') }}</span>
             </div>
             @if ($record->ip)
                 <div class="flex items-center gap-1.5">
-                    <x-laravel-exceptions-renderer::icons.globe class="w-4 h-4" />
+                    <x-filament-exceptions::icons.globe class="w-4 h-4" />
                     <span class="font-mono">{{ $record->ip }}</span>
                 </div>
             @endif
         </div>
-    </x-laravel-exceptions-renderer::section-container>
+    </x-filament-exceptions::section-container>
     {!! FilamentExceptions::renderJs() !!}
 </x-filament-panels::page>

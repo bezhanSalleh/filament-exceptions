@@ -8,7 +8,7 @@ return [
         'model' => 'Excepción',
         'model_plural' => 'Excepciones',
         'navigation' => 'Excepción',
-        'navigation_group' => 'Configuración'
+        'navigation_group' => 'Configuración',
     ],
 
     'empty_list' => '¡Hurra! Relájate y disfruta 😎',
