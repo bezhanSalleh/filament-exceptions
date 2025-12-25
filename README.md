@@ -57,6 +57,19 @@ public function panel(Panel $panel): Panel
 
 That's it! The package automatically registers itself with Laravel's exception handler and starts recording exceptions.
 
+
+> [!IMPORTANT]
+> The plugin follows Filament's theming rules. So, to use the plugin create a custom theme if you haven't already, and add the following line to your `theme.css` file:
+
+```php
+@source '../../../../vendor/bezhansalleh/filament-language-switch/resources/views/**/*.blade.php';
+```
+Now build your theme using: 
+```bash
+npm run build
+```
+
+
 ### Recording Control
 
 By default, exceptions are recorded automatically. You can control this behavior in your `AppServiceProvider`'s `boot()` method:
@@ -200,8 +213,6 @@ use BezhanSalleh\FilamentExceptions\FilamentExceptions;
    }
 ...
 ```
-## Theme
-The exception viewer automatically inherits your Filament panel's theme colors (primary, danger, warning, success, gray). No additional configuration is required.
 
 ## Translations
 Publish the translations with
