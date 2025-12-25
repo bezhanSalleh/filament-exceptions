@@ -1,0 +1,39 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'tippy.js/dist/tippy.css';
+@import 'tippy.js/animations/shift-away.css';
+
+/* Configure Tailwind v4 to use class-based dark mode (for Filament compatibility) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Scan Laravel's exception renderer components to include all their Tailwind classes */
+@source "../../vendor/laravel/framework/src/Illuminate/Foundation/resources/exceptions/renderer/components*.blade.php";
+
+/* Also scan our own views */
+@source "../views/**/*.blade.php";
+
+[x-cloak] {
+    display: none !important;
+}
+
+.tippy-box[data-theme~='laravel'] {
+    @apply max-w-7xl! rounded-md border text-xs shadow-md backdrop-blur-md overflow-x-auto;
+    @apply border-neutral-800 bg-neutral-900 text-white;
+}
+
+.dark .tippy-box[data-theme~='laravel'] {
+    @apply border-neutral-700 bg-neutral-800 text-neutral-100;
+}
+
+.tippy-content[data-theme~='laravel'] {
+    @apply px-2 py-1;
+}
+
+/* Shiki syntax highlighting dark mode - use .dark class for Filament compatibility */
+.dark .shiki,
+.dark .shiki span {
+    color: var(--shiki-dark) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+}

@@ -6,7 +6,7 @@ namespace BezhanSalleh\FilamentExceptions\Concerns;
 
 use Closure;
 use Filament\Clusters\Cluster;
-use Filament\Pages\SubNavigationPosition;
+use Filament\Pages\Enums\SubNavigationPosition;
 
 trait HasNavigation
 {

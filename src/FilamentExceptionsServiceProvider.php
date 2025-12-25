@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BezhanSalleh\FilamentExceptions;
 
-use Filament\Support\Assets\Css;
-use Filament\Support\Assets\Js;
-use Filament\Support\Facades\FilamentAsset;
+use BezhanSalleh\FilamentExceptions\Commands\InstallCommand;
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Throwable;
 
 class FilamentExceptionsServiceProvider extends PackageServiceProvider
 {
@@ -19,32 +20,25 @@ class FilamentExceptionsServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasTranslations()
             ->hasMigration('create_filament_exceptions_table')
-            ->hasCommand(Commands\InstallCommand::class);
-    }
-
-    public function packageRegistered(): void
-    {
-        parent::packageRegistered();
-
-        $this->app->scoped('filament-exceptions', function ($app): FilamentExceptions {
-            return new FilamentExceptions($app->make(Request::class));
-        });
-
+            ->hasCommand(InstallCommand::class);
     }
 
     public function packageBooted(): void
     {
         parent::packageBooted();
 
-        FilamentAsset::register([
-            Js::make('filament-exceptions', __DIR__ . '/../resources/dist/filament-exceptions.js'),
-            Css::make('filament-exceptions', __DIR__ . '/../resources/dist/filament-exceptions.css'),
-        ], 'bezhansalleh/filament-exceptions');
-
-        $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
+        $this->callAfterResolving(Schedule::class, function (Schedule $schedule): void {
             $schedule->command('model:prune', [
                 '--model' => [FilamentExceptions::getModel()],
             ])->daily();
+        });
+
+        $this->callAfterResolving(ExceptionHandler::class, function (ExceptionHandler $handler): void {
+            $handler->reportable(function (Throwable $e) use ($handler): void {
+                if ($handler->shouldReport($e)) {
+                    FilamentExceptions::report($e);
+                }
+            });
         });
     }
 }

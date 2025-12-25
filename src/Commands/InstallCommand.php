@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BezhanSalleh\FilamentExceptions\Commands;
 
 use Illuminate\Console\Command;
@@ -45,9 +47,11 @@ class InstallCommand extends Command
             if (PHP_OS_FAMILY === 'Darwin') {
                 exec('open https://github.com/bezhanSalleh/filament-exceptions');
             }
+
             if (PHP_OS_FAMILY === 'Linux') {
                 exec('xdg-open https://github.com/bezhanSalleh/filament-exceptions');
             }
+
             if (PHP_OS_FAMILY === 'Windows') {
                 exec('start https://github.com/bezhanSalleh/filament-exceptions');
             }

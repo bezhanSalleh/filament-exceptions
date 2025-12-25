@@ -1,55 +1,76 @@
+@use('BezhanSalleh\FilamentExceptions\FilamentExceptions')
 @php
-    $method = $record->method;
-    $methodColor = match ($method) {
-        'DELETE' => \Illuminate\Support\Arr::toCssClasses(['text-danger-700 bg-danger-500/10 dark:text-danger-500']),
-        'POST' => \Illuminate\Support\Arr::toCssClasses(['text-primary-700 bg-primary-500/10 dark:text-primary-500']),
-        'GET' => \Illuminate\Support\Arr::toCssClasses(['text-success-700 bg-success-500/10 dark:text-success-500']),
-        'PUT' => \Illuminate\Support\Arr::toCssClasses(['text-warning-700 bg-warning-500/10 dark:text-warning-500']),
-        'PATCH', 'OPTIONS' => \Illuminate\Support\Arr::toCssClasses(['text-gray-700 bg-gray-500/10 dark:text-gray-300 dark:bg-gray-500/20']),
-        default => \Illuminate\Support\Arr::toCssClasses(['text-gray-700 bg-gray-500/10 dark:text-gray-300 dark:bg-gray-500/20']),
-    };
+    $exception = $this->getStoredException();
+    $exceptionAsMarkdown = $exception->markdown();
+    $record = $exception->record();
 @endphp
-<x-filament::page
-    @class([
-        'fi-resource-view-record-page',
-        'fi-resource-' . str_replace('/', '-', $this->getResource()::getSlug()),
-        'fi-resource-record-' . $record->getKey(),
-    ])
->
 
-    <div
-        class="px-6 py-5 bg-white border-b border-gray-200 rounded-lg shadow-none dark:bg-gray-900 dark:border-gray-950 sm:px-6">
-        <h3 class="flex items-center text-lg font-medium leading-6 text-gray-900 dark:text-gray-50">
-            <span class="{{ $methodColor }} rounded-md px-4 py-1 mr-2">{{ $method }}</span>
-            <span
-                class="px-4 py-1 ml-2 text-gray-800 bg-gray-100 rounded-md dark:bg-gray-800 dark:text-gray-100">{{ $record->path }}
-            </span>
-        </h3>
-        <div class="flex items-center max-w-2xl mt-1 text-sm leading-5 text-gray-500">
-            <span class="mt-1 font-mono text-xs text-gray-600 dark:text-gray-200">
-                {{ __('filament-exceptions::filament-exceptions.columns.occurred_at') }}:
+<x-filament-panels::page class="min-h-dvh [&_.fi-page-content]:gap-y-0!">
 
-                {{ $record->created_at->toDateTimeString() }}
-            </span>
-        </div>
-        <div class="py-5">
-            {{ $record->message }}
-        </div>
-    </div>
-    @php
-        $relationManagers = $this->getRelationManagers();
-    @endphp
+    {!! FilamentExceptions::renderCss() !!}
 
-    @if ((! $this->hasCombinedRelationManagerTabsWithContent()) || (! count($relationManagers)))
-        @if ($this->hasInfolist())
-            {{ $this->infolist }}
-        @else
-            <div
-                wire:key="{{ $this->getId() }}.forms.{{ $this->getFormStatePath() }}"
-            >
-                {{ $this->form }}
+    <x-filament-exceptions::section-container class="px-6 py-0 sm:py-0">
+        <x-filament-exceptions::topbar :title="$exception->title()" :markdown="$exceptionAsMarkdown" />
+    </x-filament-exceptions::section-container>
+
+    <x-filament-exceptions::separator />
+
+    <x-filament-exceptions::section-container class="flex flex-col gap-8 py-0 sm:py-0 [&>div:last-child]:z-10 dark:[&>div>div:last-child]:bg-gray-900!">
+        <x-filament-exceptions::header :$exception />
+    </x-filament-exceptions::section-container>
+
+    <x-filament-exceptions::separator class="-mt-5 -z-10" />
+
+    <x-filament-exceptions::section-container class="flex flex-col gap-8 pt-14">
+        <x-filament-exceptions::trace :$exception />
+
+        <x-filament-exceptions::query :queries="$exception->applicationQueries()" />
+    </x-filament-exceptions::section-container>
+
+    <x-filament-exceptions::separator />
+
+    <x-filament-exceptions::section-container class="flex flex-col gap-12">
+        <x-filament-exceptions::request-header :headers="$exception->requestHeaders()" />
+
+        <x-filament-exceptions::request-body :body="$exception->requestBody()" />
+
+        <x-filament-exceptions::routing :routing="$exception->applicationRouteContext()" />
+
+        <x-filament-exceptions::routing-parameter :routeParameters="$exception->applicationRouteParametersContext()" />
+
+        @if (filled($record->cookies))
+            <div class="flex flex-col gap-3">
+                <h2 class="text-lg font-semibold text-neutral-900 dark:text-white">Cookies</h2>
+                <div class="flex flex-col gap-1">
+                    @foreach ($record->cookies as $key => $value)
+                        <div class="flex max-w-full items-baseline gap-2 text-sm font-mono py-1">
+                            <div class="uppercase text-neutral-500 dark:text-neutral-400 shrink-0">{{ $key }}</div>
+                            <div class="min-w-6 grow h-3 border-b-2 border-dotted border-neutral-300 dark:border-neutral-600"></div>
+                            <div class="truncate text-neutral-900 dark:text-white" title="{{ is_array($value) ? json_encode($value) : $value }}">
+                                {{ is_array($value) ? json_encode($value) : $value }}
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         @endif
-    @endif
-</x-filament::page>
+    </x-filament-exceptions::section-container>
 
+    <x-filament-exceptions::separator />
+
+    <x-filament-exceptions::section-container class="pb-0 sm:pb-0">
+        <div class="flex flex-wrap items-center gap-4 text-xs text-neutral-500 dark:text-neutral-400 pb-2">
+            <div class="flex items-center gap-1.5">
+                <x-filament-exceptions::icons.info class="w-4 h-4" />
+                <span>Recorded: {{ $record->created_at->format('M d, Y H:i:s') }}</span>
+            </div>
+            @if ($record->ip)
+                <div class="flex items-center gap-1.5">
+                    <x-filament-exceptions::icons.globe class="w-4 h-4" />
+                    <span class="font-mono">{{ $record->ip }}</span>
+                </div>
+            @endif
+        </div>
+    </x-filament-exceptions::section-container>
+    {!! FilamentExceptions::renderJs() !!}
+</x-filament-panels::page>

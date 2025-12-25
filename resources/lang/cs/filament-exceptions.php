@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     'labels' => [
@@ -7,14 +9,6 @@ return [
         'model_plural' => 'Výjimky',
         'navigation' => 'Výjimka',
         'navigation_group' => 'Nastavení',
-
-        'tabs' => [
-            'exception' => 'Výjimka',
-            'headers' => 'Hlavičky',
-            'cookies' => 'Cookies',
-            'body' => 'Tělo',
-            'queries' => 'Dotazy',
-        ],
     ],
 
     'empty_list' => 'Hurá! Posaďte se a užívejte si 😎',

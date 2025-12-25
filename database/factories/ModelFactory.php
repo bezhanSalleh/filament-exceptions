@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BezhanSalleh\FilamentExceptions\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;

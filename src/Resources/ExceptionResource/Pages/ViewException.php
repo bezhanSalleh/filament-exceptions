@@ -1,31 +1,67 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BezhanSalleh\FilamentExceptions\Resources\ExceptionResource\Pages;
 
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
-use BezhanSalleh\FilamentExceptions\Trace\Parser;
-use Filament\Actions;
+use BezhanSalleh\FilamentExceptions\StoredException;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Support\Enums\Width;
+use Illuminate\Contracts\Support\Htmlable;
+use Throwable;
 
 class ViewException extends ViewRecord
 {
     protected static string $resource = ExceptionResource::class;
 
-    protected static string $view = 'filament-exceptions::view-exception';
+    protected string $view = 'filament-exceptions::view-exception';
 
-    public function getFramesProperty(): ?array
+    protected ?StoredException $storedException = null;
+
+    /**
+     * Get the stored exception instance for rendering with Laravel's components.
+     */
+    public function getStoredException(): StoredException
     {
-        $trace = "#0 {$this->record->file}({$this->record->line})\n";
-        $frames = (new Parser($trace . $this->record->trace))->parse();
-        array_pop($frames);
+        if ($this->storedException instanceof \BezhanSalleh\FilamentExceptions\StoredException) {
+            return $this->storedException;
+        }
 
-        return $frames;
+        try {
+            $this->storedException = new StoredException($this->record);
+        } catch (Throwable) {
+            // If something goes wrong, create with a fresh record
+            $this->storedException = new StoredException($this->record);
+        }
+
+        return $this->storedException;
     }
 
-    protected function getActions(): array
+    public function getHeading(): string | Htmlable | null
+    {
+        return null; // $this->heading ?? $this->getTitle();
+    }
+
+    public function getHeader(): ?\Illuminate\Contracts\View\View
+    {
+        return null;
+    }
+
+    public function getMaxContentWidth(): Width | string | null
+    {
+        return Width::SixExtraLarge;
+    }
+
+    public function getPageClasses(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            '[&_.fi-page-header-main-ctn]:gap-y-0! [&_.fi-page-header-main-ctn]:py-1',
         ];
+    }
+
+    public function getBreadcrumbs(): array
+    {
+        return [];
     }
 }

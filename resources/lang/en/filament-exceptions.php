@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     'labels' => [
@@ -7,14 +9,6 @@ return [
         'model_plural' => 'Exceptions',
         'navigation' => 'Exception',
         'navigation_group' => 'Settings',
-
-        'tabs' => [
-            'exception' => 'Exception',
-            'headers' => 'Headers',
-            'cookies' => 'Cookies',
-            'body' => 'Body',
-            'queries' => 'Queries',
-        ],
     ],
 
     'empty_list' => 'Horray! just sit back & enjoy 😎',
