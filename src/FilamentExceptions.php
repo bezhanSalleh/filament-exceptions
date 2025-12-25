@@ -30,7 +30,7 @@ class FilamentExceptions
                 return;
             }
 
-            if (static::$shouldRecordCallback !== null && ! call_user_func(static::$shouldRecordCallback, $throwable)) {
+            if (static::$shouldRecordCallback instanceof Closure && ! call_user_func(static::$shouldRecordCallback, $throwable)) {
                 return;
             }
 
@@ -56,6 +56,7 @@ class FilamentExceptions
             );
 
             // Generate markdown if the view exists (Laravel 12+), otherwise null
+            // @phpstan-ignore method.impossibleType (view exists at runtime in Laravel 12+)
             $markdown = view()->exists('laravel-exceptions-renderer::markdown')
                 ? view('laravel-exceptions-renderer::markdown', ['exception' => $exception])->render()
                 : null;

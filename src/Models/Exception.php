@@ -20,8 +20,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $method
  * @property string $path
  * @property string|null $ip
- * @property array<int, array{connectionName: string, time: float, sql: string}> $query
- * @property array<string, string> $headers
+ * @property array<int, array<string, mixed>> $query
+ * @property array<string, array<int, string>|string> $headers
  * @property array<string, mixed>|null $body
  * @property array<string, mixed>|null $cookies
  * @property array<string, string>|null $route_context

@@ -169,7 +169,7 @@ class StoredException
         $headers = $this->record->headers ?? [];
 
         return array_map(
-            fn (array|string $header): string => is_array($header) ? implode(', ', $header) : $header,
+            fn (array | string $header): string => is_array($header) ? implode(', ', $header) : $header,
             $headers
         );
     }
