@@ -2,6 +2,17 @@
 
 All notable changes to `filament-exceptions` will be documented in this file.
 
+## 4.1.0 - 2026-01-19
+
+### What's Changed
+
+* Added support for Filament 5.x
+* Bump stefanzweifel/git-auto-commit-action from 6 to 7 by @dependabot[bot] in https://github.com/bezhanSalleh/filament-exceptions/pull/81
+* Bump actions/checkout from 5 to 6 by @dependabot[bot] in https://github.com/bezhanSalleh/filament-exceptions/pull/82
+* Bump dependabot/fetch-metadata from 2.4.0 to 2.5.0 by @dependabot[bot] in https://github.com/bezhanSalleh/filament-exceptions/pull/83
+
+**Full Changelog**: https://github.com/bezhanSalleh/filament-exceptions/compare/4.0.0...4.1.0
+
 ## 4.0.0 - 2025-12-25
 
 ### What's Changed
