@@ -6,6 +6,9 @@
     <a href="https://filamentphp.com/docs/4.x/introduction/overview">
         <img alt="FILAMENT 4.x" src="https://img.shields.io/badge/FILAMENT-4.x-EBB304?style=for-the-badge">
     </a>
+    <a href="https://filamentphp.com/docs/5.x/introduction/overview">
+        <img alt="FILAMENT 5.x" src="https://img.shields.io/badge/FILAMENT-5.x-EBB304?style=for-the-badge">
+    </a>
     <a href="https://packagist.org/packages/bezhansalleh/filament-exceptions">
         <img alt="Packagist" src="https://img.shields.io/packagist/v/bezhansalleh/filament-exceptions.svg?style=for-the-badge&logo=packagist">
     </a>
@@ -26,7 +29,7 @@
 A Simple & Beautiful Exception Viewer for FilamentPHP's Admin Panel
 
 > **Version Compatibility:**
-> - Filament 4.x → use version 4.x
+> - Filament 4.x & 5.x → use version 4.x 
 > - Filament 3.x → use version 3.x
 > - Filament 2.x → use version 1.x
 
