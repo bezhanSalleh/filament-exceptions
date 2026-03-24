@@ -1,6 +1,7 @@
 {
     "name": "bezhansalleh/filament-exceptions",
     "description": "A Simple & Beautiful Pluggable Exception Viewer for FilamentPHP's Admin Panel",
+    "version": "4.1.0",
     "keywords": [
         "bezhanSalleh",
         "laravel",
@@ -20,8 +21,8 @@
         "php": "^8.2",
         "bezhansalleh/filament-plugin-essentials": "^1.0",
         "filament/filament": "^4.0|^5.0",
-        "illuminate/contracts": "^11.28|^12.0",
-        "illuminate/support": "^11.28|^12.0",
+        "illuminate/contracts": "^11.28|^12.0|^13.0",
+        "illuminate/support": "^11.28|^12.0|^13.0",
         "spatie/laravel-package-tools": "^1.9"
     },
     "require-dev": {
