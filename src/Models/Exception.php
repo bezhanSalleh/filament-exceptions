@@ -8,6 +8,7 @@ use BezhanSalleh\FilamentExceptions\FilamentExceptionsPlugin;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -27,8 +28,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property array<string, string>|null $route_context
  * @property array<string, mixed>|null $route_parameters
  * @property string|null $markdown
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon $updated_at
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  */
 class Exception extends Model
 {
