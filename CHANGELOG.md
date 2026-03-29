@@ -2,6 +2,14 @@
 
 All notable changes to `filament-exceptions` will be documented in this file.
 
+## 4.2.0 - 2026-03-29
+
+### What's Changed
+
+* Adds Laravel 13 Support by @bezhanSalleh in https://github.com/bezhanSalleh/filament-exceptions/pull/85
+
+**Full Changelog**: https://github.com/bezhanSalleh/filament-exceptions/compare/4.1.0...4.2.0
+
 ## 4.1.0 - 2026-01-19
 
 ### What's Changed
