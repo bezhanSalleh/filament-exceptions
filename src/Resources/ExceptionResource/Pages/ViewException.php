@@ -9,6 +9,7 @@ use BezhanSalleh\FilamentExceptions\StoredException;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Enums\Width;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Contracts\View\View;
 use Throwable;
 
 class ViewException extends ViewRecord
@@ -24,7 +25,7 @@ class ViewException extends ViewRecord
      */
     public function getStoredException(): StoredException
     {
-        if ($this->storedException instanceof \BezhanSalleh\FilamentExceptions\StoredException) {
+        if ($this->storedException instanceof StoredException) {
             return $this->storedException;
         }
 
@@ -43,7 +44,7 @@ class ViewException extends ViewRecord
         return null; // $this->heading ?? $this->getTitle();
     }
 
-    public function getHeader(): ?\Illuminate\Contracts\View\View
+    public function getHeader(): ?View
     {
         return null;
     }

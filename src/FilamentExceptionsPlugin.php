@@ -8,6 +8,7 @@ use BezhanSalleh\FilamentExceptions\Concerns\HasLabels;
 use BezhanSalleh\FilamentExceptions\Concerns\HasModelPruneInterval;
 use BezhanSalleh\FilamentExceptions\Concerns\HasNavigation;
 use BezhanSalleh\FilamentExceptions\Concerns\HasTenantScope;
+use BezhanSalleh\FilamentExceptions\Models\Exception;
 use BezhanSalleh\FilamentExceptions\Resources\ExceptionResource;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
@@ -42,7 +43,7 @@ class FilamentExceptionsPlugin implements Plugin
     public function register(Panel $panel): void
     {
         if (is_null(FilamentExceptions::getModel())) {
-            FilamentExceptions::model(\BezhanSalleh\FilamentExceptions\Models\Exception::class);
+            FilamentExceptions::model(Exception::class);
         }
 
         $panel
