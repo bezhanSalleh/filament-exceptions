@@ -75,6 +75,11 @@ class ExceptionResource extends Resource
             ? (string) static::getEloquentQuery()->count()
             : null;
     }
+    
+    public static function getNavigationBadgeColor(): string | array | null
+    {
+        return static::getPlugin()->getNavigationBadgeColor();
+    }
 
     public static function shouldRegisterNavigation(): bool
     {
