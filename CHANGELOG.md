@@ -2,6 +2,23 @@
 
 All notable changes to `filament-exceptions` will be documented in this file.
 
+## 4.2.1 - 2026-06-27
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 2.5.0 to 3.0.0 by @dependabot[bot] in https://github.com/bezhanSalleh/filament-exceptions/pull/86
+* Bump dependabot/fetch-metadata from 3.0.0 to 3.1.0 by @dependabot[bot] in https://github.com/bezhanSalleh/filament-exceptions/pull/87
+* Fix: delegate getNavigationBadgeColor() to plugin by @m-ristau in https://github.com/bezhanSalleh/filament-exceptions/pull/88
+* Fix broken code-style workflow link used inside the code style badge by @DanielFatkic in https://github.com/bezhanSalleh/filament-exceptions/pull/90
+* Bump actions/checkout from 6 to 7 by @dependabot[bot] in https://github.com/bezhanSalleh/filament-exceptions/pull/91
+
+### New Contributors
+
+* @m-ristau made their first contribution in https://github.com/bezhanSalleh/filament-exceptions/pull/88
+* @DanielFatkic made their first contribution in https://github.com/bezhanSalleh/filament-exceptions/pull/90
+
+**Full Changelog**: https://github.com/bezhanSalleh/filament-exceptions/compare/4.2.0...4.2.1
+
 ## 4.2.0 - 2026-03-29
 
 ### What's Changed
