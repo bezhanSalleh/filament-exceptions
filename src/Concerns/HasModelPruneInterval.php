@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace BezhanSalleh\FilamentExceptions\Concerns;
 
-use Carbon\Carbon;
+use Carbon\CarbonInterface;
 
 trait HasModelPruneInterval
 {
-    protected ?Carbon $modelPruneInterval = null;
+    protected ?CarbonInterface $modelPruneInterval = null;
 
-    public function modelPruneInterval(Carbon $interval): static
+    public function modelPruneInterval(CarbonInterface $interval): static
     {
         $this->modelPruneInterval = $interval;
 
         return $this;
     }
 
-    public function getModelPruneInterval(): Carbon
+    public function getModelPruneInterval(): CarbonInterface
     {
         return $this->modelPruneInterval ?? now()->subWeek();
     }

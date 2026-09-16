@@ -159,7 +159,7 @@ FilamentExceptionsPlugin::make()
 #### Mass Pruning Settings
 ```php
 FilamentExceptionsPlugin::make()
-    ->modelPruneInterval(Carbon $interval)
+    ->modelPruneInterval(CarbonInterface $interval)
 ```
 > **Note** This requires laravel scheduler to be setup and configured in order to work. You can see how to do that here  [Running The Scheduler](https://laravel.com/docs/10.x/scheduling#running-the-scheduler)
 

@@ -43,6 +43,9 @@ class TestCase extends Orchestra
     protected function defineDatabaseMigrations(): void
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
+        $migration = include __DIR__ . '/../database/migrations/create_filament_exceptions_table.php.stub';
+        $migration->up();
     }
 
     public function getEnvironmentSetUp($app)
@@ -52,10 +55,5 @@ class TestCase extends Orchestra
             ...$app['config']->get('view.paths'),
             __DIR__ . '/../resources/views',
         ]);
-
-        /*
-        $migration = include __DIR__.'/../database/migrations/create_filament-exceptions_table.php.stub';
-        $migration->up();
-        */
     }
 }
