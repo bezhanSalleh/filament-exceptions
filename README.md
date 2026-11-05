@@ -26,22 +26,25 @@
 
 # Exception Viewer
 
-A Simple & Beautiful Exception Viewer for FilamentPHP's Admin Panel
-
-> **Version Compatibility:**
-> - Filament 4.x & 5.x → use version 4.x 
-> - Filament 3.x → use version 3.x
-> - Filament 2.x → use version 1.x
+A simple and beautiful exception viewer for Filament Panels. The plugin records every exception your app throws and lets you browse, inspect and prune them from inside the panel.
 
 <div class="filament-hidden">
 <b>Table of Contents</b>
 
 - [Installation](#installation)
-  - [Recording Control](#recording-control)
-  - [Configuration Options](#configuration-options)
-  - [Custom Exception Model](#custom-exception-model)
+- [Recording Control](#recording-control)
+  - [Stop and Start Recording](#stop-and-start-recording)
+  - [Conditional Recording](#conditional-recording)
+- [Configuration Options](#configuration-options)
+  - [Navigation](#navigation)
+  - [Labels and Search](#labels-and-search)
+  - [Mass Pruning](#mass-pruning)
+  - [Tenancy](#tenancy)
+  - [General](#general)
+- [Custom Exception Model](#custom-exception-model)
 - [Translations](#translations)
 - [Testing](#testing)
+- [Version Support](#version-support)
 - [Changelog](#changelog)
 - [Contributing](#contributing)
 - [Security Vulnerabilities](#security-vulnerabilities)
@@ -51,18 +54,19 @@ A Simple & Beautiful Exception Viewer for FilamentPHP's Admin Panel
 
 ## Installation
 
-1. You can install the package via composer:
+1. Install the package with Composer:
 
 ```bash
 composer require bezhansalleh/filament-exceptions
 ```
 
-2. Publish and run the migration via:
+2. Publish and run the migration:
+
 ```bash
 php artisan exceptions:install
 ```
 
-3. Register the plugin for the Filament Panel
+3. Register the plugin in your panel provider:
 
 ```php
 public function panel(Panel $panel): Panel
@@ -74,26 +78,27 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-That's it! The package automatically registers itself with Laravel's exception handler and starts recording exceptions.
-
+That's it. The package hooks into Laravel's exception handler and starts recording exceptions right away.
 
 > [!IMPORTANT]
-> The plugin follows Filament's theming rules. So, to use the plugin create a custom theme if you haven't already, and add the following line to your `theme.css` file:
+> The plugin follows Filament's theming rules. Create a custom theme if you haven't already, then add the following line to your `theme.css` file:
 
-```php
+```css
 @source '../../../../vendor/bezhansalleh/filament-exceptions/resources/views/**/*.blade.php';
 ```
-Now build your theme using: 
+
+Then build your theme:
+
 ```bash
 npm run build
 ```
 
+## Recording Control
 
-### Recording Control
+The plugin records exceptions by default. Control that behavior from the `boot()` method of your `AppServiceProvider`.
 
-By default, exceptions are recorded automatically. You can control this behavior in your `AppServiceProvider`'s `boot()` method:
+### Stop and Start Recording
 
-#### Stop/Start Recording
 ```php
 use BezhanSalleh\FilamentExceptions\FilamentExceptions;
 
@@ -105,20 +110,21 @@ public function boot(): void
     // Resume recording
     FilamentExceptions::startRecording();
 
-    // Check if recording is active
+    // Check whether recording is active
     FilamentExceptions::isRecording();
 }
 ```
 
-#### Conditional Recording
-Use `recordUsing()` to define custom logic for when exceptions should be recorded:
+### Conditional Recording
+
+Call `recordUsing()` to decide, per exception, whether the plugin records it:
 
 ```php
 use BezhanSalleh\FilamentExceptions\FilamentExceptions;
 
 public function boot(): void
 {
-    // Only record in production
+    // Record only in production
     FilamentExceptions::recordUsing(fn () => app()->isProduction());
 
     // Skip specific exception types
@@ -127,7 +133,7 @@ public function boot(): void
             && ! $e instanceof \Illuminate\Auth\AuthenticationException;
     });
 
-    // Combine multiple conditions
+    // Combine several conditions
     FilamentExceptions::recordUsing(function (Throwable $e) {
         if (! app()->isProduction()) {
             return false;
@@ -144,11 +150,12 @@ public function boot(): void
 }
 ```
 
-### Configuration Options
+## Configuration Options
 
-When registering the FilamentExceptions plugin, you can chain various methods to customize its behavior. Here are all available configuration options:
+Chain any of the following methods onto the plugin when you register it.
 
-#### Navigation
+### Navigation
+
 ```php
 FilamentExceptionsPlugin::make()
     ->navigationBadge(bool | Closure $condition = true)
@@ -163,7 +170,8 @@ FilamentExceptionsPlugin::make()
     ->subNavigationPosition(SubNavigationPosition | Closure $position)
 ```
 
-#### Labels and Search
+### Labels and Search
+
 ```php
 FilamentExceptionsPlugin::make()
     ->modelLabel(string | Closure | null $label)
@@ -172,14 +180,18 @@ FilamentExceptionsPlugin::make()
     ->globallySearchable(bool | Closure $condition = true)
 ```
 
-#### Mass Pruning Settings
+### Mass Pruning
+
 ```php
 FilamentExceptionsPlugin::make()
     ->modelPruneInterval(CarbonInterface $interval)
 ```
-> **Note** This requires laravel scheduler to be setup and configured in order to work. You can see how to do that here  [Running The Scheduler](https://laravel.com/docs/10.x/scheduling#running-the-scheduler)
 
-#### Tenancy Configuration
+> [!NOTE]
+> Pruning runs through Laravel's scheduler, so make sure you have it [running](https://laravel.com/docs/scheduling#running-the-scheduler).
+
+### Tenancy
+
 ```php
 FilamentExceptionsPlugin::make()
     ->scopeToTenant(bool | Closure $condition = true)
@@ -187,14 +199,16 @@ FilamentExceptionsPlugin::make()
     ->tenantRelationshipName(string | Closure | null $relationshipName)
 ```
 
-#### General Configuration
+### General
+
 ```php
 FilamentExceptionsPlugin::make()
     ->cluster(string | Closure | null $cluster)
     ->slug(string | Closure | null $slug)
 ```
 
-Example usage:
+A combined example:
+
 ```php
 return $panel
     ->plugins([
@@ -206,9 +220,11 @@ return $panel
             ->modelPruneInterval(now()->subDays(7))
     ]);
 ```
- 
-### Custom Exception Model
-1. Extend the base model as follow:
+
+## Custom Exception Model
+
+1. Extend the base model:
+
 ```php
 <?php
 
@@ -221,7 +237,9 @@ class MyCustomException extends BaseException
     ...
 }
 ```
-2. Then, in a service provider's `boot()` method for instance `AppServiceProvider`:
+
+2. Register it in the `boot()` method of a service provider, for example `AppServiceProvider`:
+
 ```php
 use App\Models\MyCustomException;
 use BezhanSalleh\FilamentExceptions\FilamentExceptions;
@@ -234,7 +252,9 @@ use BezhanSalleh\FilamentExceptions\FilamentExceptions;
 ```
 
 ## Translations
-Publish the translations with
+
+Publish the translations:
+
 ```bash
 php artisan vendor:publish --tag=filament-exceptions-translations
 ```
@@ -245,17 +265,30 @@ php artisan vendor:publish --tag=filament-exceptions-translations
 composer test
 ```
 
+## Version Support
+
+Only the latest major plugin line receives active development. Older lines stay installable for legacy projects but get no new features; they only receive security fixes while their Filament target is still supported upstream.
+
+| Plugin | Filament | Status |
+|---|---|---|
+| **[`4.x`](https://github.com/bezhansalleh/filament-exceptions/tree/main)** | [v4](https://filamentphp.com/docs/4.x/introduction/overview) & [v5](https://filamentphp.com/docs/5.x/introduction/overview) | **Active** — new features + bug fixes (lives on `main`) |
+| [`3.x`](https://github.com/bezhansalleh/filament-exceptions/tree/3.x) | [v3](https://filamentphp.com/docs/3.x/panels/installation) | End of life — follows Filament v3 EOL |
+| [`2.x`](https://github.com/bezhansalleh/filament-exceptions/tree/2.x) | [v3](https://filamentphp.com/docs/3.x/panels/installation) | End of life — follows Filament v3 EOL |
+| [`1.x`](https://github.com/bezhansalleh/filament-exceptions/tree/1.x) | [v2](https://filamentphp.com/docs/2.x/admin/installation) | End of life |
+
+See [CHANGELOG](CHANGELOG.md) for migration notes between majors.
+
 ## Changelog
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+See [CHANGELOG](CHANGELOG.md) for the list of recent changes.
 
 ## Contributing
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+See [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
 
 ## Security Vulnerabilities
 
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
+Review [our security policy](../../security/policy) to learn how to report security vulnerabilities.
 
 ## Credits
 
@@ -264,4 +297,4 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+The MIT License (MIT). See the [License File](LICENSE.md) for more information.
