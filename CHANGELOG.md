@@ -2,6 +2,19 @@
 
 All notable changes to `filament-exceptions` will be documented in this file.
 
+## 4.2.2 - 2026-11-05
+
+### What's Changed
+
+* Accept `CarbonInterface` for the model prune interval by @jeromecoloma in https://github.com/bezhanSalleh/filament-exceptions/pull/93
+* Rebuilt the published assets with Vite 8, Shiki 4 and Tailwind 4.3; run `php artisan filament:assets` after updating
+
+### New Contributors
+
+* @jeromecoloma made their first contribution in https://github.com/bezhanSalleh/filament-exceptions/pull/93
+
+**Full Changelog**: https://github.com/bezhanSalleh/filament-exceptions/compare/4.2.1...4.2.2
+
 ## 4.2.1 - 2026-06-27
 
 ### What's Changed
