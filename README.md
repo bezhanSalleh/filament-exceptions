@@ -33,6 +33,22 @@ A Simple & Beautiful Exception Viewer for FilamentPHP's Admin Panel
 > - Filament 3.x → use version 3.x
 > - Filament 2.x → use version 1.x
 
+<div class="filament-hidden">
+<b>Table of Contents</b>
+
+- [Installation](#installation)
+  - [Recording Control](#recording-control)
+  - [Configuration Options](#configuration-options)
+  - [Custom Exception Model](#custom-exception-model)
+- [Translations](#translations)
+- [Testing](#testing)
+- [Changelog](#changelog)
+- [Contributing](#contributing)
+- [Security Vulnerabilities](#security-vulnerabilities)
+- [Credits](#credits)
+- [License](#license)
+</div>
+
 ## Installation
 
 1. You can install the package via composer:
